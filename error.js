@@ -1,17 +1,10 @@
-exports = {
 
-    enviarErro: function (msg) {
-        res.status(400).send(
-            montaErro(msg));
-    },
-
-
-}
-function montaErro(msg) {
-    var erro = {
+module.exports = function (message, codigo) {
+    return {
         sucessoOperacao: false,
-        mensagemErro: msg,
-        dataReferencia: new Date()
+        codigoErro: codigo || 400,
+        mensagemErro: message,
+        dataReferencia: new Date(),
     }
-    return erro;
+
 }

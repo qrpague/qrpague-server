@@ -15,14 +15,14 @@ var express = require('express'),
 
 var logger = require('./lib/logger.js');
 
-app.use( Security.cors )
+app.use(Security.cors)
 
 app.use(methodOverride());
 
 app.use(bodyParser.json({
     limit: '6mb'
 }));
-app.use(bodyParser.text());
+app.use(bodyParser.json())
 
 app.use(bodyParser.urlencoded({
     limit: '6mb',
@@ -37,7 +37,26 @@ load('models')
     .then('routes')
     .into(app);
 
+
+app.use(logErrors);
+app.use(errorHandler);
+
 app.use(cookieParser());
 app.listen(cfg.httpPort, cfg.httpHost, function () {
     console.info("SERVIDOR INICIADO (" + cfg.httpHost + ":" + cfg.httpPort + ")");
 });
+
+
+
+function logErrors(err, req, res, next) {
+    console.error(err);
+    next(err);
+}
+
+function errorHandler(err, req, res, next) {
+    var status = err.status || 400;
+    let retorno = { message : err.message ,  }  
+    res.setHeader('content-type', ['application/json']);
+    res.status(status).send(retorno);
+
+}

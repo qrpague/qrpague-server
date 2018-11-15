@@ -4,10 +4,13 @@ var logger = require("../lib/logger.js");
 var qrPagModel = require("../models/qrPagModel.js");
 var QRCode = require("qrcode");
 var Error = require( global.pathRootApp + '/error')
+
+
+
 module.exports = function (app) {
 	var qrPagController = {
 
-		gerar: function (req, res) {
+		gerar: function (req, res, next ) {
 			var tipo = req.headers.accept;
 			var end = req.headers.host;
 			var operacaoFinanceira = JSON.parse(req.body);
@@ -16,91 +19,91 @@ module.exports = function (app) {
 				tipo = "text/plain";
 
 			if (operacaoFinanceira.versao == ''){
-				Error.enviarErro("Versão da operação não informada");
-				return;
+				return next( Error("Versão da operação não informada"));
+				
 			}
 
 			if (operacaoFinanceira.cnpjInstituicao == ''){
-				Error.enviarErro("CNPJ da instituição não informada");	
-				return;
+				return next( Error("CNPJ da instituição não informada"));	
+				
 			}
 
 			if (operacaoFinanceira.valor == null || operacaoFinanceira.valor == ""){
-				Error.enviarErro("Valor da operação não informada");
-				return;
+				return next( Error("Valor da operação não informada"));
+				
 			}
 
 			if (operacaoFinanceira.dataHoraSolicitacao == ''){
-				Error.enviarErro("Data/Hora da operação não informada");
-				return;
+				return next( Error("Data/Hora da operação não informada"));
+				
 			}
 
 			if (operacaoFinanceira.situacao == ''){
-				Error.enviarErro("Situação da operação não informada");
-				return;
+				return next( Error("Situação da operação não informada"));
+				
 			}
 
 			if (operacaoFinanceira.tipoOperacao == ''){
-				Error.enviarErro("Tipo da operação não informada");
-				return;
+				return next( Error("Tipo da operação não informada"));
+				
 			}
 
 			// VALIDAÇÃO TERMINAL	
 			if (operacaoFinanceira.terminal == null || operacaoFinanceira.terminal == ''){
-				Error.enviarErro("Terminal não informado");
-				return;
+				return next( Error("Terminal não informado"));
+				
 			}
 
 			if (operacaoFinanceira.terminal.idTerminal == ""){
-				Error.enviarErro("Id do terminal não informado");
-				return;
+				return next( Error("Id do terminal não informado"));
+				
 			}
 
 			if (operacaoFinanceira.terminal.descricao == ""){
-				Error.enviarErro("Descrição do terminal não informado");
-				return;
+				return next( Error("Descrição do terminal não informado"));
+				
 			}
 
 			if (operacaoFinanceira.terminal.uf == ""){
-				Error.enviarErro("UF do terminal não informado");
-				return;
+				return next( Error("UF do terminal não informado"));
+				
 			}
 
 			if (operacaoFinanceira.terminal.cep == ""){
-				Error.enviarErro("CEP do terminal não informado");
-				return;
+				return next( Error("CEP do terminal não informado"));
+				
 			}
 
 			if (operacaoFinanceira.terminal.latitudeTerminal == ""){
-				Error.enviarErro("Latitude do terminal não informado");
-				return;
+				return next( Error("Latitude do terminal não informado"));
+				
 			}
 
 			if (operacaoFinanceira.terminal.longitudeTerminal == ""){
-				Error.enviarErro("Longitude do terminal não informado");
-				return;
+				return next( Error("Longitude do terminal não informado"));
+				
 			}
 
 
 			// VALIDAÇÃO BENEFICIARIO
 			if (operacaoFinanceira.beneficiario == null){
-				Error.enviarErro("Beneficiário não informado");
-				return;
+				return next( Error("Beneficiário não informado"));
+				
 			}
 
 			if (operacaoFinanceira.beneficiario.nome == ""){
-				Error.enviarErro("Nome do beneficiário não informado");
-				return;
+				return next( Error("Nome do beneficiário não informado"));
+				
 			}
 
 			if (operacaoFinanceira.beneficiario.cpfCnpj == ""){
-				Error.enviarErro("CPF/CNPJ do beneficiário não informado");
-				return;
+				return next( Error("CPF/CNPJ do beneficiário não informado"));
+				
 			}
 
 			if (operacaoFinanceira.beneficiario.instituicao == ""){
-				Error.enviarErro("Instituição do beneficiário não informado");
-				return;
+				return next( Error("Instituição do beneficiário não informado"));
+				
 			}
 
 
@@ -121,80 +124,80 @@ module.exports = function (app) {
 		 
 		},
 
-		recuperarOperacoes: function (req, res) {
+		recuperarOperacoes: function (req, res, next ) {
 			qrPagModel.recuperarOperacoes().then(function (lista) {
-				res.setHeader('content-type', 'application/qrpague');
+				res.setHeader('content-type', ['application/qrpague' , 'application/json']);
 				res.status(200).send(lista);
 			});
 		},
 
-		consultarOperacao: function (req, res) {
+		consultarOperacao: function (req, res, next ) {
 			var uuid = req.params.uuid;
 
 			qrPagModel.consultarOperacao(uuid).then(function (operacao) {
-				res.setHeader('content-type', 'application/qrpague');
+				res.setHeader('content-type', ['application/qrpague' , 'application/json']);
 				res.status(200).send(operacao);
 			});
 		},
 
-		autorizarOperacao: function (req, res) {
+		autorizarOperacao: function (req, res, next ) {
 
 			var uuid = req.params.uuid;
 			var autorizacao = JSON.parse(req.body);
 
 			// VALIDAÇÃO OPERAÇÃO
 			if (!autorizacao.hasOwnProperty('operacaoAutorizada')){
-				Error.enviarErro("Operação da autorização não informada");
-				return;
+				return next( Error("Operação da autorização não informada"));
+				
 			}
 
 			if (typeof (autorizacao.operacaoAutorizada) != "boolean") {
-				Error.enviarErro("Operação da autorização com formato inválido");
-				return;
+				return next( Error("Operação da autorização com formato inválido"));
+				
 			}
 
 			if (autorizacao.dataHoraAutorizacao == ""){
-				Error.enviarErro("Data/Hora da autorização não informada");
-				return;
+				return next( Error("Data/Hora da autorização não informada"));
+				
 			}
 
 			if (autorizacao.dispositivoConfirmacao == null || autorizacao.dispositivoConfirmacao == ''){
-				Error.enviarErro("Dispositivo não informado");
-				return;
+				return next( Error("Dispositivo não informado"));
+				
 			}
 
 			if (autorizacao.dispositivoConfirmacao.idTerminal == ""){
-				Error.enviarErro("Id do terminal não informado");
-				return;
+				return next( Error("Id do terminal não informado"));
+				
 			}
 
 			if (autorizacao.dispositivoConfirmacao.descricao == ""){
-				Error.enviarErro("Descrição do terminal não informado");
-				return;
+				return next( Error("Descrição do terminal não informado"));
+				
 			}
 
 			if (autorizacao.dispositivoConfirmacao.uf == ""){
-				Error.enviarErro("UF do terminal não informado");
-				return;
+				return next( Error("UF do terminal não informado"));
+				
 			}
 
 			if (autorizacao.dispositivoConfirmacao.cep == ""){
-				Error.enviarErro("CEP do terminal não informado");
-				return;
+				return next( Error("CEP do terminal não informado"));
+				
 			}
 
 			if (autorizacao.dispositivoConfirmacao.latitudeTerminal == ""){
-				Error.enviarErro("Latitude do terminal não informado");
-				return;
+				return next( Error("Latitude do terminal não informado"));
+				
 			}
 
 			if (autorizacao.dispositivoConfirmacao.longitudeTerminal == ""){
-				Error.enviarErro("Longitude do terminal não informado");
-				return;
+				return next( Error("Longitude do terminal não informado"));
+				
 			}
 
 			qrPagModel.autorizarOperacao(uuid, autorizacao).then(function (aut) {
-				res.setHeader('content-type', 'application/qrpague');
+				res.setHeader('content-type', ['application/qrpague' , 'application/json']);
 				res.status(200).send({
 					sucessoOperacao: true,
 					dataReferencia: new Date()
@@ -204,65 +207,65 @@ module.exports = function (app) {
 			
 		},
 
-		receberConfirmacao: function (req, res) {
+		receberConfirmacao: function (req, res, next ) {
 
 			var uuid = req.params.uuid;
 			var confirmacao = JSON.parse(req.body);
 
 			// VALIDAÇÃO OPERAÇÃO
 			if (!confirmacao.hasOwnProperty('operacaoConfirmada')){
-				Error.enviarErro("Operação da confirmação não informada");					
-				return;
+				return next( Error("Operação da confirmação não informada"));					
+				
 			}
 
 			if (typeof (confirmacao.operacaoConfirmada) != "boolean") {
-				Error.enviarErro("Operação da confirmação com formato inválido");	
-				return;
+				return next( Error("Operação da confirmação com formato inválido"));	
+				
 			}
 
 			if (!confirmacao.hasOwnProperty('dataHoraConfirmacao') || confirmacao.dataHoraConfirmacao == ""){
-				Error.enviarErro("Data/Hora da confirmação não informada");	
-				return;
+				return next( Error("Data/Hora da confirmação não informada"));	
+				
 			}				
 
 			if (confirmacao.dispositivoConfirmacao == null || confirmacao.dispositivoConfirmacao == ''){
-				Error.enviarErro("Dispositivo não informado");	
-				return;
+				return next( Error("Dispositivo não informado"));	
+				
 			}
 
 			if (confirmacao.dispositivoConfirmacao.idTerminal == ""){
-				Error.enviarErro("Id do terminal não informado");					
-				return;
+				return next( Error("Id do terminal não informado"));					
+				
 			}
 
 			if (confirmacao.dispositivoConfirmacao.descricao == ""){
-				Error.enviarErro("Descrição do terminal não informado");	
-				return;
+				return next( Error("Descrição do terminal não informado"));	
+				
 			}				
 
 			if (confirmacao.dispositivoConfirmacao.uf == ""){
-				Error.enviarErro("UF do terminal não informado");	
-				return;
+				return next( Error("UF do terminal não informado"));	
+				
 			}
 
 			if (confirmacao.dispositivoConfirmacao.cep == ""){
-				Error.enviarErro("CEP do terminal não informado");	
-				return;
+				return next( Error("CEP do terminal não informado"));	
+				
 			}
 
 			if (confirmacao.dispositivoConfirmacao.latitudeTerminal == ""){
-				Error.enviarErro("Latitude do terminal não informado");				
-				return;
+				return next( Error("Latitude do terminal não informado"));				
+				
 			}
 
 			if (confirmacao.dispositivoConfirmacao.longitudeTerminal == ""){
-				Error.enviarErro("Longitude do terminal não informado");
-				return;
+				return next( Error("Longitude do terminal não informado"));
+				
 			}
 
 
 			qrPagModel.confirmarOperacao(uuid, confirmacao).then(function (conf) {
-				res.setHeader('content-type', 'application/qrpague');
+				res.setHeader('content-type', ['application/qrpague' , 'application/json']);
 				res.status(200).send({
 					sucessoOperacao: true,
 					dataReferencia: new Date()
@@ -272,20 +275,20 @@ module.exports = function (app) {
 			 
 		},
 
-		retornaCodigoBarra: function (req, res) {
+		retornaCodigoBarra: function (req, res, next ) {
 			var codigoBarras = req.params.codigoBarras;
 
 			if (codigoBarras == ""){
-				Error.enviarErro("Código de barras não informado");		
-				return;
+				return next( Error("Código de barras não informado"));		
+				
 			}			
 
 			if (codigoBarras.length != 44){
-				Error.enviarErro("Formato do código de barras não informado");	
-				return;
+				return next( Error("Formato do código de barras não informado"));	
+				
 			}
 			
-			res.setHeader('content-type', 'application/qrpague');
+			res.setHeader('content-type', ['application/qrpague' , 'application/json']);
 			res.status(200).send({"codigoBarras":codigoBarras});
 		}
 	};
