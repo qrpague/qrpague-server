@@ -7,7 +7,6 @@ exports = {
 
 
 }
-
 function montaErro(msg) {
     var erro = {
         sucessoOperacao: false,
