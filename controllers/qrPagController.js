@@ -13,7 +13,7 @@ module.exports = function (app) {
 		gerar: function (req, res, next ) {
 			var tipo = req.headers.accept;
 			var end = req.headers.host;
-			var operacaoFinanceira = JSON.parse(req.body);
+			var operacaoFinanceira =  req.body 
 
 			if(tipo == "*/*")
 				tipo = "text/plain";
