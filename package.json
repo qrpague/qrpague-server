@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "body-parser": "~1.8.1",
+    "boleto-brasileiro-validator": "^1.0.3",
     "convert-source-map": "^1.1.0",
     "cookie-parser": "~1.3.3",
     "debug": "^2.0.0",
