@@ -15,6 +15,7 @@ var express = require('express'),
 
 var logger = require('./lib/logger.js');
 
+app.use(Security.cors)
 
 app.use(methodOverride());
 
@@ -41,7 +42,6 @@ app.use(logErrors);
 app.use(errorHandler);
 
 app.use(cookieParser());
-app.use(Security.cors)
 
 app.listen(cfg.httpPort, cfg.httpHost, function () {
     console.info("SERVIDOR INICIADO (" + cfg.httpHost + ":" + cfg.httpPort + ")");
