@@ -280,20 +280,18 @@ module.exports = function (app) {
 
 		retornaCodigoBarra: async function (req, res, next ) {
 			var codigoBarras = req.params.codigoBarras;
-			let validacaoBoleto = null
 			let tipoBoleto = null 
 			if (codigoBarras == ""){
 				return next( Error("Código de barras não informado"));		
 				
 			}	
 			try {
-				validacaoBoleto = await Validador.boleto( codigoBarras )
 				if( Validador.boletoBancario( codigoBarras ) ) {
 					tipoBoleto = "BOLETO-BANCARIO"
 				} else if( Validador.boletoArrecadacao( codigoBarras ) ) {
 					tipoBoleto = "CONVENIO"
 				} else if( Validador.boletoBancarioLinhaDigitavel( codigoBarras ) ) {
-					tipoBoleto = "CONVENIO"
+					tipoBoleto = "BOLETO-BANCARIO"
 				} else if( Validador.boletoArrecadacaoLinhaDigitavel( codigoBarras ) ) {
 					tipoBoleto = "CONVENIO"
 				} 
