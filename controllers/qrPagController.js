@@ -112,11 +112,11 @@ module.exports = function (app) {
 
 			qrPagModel.incluirOperacao(operacaoFinanceira).then(function (resp) {
 				if (tipo == "text/plain"){
-					res.setHeader('content-type', tipo);
+					res.setHeader('Content-Type', tipo);
 					res.status(200).send(end + "/operacoes/" + resp._id);
 				}
 				else if (tipo.substr(0,5) == "image"){
-					res.setHeader('content-type', tipo);
+					res.setHeader('Content-Type', tipo);
 
 					QRCode.toDataURL(JSON.stringify(operacaoFinanceira), function (err, url) {
 						res.status(200).send(url);
@@ -129,7 +129,7 @@ module.exports = function (app) {
 
 		recuperarOperacoes: function (req, res, next ) {
 			qrPagModel.recuperarOperacoes().then(function (lista) {
-				res.setHeader('content-type', ['application/qrpague' , 'application/json']);
+				res.setHeader('Content-Type', ['application/qrpague' ]);
 				res.status(200).send(lista);
 			});
 		},
@@ -138,7 +138,7 @@ module.exports = function (app) {
 			var uuid = req.params.uuid;
 
 			qrPagModel.consultarOperacao(uuid).then(function (operacao) {
-				res.setHeader('content-type', ['application/qrpague' , 'application/json']);
+				res.setHeader('Content-Type', ['application/qrpague' ]);
 				res.status(200).send(operacao);
 			});
 		},
@@ -200,7 +200,7 @@ module.exports = function (app) {
 			}
 
 			qrPagModel.autorizarOperacao(uuid, autorizacao).then(function (aut) {
-				res.setHeader('content-type', ['application/qrpague' , 'application/json']);
+				res.setHeader('Content-Type', ['application/qrpague' ]);
 				res.status(200).send({
 					sucessoOperacao: true,
 					dataReferencia: new Date()
@@ -268,7 +268,7 @@ module.exports = function (app) {
 
 
 			qrPagModel.confirmarOperacao(uuid, confirmacao).then(function (conf) {
-				res.setHeader('content-type', ['application/qrpague' , 'application/json']);
+				res.setHeader('Content-Type', ['application/qrpague' ]);
 				res.status(200).send({
 					sucessoOperacao: true,
 					dataReferencia: new Date()
@@ -305,7 +305,7 @@ module.exports = function (app) {
 				
 			// }
 			
-			// res.setHeader('content-type', ['application/qrpague' , 'application/json']);
+			// res.setHeader('Content-Type', ['application/qrpague' ]);
 			res.status(200).send({"codigoBarras":codigoBarras , lenght : codigoBarras.length , tipoOperacao : tipoBoleto });
 		}
 	};
