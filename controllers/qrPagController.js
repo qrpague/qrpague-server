@@ -129,7 +129,7 @@ module.exports = function (app) {
 
 		recuperarOperacoes: function (req, res, next ) {
 			qrPagModel.recuperarOperacoes().then(function (lista) {
-				res.setHeader('Content-Type', ['application/qrpague' ]);
+				res.setHeader('Content-Type', ['application/json' ]);
 				res.status(200).send(lista);
 			});
 		},
