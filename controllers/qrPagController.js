@@ -292,6 +292,10 @@ module.exports = function (app) {
 					tipoBoleto = "BOLETO-BANCARIO"
 				} else if( Validador.boletoArrecadacao( codigoBarras ) ) {
 					tipoBoleto = "CONVENIO"
+				} else if( Validador.boletoBancarioLinhaDigitavel( codigoBarras ) ) {
+					tipoBoleto = "CONVENIO"
+				} else if( Validador.boletoArrecadacaoLinhaDigitavel( codigoBarras ) ) {
+					tipoBoleto = "CONVENIO"
 				} 
 			}catch( erro ) {
 				console.log( erro)
