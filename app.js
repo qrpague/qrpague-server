@@ -57,7 +57,6 @@ function logErrors(err, req, res, next) {
 function errorHandler(err, req, res, next) {
     var status = err.status || 400;
     let retorno = { message : err.message ,  }  
-    res.setHeader('content-type', ['application/json']);
     res.status(status).send(retorno);
 
 }
