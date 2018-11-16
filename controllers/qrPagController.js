@@ -5,6 +5,9 @@ var qrPagModel = require("../models/qrPagModel.js");
 var QRCode = require("qrcode");
 var Error = require( global.pathRootApp + '/error')
 
+// var boletoValidator = require('boleto-validator/promise');
+var Validador = require('boleto-brasileiro-validator');
+
 
 
 module.exports = function (app) {
@@ -275,21 +278,33 @@ module.exports = function (app) {
 			 
 		},
 
-		retornaCodigoBarra: function (req, res, next ) {
+		retornaCodigoBarra: async function (req, res, next ) {
 			var codigoBarras = req.params.codigoBarras;
-
+			let validacaoBoleto = null
+			let tipoBoleto = null 
 			if (codigoBarras == ""){
 				return next( Error("Código de barras não informado"));		
 				
-			}			
-
-			if (codigoBarras.length != 44){
-				return next( Error("Formato do código de barras não informado"));	
+			}	
+			try {
+				validacaoBoleto = await Validador.boleto( codigoBarras )
+				if( Validador.boletoBancario( codigoBarras ) ) {
+					tipoBoleto = "BOLETO-BANCARIO"
+				} else if( Validador.boletoArrecadacao( codigoBarras ) ) {
+					tipoBoleto = "CONVENIO"
+				} 
+			}catch( erro ) {
+				console.log( erro)
+			}	
+			 
+ 
+			// if (codigoBarras.length != 44){
+			// 	return next( Error("Formato do código de barras não informado"));	
 				
-			}
+			// }
 			
 			res.setHeader('content-type', ['application/qrpague' , 'application/json']);
-			res.status(200).send({"codigoBarras":codigoBarras});
+			res.status(200).send({"codigoBarras":codigoBarras , lenght : codigoBarras.length , tipo : tipoBoleto });
 		}
 	};
 	return qrPagController;
