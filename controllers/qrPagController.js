@@ -303,7 +303,7 @@ module.exports = function (app) {
 				
 			// }
 			
-			res.setHeader('content-type', ['application/qrpague' , 'application/json']);
+			// res.setHeader('content-type', ['application/qrpague' , 'application/json']);
 			res.status(200).send({"codigoBarras":codigoBarras , lenght : codigoBarras.length , tipo : tipoBoleto });
 		}
 	};
