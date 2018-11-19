@@ -305,7 +305,7 @@ module.exports = function (app) {
 				
 			// }
 			
-			// res.setHeader('Content-Type', ['application/qrpague' ]);
+			res.setHeader('Content-Type', ['application/qrpague' ]);
 			res.status(200).send({"codigoBarras":codigoBarras , lenght : codigoBarras.length , tipoOperacao : tipoBoleto });
 		}
 	};
