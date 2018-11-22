@@ -138,7 +138,7 @@ module.exports = function (app) {
 			var uuid = req.params.uuid;
 
 			qrPagModel.consultarOperacao(uuid).then(function (operacao) {
-				res.setHeader('Content-Type', ['application/qrpague' ]);
+				res.setHeader('Content-Type','application/qrpague');
 				res.status(200).send(operacao);
 			});
 		},
@@ -200,7 +200,7 @@ module.exports = function (app) {
 			}
 
 			qrPagModel.autorizarOperacao(uuid, autorizacao).then(function (aut) {
-				res.setHeader('Content-Type', ['application/qrpague' ]);
+				res.setHeader('Content-Type','application/qrpague');
 				res.status(200).send({
 					sucessoOperacao: true,
 					dataReferencia: new Date()
