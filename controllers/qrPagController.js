@@ -300,12 +300,7 @@ module.exports = function (app) {
 			}	
 			 
  
-			// if (codigoBarras.length != 44){
-			// 	return next( Error("Formato do código de barras não informado"));	
-				
-			// }
-			
-			res.setHeader('Content-Type', ['application/qrpague' ]);
+			res.setHeader('Content-Type','application/qrpague');
 			res.status(200).send({"codigoBarras":codigoBarras , lenght : codigoBarras.length , tipoOperacao : tipoBoleto });
 		}
 	};
