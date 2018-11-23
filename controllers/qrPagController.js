@@ -19,8 +19,6 @@ module.exports = function (app) {
 				var end = req.headers.host;
 				var operacaoFinanceira = req.body
 
-				if (tipo == "*/*")
-					tipo = "text/plain";
 
 				if (operacaoFinanceira.versao == '') {
 					return next(Error("Versão da operação não informada"));
@@ -114,9 +112,8 @@ module.exports = function (app) {
 				qrPagModel.incluirOperacao(operacaoFinanceira).then(function (resp) {
 
 
-					if (tipo.substr(0, 5) == "image") {
-						res.setHeader('Content-Type', tipo);
-
+					if (tipo == "application/image") {
+ 
 						QRCode.toDataURL(JSON.stringify(operacaoFinanceira), function (err, url) {
 							res.status(200).send(url);
 						})
