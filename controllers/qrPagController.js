@@ -17,6 +17,7 @@ module.exports = function (app) {
 			try {
 				var tipo = req.headers.accept;
 				var end = req.headers.host;
+				let protocol = req.headers.protocol || 'http'
 				var operacaoFinanceira = req.body
 
 
@@ -118,8 +119,8 @@ module.exports = function (app) {
 							res.status(200).send(url);
 						})
 					}
-					  
-					return res.status(200).send(end + "/operacoes/" + resp._id);
+					let resposta = protocol + '://' + end + "/operacoes/" + resp._id
+					return res.status(200).send( resposta );
 		 
  
 				});
