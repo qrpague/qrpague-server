@@ -5,7 +5,7 @@ var configuracoes = {
 	httpPort : 9092,
 	httpHost : '0.0.0.0',
 	portWebsocket : 4000,
-	urlDataBase : 'localhost:27017'
+	urlDataBase : 'localhost:10001'
 };
 
 exports.Config = configuracoes;
