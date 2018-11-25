@@ -1,0 +1,29 @@
+{
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "8.0"
+          },
+          "useBuiltIns": true
+        }
+      ]
+    ],
+    "sourceMaps": true,
+    "retainLines": true,
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./"
+          ],
+          "alias": {
+            "test": "./test",
+            "underscore": "lodash"
+          }
+        }
+      ]
+    ]
+  }

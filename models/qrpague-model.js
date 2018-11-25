@@ -3,9 +3,9 @@
 var logger = require('../lib/logger.js'),
 	mongo = require('mongodb'),
 	monk = require('monk'),
-	cfg = require('../config').Config,
+	cfg = require('../config'),
 	Promise = require('promise'),
-	db = monk(cfg.urlDataBase),
+	db = monk(cfg.URL_DATABASE),
 	listaOperacoes = db.get('tabOperacoes')
 
 var modelo = module.exports = function (app) { };

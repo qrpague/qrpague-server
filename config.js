@@ -1,11 +1,9 @@
-var path = require('path');
-global.pathRootApp = path.resolve(__dirname);
 
-var configuracoes = {
-	httpPort : 9092,
-	httpHost : '0.0.0.0',
-	portWebsocket : 4000,
-	urlDataBase : 'localhost:10001'
+var Config = {
+	HTTP_PORT : 9092,
+	HTTP_HOST : '0.0.0.0',
+	WEBSOCKET_PORT : 4000,
+	URL_DATABASE : 'localhost:27017'
 };
 
-exports.Config = configuracoes;
+module.exports = Config;
