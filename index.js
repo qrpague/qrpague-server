@@ -1,15 +1,14 @@
 'use strict';
 
-let Security = require('./security');
-let path = require('path');
-
+import Security from'./security'
+import path from'path'
  
-let express = require('express')
+import express from'express'
 const app = express();
-let cookieParser = require('cookie-parser')
-let bodyParser = require('body-parser')
-let methodOverride = require('method-override')
-let cfg = require('./config')
+import cookieParser from'cookie-parser'
+import bodyParser from'body-parser'
+import methodOverride from'method-override'
+import cfg from'./config'
 
 import ResourcesNegocio from './resources/negocio'
 
