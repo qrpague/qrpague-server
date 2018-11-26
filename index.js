@@ -10,7 +10,6 @@ let cookieParser = require('cookie-parser')
 let bodyParser = require('body-parser')
 let methodOverride = require('method-override')
 let cfg = require('./config')
-let logger = require('./lib/logger.js');
 
 import ResourcesNegocio from './resources/negocio'
 
