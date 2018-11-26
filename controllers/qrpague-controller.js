@@ -5,7 +5,7 @@ var qrPagModel = require("../models/qrpague-model.js");
 var QRCode = require("qrcode");
 var Error = require( '../error' )
 var Validador = require('boleto-brasileiro-validator');
-
+import Config from 'config'
 
 
 module.exports = {
@@ -29,10 +29,10 @@ module.exports = {
 					res.status(200).send(url);
 				})
 			}
-			let resposta = protocol + '://' + end + "/operacoes/" + resp._id
+			let resposta = Config.PROTOCOL + '://' + end + "/operacoes/" + resp._id
 			return res.status(200).send( resposta );
 		}catch( error ) {
-			next( 'QRPAGUE_BACKEND_GERAR_QRCODE_ERROR_CATCH' )
+			next( error  )
 		}	
 
 
