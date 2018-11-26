@@ -10,116 +10,32 @@ var Validador = require('boleto-brasileiro-validator');
 
 module.exports = {
 
-	gerar: function (req, res, next ) {
-		var tipo = req.headers.accept;
-		var end = req.headers.host;
-		var operacaoFinanceira =  req.body 
-
-		if(tipo == "*/*")
-			tipo = "text/plain";
-
-		if (operacaoFinanceira.versao == ''){
-			return next( Error("Versão da operação não informada"));
-			
-		}
-
-		if (operacaoFinanceira.cnpjInstituicao == ''){
-			return next( Error("CNPJ da instituição não informada"));	
-			
-		}
-
-		if (operacaoFinanceira.valor == null || operacaoFinanceira.valor == ""){
-			return next( Error("Valor da operação não informada"));
-			
-		}
-
-		if (operacaoFinanceira.dataHoraSolicitacao == ''){
-			return next( Error("Data/Hora da operação não informada"));
-			
-		}
-
-		if (operacaoFinanceira.situacao == ''){
-			return next( Error("Situação da operação não informada"));
-			
-		}
-
-		if (operacaoFinanceira.tipoOperacao == ''){
-			return next( Error("Tipo da operação não informada"));
-			
-		}
-
-		// VALIDAÇÃO TERMINAL	
-		if (operacaoFinanceira.terminal == null || operacaoFinanceira.terminal == ''){
-			return next( Error("Terminal não informado"));
-			
-		}
-
-		if (operacaoFinanceira.terminal.idTerminal == ""){
-			return next( Error("Id do terminal não informado"));
-			
-		}
-
-		if (operacaoFinanceira.terminal.descricao == ""){
-			return next( Error("Descrição do terminal não informado"));
-			
-		}
-
-		if (operacaoFinanceira.terminal.uf == ""){
-			return next( Error("UF do terminal não informado"));
-			
-		}
-
-		if (operacaoFinanceira.terminal.cep == ""){
-			return next( Error("CEP do terminal não informado"));
-			
-		}
-
-		if (operacaoFinanceira.terminal.latitudeTerminal == ""){
-			return next( Error("Latitude do terminal não informado"));
-			
-		}
-
-		if (operacaoFinanceira.terminal.longitudeTerminal == ""){
-			return next( Error("Longitude do terminal não informado"));
-			
-		}
+	gerar: async function (req, res, next ) {
 
 
-		// VALIDAÇÃO BENEFICIARIO
-		if (operacaoFinanceira.beneficiario == null){
-			return next( Error("Beneficiário não informado"));
-			
-		}
-
-		if (operacaoFinanceira.beneficiario.nome == ""){
-			return next( Error("Nome do beneficiário não informado"));
-			
-		}
-
-		if (operacaoFinanceira.beneficiario.cpfCnpj == ""){
-			return next( Error("CPF/CNPJ do beneficiário não informado"));
-			
-		}
-
-		if (operacaoFinanceira.beneficiario.instituicao == ""){
-			return next( Error("Instituição do beneficiário não informado"));
-			
-		}
-
-
-		qrPagModel.incluirOperacao(operacaoFinanceira).then(function (resp) {
-			if (tipo == "text/plain"){
-				res.setHeader('Content-Type', tipo);
-				res.status(200).send(end + "/operacoes/" + resp._id);
-			}
-			else if (tipo.substr(0,5) == "image"){
-				res.setHeader('Content-Type', tipo);
-
+		try{
+			var tipo = req.headers.accept;
+			var end = req.headers.host;
+			var operacaoFinanceira =  req.body 
+	
+	
+			validarOperacao( operacaoFinanceira, next )
+	
+	
+			let resp = await qrPagModel.incluirOperacao(operacaoFinanceira);
+			if (tipo == "application/image") {
+	 
 				QRCode.toDataURL(JSON.stringify(operacaoFinanceira), function (err, url) {
 					res.status(200).send(url);
 				})
 			}
-		});
+			let resposta = protocol + '://' + end + "/operacoes/" + resp._id
+			return res.status(200).send( resposta );
+		}catch( error ) {
+			next( 'QRPAGUE_BACKEND_GERAR_QRCODE_ERROR_CATCH' )
+		}	
+
+
 
 	 
 	},
@@ -301,4 +217,95 @@ module.exports = {
 		res.status(200).send({"codigoBarras":codigoBarras , lenght : codigoBarras.length , tipoOperacao : tipoBoleto });
 	}
 
+}
+
+
+function validarOperacao( operacaoFinanceira , next  ) {
+	if (operacaoFinanceira.versao == ''){
+		return next( Error("Versão da operação não informada"));
+		
+	}
+
+	if (operacaoFinanceira.cnpjInstituicao == ''){
+		return next( Error("CNPJ da instituição não informada"));	
+		
+	}
+
+	if (operacaoFinanceira.valor == null || operacaoFinanceira.valor == ""){
+		return next( Error("Valor da operação não informada"));
+		
+	}
+
+	if (operacaoFinanceira.dataHoraSolicitacao == ''){
+		return next( Error("Data/Hora da operação não informada"));
+		
+	}
+
+	if (operacaoFinanceira.situacao == ''){
+		return next( Error("Situação da operação não informada"));
+		
+	}
+
+	if (operacaoFinanceira.tipoOperacao == ''){
+		return next( Error("Tipo da operação não informada"));
+		
+	}
+
+	// VALIDAÇÃO TERMINAL	
+	if (operacaoFinanceira.terminal == null || operacaoFinanceira.terminal == ''){
+		return next( Error("Terminal não informado"));
+		
+	}
+
+	if (operacaoFinanceira.terminal.idTerminal == ""){
+		return next( Error("Id do terminal não informado"));
+		
+	}
+
+	if (operacaoFinanceira.terminal.descricao == ""){
+		return next( Error("Descrição do terminal não informado"));
+		
+	}
+
+	if (operacaoFinanceira.terminal.uf == ""){
+		return next( Error("UF do terminal não informado"));
+		
+	}
+
+	if (operacaoFinanceira.terminal.cep == ""){
+		return next( Error("CEP do terminal não informado"));
+		
+	}
+
+	if (operacaoFinanceira.terminal.latitudeTerminal == ""){
+		return next( Error("Latitude do terminal não informado"));
+		
+	}
+
+	if (operacaoFinanceira.terminal.longitudeTerminal == ""){
+		return next( Error("Longitude do terminal não informado"));
+		
+	}
+
+
+	// VALIDAÇÃO BENEFICIARIO
+	if (operacaoFinanceira.beneficiario == null){
+		return next( Error("Beneficiário não informado"));
+		
+	}
+
+	if (operacaoFinanceira.beneficiario.nome == ""){
+		return next( Error("Nome do beneficiário não informado"));
+		
+	}
+
+	if (operacaoFinanceira.beneficiario.cpfCnpj == ""){
+		return next( Error("CPF/CNPJ do beneficiário não informado"));
+		
+	}
+
+	if (operacaoFinanceira.beneficiario.instituicao == ""){
+		return next( Error("Instituição do beneficiário não informado"));
+		
+	}
 }
