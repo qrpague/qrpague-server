@@ -28,7 +28,7 @@ module.exports = {
 					res.status(200).send(url);
 				})
 			}
-			let resposta = Config.PROTOCOL + '://' + Config.HOST_QRCODE_CREATE + "/operacoes/" + resp._id
+			let resposta = Config.PROTOCOL + '://' + Config.QRPAGUE_URL_QRCODE_CREATE  + resp._id
 			return res.status(200).send(resposta);
 		} catch (error) {
 			next(error)
@@ -39,20 +39,31 @@ module.exports = {
 
 	},
 
-	recuperarOperacoes: function (req, res, next) {
+	recuperarOperacoes: async function (req, res, next) {
 		qrPagModel.recuperarOperacoes().then(function (lista) {
 			res.setHeader('Content-Type', ['application/json']);
 			res.status(200).send(lista);
 		});
 	},
 
-	consultarOperacao: function (req, res, next) {
-		var uuid = req.params.uuid;
+	consultarOperacao: async function (req, res, next) {
 
-		qrPagModel.consultarOperacao(uuid).then(function (operacao) {
+		
+		try {
+
+			var uuid = req.params.uuid;
+
+			let operacao = await qrPagModel.consultarOperacao(uuid);
 			res.setHeader('Content-Type', 'application/qrpague');
-			res.status(200).send(operacao);
-		});
+
+			if ( !operacao ) {
+				return res.status(401).send({});
+			}
+			return res.status(200).send(operacao);
+	
+		} catch (error) {
+			next(error)
+		}
 	},
 
 	autorizarOperacao: async function (req, res, next) {
