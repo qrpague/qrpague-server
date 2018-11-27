@@ -6,6 +6,7 @@ var QRCode = require("qrcode");
 var Error = require('../error')
 var Validador = require('boleto-brasileiro-validator');
 import Config from 'config'
+import CallBackServices from 'services/callback'
 
 
 module.exports = {
@@ -73,14 +74,37 @@ module.exports = {
 			var uuid = req.params.uuid;
 			var autorizacao = req.body
 
-			validarAutorizacao(autorizacao, next)
+			// validarAutorizacao(autorizacao, next)
+
+
+			//CALLBACK - CONSULTAR UUID 
+
+			let operacao = await qrPagModel.consultarOperacao( uuid );
+
+			if (!operacao) {
+				return next( 'QRPAGUE_SERVER_AUTORIZAR-OPERACAO_UUID_INVALIDO' )
+			}
+
+			let urlCallBack = operacao.callback 
+
+			if ( !urlCallBack ) {
+				autorizacao.dispositivoConfirmacao = {}
+			} else {
+
+				let dispositivoConfirmacao = await CallBackServices.takeReturn( urlCallBack , operacao )
+
+				autorizacao.dispositivoConfirmacao = dispositivoConfirmacao
+
+			}
 
 
 			let aut = await qrPagModel.autorizarOperacao(uuid, autorizacao)
 
  
-			res.setHeader('Content-Type', 'application/json');
 			let resposta = { sucessoOperacao: true, dataReferencia: new Date() }
+
+			res.setHeader('Content-Type', ['application/json']);
+
 			return res.status(200).send(resposta);
 		} catch (error) {
 			next(error)
@@ -90,7 +114,7 @@ module.exports = {
 
 	},
 
-	receberConfirmacao: function (req, res, next) {
+	receberConfirmacao: async function (req, res, next) {
 
 		var uuid = req.params.uuid;
 		var confirmacao = JSON.parse(req.body);
