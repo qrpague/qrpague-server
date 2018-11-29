@@ -53,8 +53,8 @@ module.exports = {
 
 
 		try {
-			
- 		   
+
+
 			let acceptType = req.headers['accept']
 			var uuid = req.params.uuid;
 			let operacao = await qrPagModel.consultarOperacao(uuid);
@@ -62,32 +62,12 @@ module.exports = {
 				return res.status(401).send({});
 			}
 
-			
-			if ( acceptType.indexOf('application/xhtml+xml') != -1 ) {
-				res.setHeader('Content-Type', 'application/xhtml+xml');
 
 
-				let fs = require("fs")
+			res.setHeader('Content-Type', 'application/qrpague');
 
-				let urlOperacao = Config.PROTOCOL + '://' + Config.HTTP_HOST + ':' + Config.HTTP_PORT +  req.originalUrl
-	 
-				let content = fs.readFileSync( global.pathRootApp + '/templates/shareLink.html', "utf8")
-	
-				// let qrcodeImage = await QRCode.toDataURL( JSON.stringify( operacao ) )
-	
-				content = content.replaceAll( '$TITLE$' , 'QRPAGUE - PAGAMENTO' )
-				content = content.replaceAll( '$URL$' , urlOperacao )
-				content = content.replaceAll( '$DESCRIPTION$' , operacao.descricao )
-				content = content.replaceAll( '$URL_IMAGE$' , 'https://avatars1.githubusercontent.com/u/43270555?s=460&v=4' )
-				content = content.replaceAll( '$TYPE$' , 'website' )
 
-				operacao = content
 
-			}else{
-				res.setHeader('Content-Type', 'application/qrpague');
-			} 
-
-			
 			return res.status(200).send(operacao);
 
 		} catch (error) {
