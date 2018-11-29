@@ -59,7 +59,8 @@ module.exports = {
 			let headers = req.headers['user-agent']
 
 
-			console.info( acceptType , headers )
+			console.info( acceptType )
+			console.ingo( headers )
 
 			var uuid = req.params.uuid;
 			let operacao = await qrPagModel.consultarOperacao(uuid);
