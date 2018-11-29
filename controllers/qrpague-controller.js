@@ -16,11 +16,10 @@ module.exports = {
 
 		try {
 			var tipo = req.headers.accept;
- 			var operacaoFinanceira = req.body
+			var operacaoFinanceira = req.body
 
 
 			validarOperacao(operacaoFinanceira, next)
-
 
 			let resp = await qrPagModel.incluirOperacao(operacaoFinanceira);
 			if (tipo == "application/image") {
@@ -29,8 +28,10 @@ module.exports = {
 					res.status(200).send(url);
 				})
 			}
-			let resposta = Config.PROTOCOL + '://' + Config.QRPAGUE_URL_QRCODE_CREATE  + resp._id
+			let resposta = Config.PROTOCOL + '://' + Config.QRPAGUE_URL_QRCODE_CREATE + resp._id
+
 			return res.status(200).send(resposta);
+
 		} catch (error) {
 			next(error)
 		}
@@ -41,27 +42,55 @@ module.exports = {
 	},
 
 	recuperarOperacoes: async function (req, res, next) {
-		qrPagModel.recuperarOperacoes().then(function (lista) {
-			res.setHeader('Content-Type', ['application/json']);
-			res.status(200).send(lista);
-		});
+
+		let lista = await qrPagModel.recuperarOperacoes()
+
+		res.setHeader('Content-Type', ['application/json']);
+		res.status(200).send(lista);
 	},
 
 	consultarOperacao: async function (req, res, next) {
 
-		
+
 		try {
-
+			
+			
+		   
+			let contentType = req.headers['content-type']
 			var uuid = req.params.uuid;
-
 			let operacao = await qrPagModel.consultarOperacao(uuid);
-			res.setHeader('Content-Type', 'application/qrpague');
-
-			if ( !operacao ) {
+			if (!operacao) {
 				return res.status(401).send({});
 			}
-			return res.status(200).send(operacao);
+
+			
+			if ( contentType === 'application/xhtml+xml') {
+				res.setHeader('Content-Type', 'application/xhtml+xml');
+
+
+				let fs = require("fs")
+
+				let urlOperacao = Config.PROTOCOL + '://' + Config.HTTP_HOST + ':' + Config.HTTP_PORT +  req.originalUrl
+	 
+				let content = fs.readFileSync( global.pathRootApp + '/templates/shareLink.html', "utf8")
 	
+				// let qrcodeImage = await QRCode.toDataURL( JSON.stringify( operacao ) )
+	
+				content = content.replaceAll( '$TITLE$' , 'QRPAGUE - PAGAMENTO' )
+				content = content.replaceAll( '$URL$' , urlOperacao )
+				content = content.replaceAll( '$DESCRIPTION$' , operacao.descricao )
+				content = content.replaceAll( '$URL_IMAGE$' , 'https://avatars1.githubusercontent.com/u/43270555?s=460&v=4' )
+				content = content.replaceAll( '$TYPE$' , 'website' )
+
+				operacao = content
+
+			}else{
+				res.setHeader('Content-Type', 'application/qrpague');
+			} 
+
+			
+			return res.status(200).send(operacao);
+
 		} catch (error) {
 			next(error)
 		}
@@ -79,19 +108,19 @@ module.exports = {
 
 			//CALLBACK - CONSULTAR UUID 
 
-			let operacao = await qrPagModel.consultarOperacao( uuid );
+			let operacao = await qrPagModel.consultarOperacao(uuid);
 
 			if (!operacao) {
-				return next( 'QRPAGUE_SERVER_AUTORIZAR-OPERACAO_UUID_INVALIDO' )
+				return next('QRPAGUE_SERVER_AUTORIZAR-OPERACAO_UUID_INVALIDO')
 			}
 
-			let urlCallBack = operacao.callback 
+			let urlCallBack = operacao.callback
 
-			if ( !urlCallBack ) {
+			if (!urlCallBack) {
 				autorizacao.dispositivoConfirmacao = {}
 			} else {
 
-				let dispositivoConfirmacao = await CallBackServices.takeReturn( urlCallBack , operacao )
+				let dispositivoConfirmacao = await CallBackServices.takeReturn(urlCallBack, operacao)
 
 				autorizacao.dispositivoConfirmacao = dispositivoConfirmacao
 
@@ -100,7 +129,7 @@ module.exports = {
 
 			let aut = await qrPagModel.autorizarOperacao(uuid, autorizacao)
 
- 
+
 			let resposta = { sucessoOperacao: true, dataReferencia: new Date() }
 
 			res.setHeader('Content-Type', ['application/json']);
@@ -109,7 +138,6 @@ module.exports = {
 		} catch (error) {
 			next(error)
 		}
-
 
 
 	},
