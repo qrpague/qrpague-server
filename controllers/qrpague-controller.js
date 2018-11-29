@@ -54,9 +54,8 @@ module.exports = {
 
 		try {
 			
-			
-		   
-			let contentType = req.headers['content-type']
+ 		   
+			let acceptType = req.headers['accept']
 			var uuid = req.params.uuid;
 			let operacao = await qrPagModel.consultarOperacao(uuid);
 			if (!operacao) {
@@ -64,7 +63,7 @@ module.exports = {
 			}
 
 			
-			if ( contentType === 'application/xhtml+xml') {
+			if ( acceptType.indexOf('application/xhtml+xml') != -1 ) {
 				res.setHeader('Content-Type', 'application/xhtml+xml');
 
 
