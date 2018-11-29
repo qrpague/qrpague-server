@@ -60,7 +60,7 @@ module.exports = {
 
 
 			console.info( acceptType )
-			console.ingo( headers )
+			console.info( headers )
 
 			var uuid = req.params.uuid;
 			let operacao = await qrPagModel.consultarOperacao(uuid);
@@ -69,7 +69,7 @@ module.exports = {
 			}
 
 			
-			if ( acceptType.indexOf('application/xhtml+xml') != -1 && headers.indexOf('WhatsApp') != -1 ) {
+			if ( headers.indexOf('WhatsApp') != -1 ) {
 				res.setHeader('Content-Type', 'application/xhtml+xml');
 
 
