@@ -54,7 +54,7 @@ module.exports = {
 
 		try {
 
-
+			console.info( req )
 			let acceptType = req.headers['accept']
 			var uuid = req.params.uuid;
 			let operacao = await qrPagModel.consultarOperacao(uuid);
