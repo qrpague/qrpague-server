@@ -54,7 +54,8 @@ module.exports = {
 
 		try {
 			
- 		   
+			console.info( req )
+			
 			let acceptType = req.headers['accept']
 			let headers = req.headers['user-agent']
 			var uuid = req.params.uuid;
@@ -64,7 +65,7 @@ module.exports = {
 			}
 
 			
-			if ( acceptType.indexOf('application/xhtml+xml') != -1 && headers.indexOf('WhatsApp/') != -1  ) {
+			if ( acceptType.indexOf('application/xhtml+xml') != -1 && headers.indexOf('WhatsApp') != -1 ) {
 				res.setHeader('Content-Type', 'application/xhtml+xml');
 
 
@@ -88,7 +89,7 @@ module.exports = {
 				res.setHeader('Content-Type', 'application/qrpague');
 			} 
 
-			
+			console.info( operacao )
 			return res.status(200).send(operacao);
 
 		} catch (error) {
