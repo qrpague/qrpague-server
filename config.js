@@ -1,7 +1,7 @@
 
 var Config = {
 
-	PROTOCOL: 'http',
+	PROTOCOL: 'https',
 	HTTP_PORT : 9092,
 	HTTP_HOST : '0.0.0.0',
 	WEBSOCKET_PORT : 4000,

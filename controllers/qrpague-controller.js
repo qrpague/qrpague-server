@@ -83,6 +83,7 @@ module.exports = {
 	
 				content = content.replaceAll( '$TITLE$' , 'QRPAGUE - PAGAMENTO' )
 				content = content.replaceAll( '$URL$' , urlOperacao )
+				content = content.replaceAll( '$URL$' , "R$ " + operacao.valor )
 				content = content.replaceAll( '$DESCRIPTION$' , operacao.descricao )
 				content = content.replaceAll( '$URL_IMAGE$' , 'https://avatars1.githubusercontent.com/u/43270555?s=460&v=4' )
 				content = content.replaceAll( '$TYPE$' , 'website' )
