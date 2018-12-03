@@ -81,7 +81,7 @@ module.exports = {
 	
 				// let qrcodeImage = await QRCode.toDataURL( JSON.stringify( operacao ) )
 	
-				content = content.replaceAll( '$TITLE$' , 'QRPAGUE - PAGAMENTO' )
+				content = content.replaceAll( '$TITLE$' , ' ' +operacao.tipo )
 				content = content.replaceAll( '$URL$' , urlOperacao )
 				content = content.replaceAll( '$URL$' , "R$ " + operacao.valor )
 				content = content.replaceAll( '$DESCRIPTION$' , operacao.descricao )
