@@ -25,7 +25,7 @@ module.exports = {
 	},
 
 	consultarOperacao: function (uuid) {
-		return listaOperacoes.findOne({ _id: uuid }, function (e, operacao) {
+		return listaOperacoes.findOne({ _id: monk._id( uuid ) }, function (e, operacao) {
 			return Promise.resolve(operacao);
 		});
 	},
@@ -33,7 +33,7 @@ module.exports = {
 	autorizarOperacao: function (uuid, dados) {
 		var aut = (dados.operacaoAutorizada) ? 'AUTORIZADO' : 'CANCELADO';
 
-		return listaOperacoes.update({ _id: uuid }, { $set: { 'situacao': aut, 'autorizacaoOperacao': dados } }, function (e, operacao) {
+		return listaOperacoes.update({ _id: monk._id( uuid ) }, { $set: { 'situacao': aut, 'autorizacaoOperacao': dados } }, function (e, operacao) {
 			return Promise.resolve(operacao);
 		});
 	},
@@ -41,7 +41,7 @@ module.exports = {
 	confirmarOperacao: function (uuid, dados) {
 		var aut = (dados.operacaoConfirmada) ? 'CONFIRMADO' : 'CANCELADO';
 
-		return listaOperacoes.update({ _id: uuid }, { $set: { 'situacao': aut, 'confirmacaoOperacao': dados } }, function (e, operacao) {
+		return listaOperacoes.update({ _id: monk._id( uuid ) }, { $set: { 'situacao': aut, 'confirmacaoOperacao': dados } }, function (e, operacao) {
 			return Promise.resolve(operacao);
 		});
 	}
