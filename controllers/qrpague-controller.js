@@ -81,7 +81,15 @@ module.exports = {
 	
 				// let qrcodeImage = await QRCode.toDataURL( JSON.stringify( operacao ) )
 	
-				content = content.replaceAll( '$TITLE$' , ' ' +operacao.tipo )
+				let tipo = 'PAGAMENTOS'
+				switch( operacao.tipoOperacao ) {
+					case 'PAGAMENTO': tipo = 'Titulo de pagamento.';  break
+					case 'CONVENIO': tipo = 'Titulo de convënio.';  break
+					case 'BOLETO-BANCARIO': tipo = 'Titulo bancário.';  break
+					case 'TRANSFERENCIA': tipo = 'Ordem de transferëncia.';  break
+				}
+
+				content = content.replaceAll( '$TITLE$' , ' ' + tipo  )
 				content = content.replaceAll( '$URL$' , urlOperacao )
 				content = content.replaceAll( '$URL$' , "R$ " + operacao.valor )
 				content = content.replaceAll( '$DESCRIPTION$' , operacao.descricao )

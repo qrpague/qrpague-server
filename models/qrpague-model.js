@@ -24,7 +24,7 @@ module.exports = {
 		});
 	},
 
-	consultarOperacao: function (uuid) {
+	consultarOperacao: function ( uuid ) {
 		return listaOperacoes.findOne({ _id: monk.id( uuid ) }, function (e, operacao) {
 			return Promise.resolve(operacao);
 		});
