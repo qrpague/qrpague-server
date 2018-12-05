@@ -53,7 +53,6 @@ module.exports = {
 
 
 		try {
-			
  
 			let acceptType = req.headers['accept']
 			let headers = req.headers['user-agent']
@@ -82,16 +81,29 @@ module.exports = {
 				// let qrcodeImage = await QRCode.toDataURL( JSON.stringify( operacao ) )
 	
 				let tipo = 'PAGAMENTOS'
+				let descricao = 'Tíquete de pagamento'
 				switch( operacao.tipoOperacao ) {
-					case 'PAGAMENTO': tipo = 'Titulo de pagamento.';  break
-					case 'CONVENIO': tipo = 'Titulo de convënio.';  break
-					case 'BOLETO-BANCARIO': tipo = 'Titulo bancário.';  break
-					case 'TRANSFERENCIA': tipo = 'Ordem de transferëncia.';  break
+					case 'PAGAMENTO':
+					 tipo = 'Pagamento de título.'; 
+					 descricao = 'Tíquete de pagamento no valor de R$ ';  
+					 break
+					case 'CONVENIO': 
+					tipo = 'Pagamento de convênio.';  
+					descricao = 'Tíquete de pagamento no valor de R$ ';  
+					break
+					case 'BOLETO-BANCARIO': 
+					tipo = 'Transferencia digital.';  
+					descricao = 'Tíquete de transferência no valor de R$ ';  
+					break
+					case 'TRANSFERENCIA': 
+					tipo = 'Transferência digital.';  
+					descricao = 'Tíquete de transferência no valor de R$ ';  
+					break
 				}
 
 				content = content.replaceAll( '$TITLE$' , ' ' + tipo  )
 				content = content.replaceAll( '$URL$' , urlOperacao )
- 				content = content.replaceAll( '$DESCRIPTION$' , operacao.descricao + " R$ " + operacao.valor )
+ 				content = content.replaceAll( '$DESCRIPTION$' , descricao + operacao.valor )
 				content = content.replaceAll( '$URL_IMAGE$' , 'https://avatars1.githubusercontent.com/u/43270555?s=460&v=4' )
 				content = content.replaceAll( '$TYPE$' , 'website' )
 
