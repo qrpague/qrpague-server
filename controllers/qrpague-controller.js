@@ -75,7 +75,7 @@ module.exports = {
 
 				let fs = require("fs")
 
-				let urlOperacao = Config.PROTOCOL + '://' + Config.HTTP_HOST + ':' + Config.HTTP_PORT +  req.originalUrl
+				let urlOperacao = Config.PROTOCOL + '://' + Config.HOST + ':' + Config.HTTP_PORT +  req.originalUrl
 	 
 				let content = fs.readFileSync( global.pathRootApp + '/templates/shareLink.html', "utf8")
 	
