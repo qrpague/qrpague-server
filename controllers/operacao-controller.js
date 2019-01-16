@@ -41,7 +41,7 @@ module.exports = {
 
 	},
 
-	recuperarOperacoes: async function (req, res, next) {
+	recuperar: async function (req, res, next) {
 
 		let lista = await qrPagModel.recuperarOperacoes()
 
@@ -49,7 +49,7 @@ module.exports = {
 		res.status(200).send(lista);
 	},
 
-	consultarOperacao: async function (req, res, next) {
+	consultar: async function (req, res, next) {
 
 
 		try {
@@ -121,7 +121,7 @@ module.exports = {
 		}
 	},
 
-	autorizarOperacao: async function (req, res, next) {
+	autorizar: async function (req, res, next) {
 
 		try {
 
@@ -167,7 +167,7 @@ module.exports = {
 
 	},
 
-	receberConfirmacao: async function (req, res, next) {
+	receber: async function (req, res, next) {
 
 		var uuid = req.params.uuid;
 		var confirmacao = JSON.parse(req.body);
@@ -235,31 +235,7 @@ module.exports = {
 
 	},
 
-	retornaCodigoBarra: async function (req, res, next) {
-		var codigoBarras = req.params.codigoBarras;
-		let tipoBoleto = null
-		if (codigoBarras == "") {
-			return next(Error("Código de barras não informado"));
-
-		}
-		try {
-			if (Validador.boletoBancario(codigoBarras)) {
-				tipoBoleto = "BOLETO-BANCARIO"
-			} else if (Validador.boletoArrecadacao(codigoBarras)) {
-				tipoBoleto = "CONVENIO"
-			} else if (Validador.boletoBancarioLinhaDigitavel(codigoBarras)) {
-				tipoBoleto = "BOLETO-BANCARIO"
-			} else if (Validador.boletoArrecadacaoLinhaDigitavel(codigoBarras)) {
-				tipoBoleto = "CONVENIO"
-			}
-		} catch (erro) {
-			console.log(erro)
-		}
-
-
-		res.setHeader('Content-Type', 'application/qrpague');
-		res.status(200).send({ "codigoBarras": codigoBarras, lenght: codigoBarras.length, tipoOperacao: tipoBoleto });
-	}
+	 
 
 }
 
@@ -352,7 +328,6 @@ function validarOperacao(operacaoFinanceira, next) {
 
 	}
 }
-
 
 function validarAutorizacao(autorizacao, next) {
 	// VALIDAÇÃO OPERAÇÃO

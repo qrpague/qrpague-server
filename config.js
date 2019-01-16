@@ -3,17 +3,15 @@ var Config = {
 
 	PROTOCOL: 'https',
 	HTTP_PORT : 9092,
-	HTTP_HOST : '0.0.0.0',
+	HTTP_HOST : '127.0.0.1',
 	HOST : 'qrpague.com',
-	WEBSOCKET_PORT : 4000,
-	URL_DATABASE : '127.0.0.1:10001/QRPAGUE',
+	URL_DATABASE : '0.0.0.0:10001/QRPAGUE',
 	QRPAGUE_URL_QRCODE_CREATE: '0.0.0.0:9092/operacoes/',
 
  
 };
 
 module.exports = Config;
-
 
 
 

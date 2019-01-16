@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:alpine
 
 MAINTAINER LEONARDO SILVEIRA (SICOOB)
 
@@ -9,6 +9,7 @@ WORKDIR $QRPAGUE
 #install dependencies
 COPY package.json $QRPAGUE/
 RUN npm install 
+RUN npm install --save-dev babel-cli
 
 #copy sources
 COPY *.js "$QRPAGUE"/
@@ -29,6 +30,6 @@ RUN echo "{}" > default-0.json
 
 EXPOSE 9092
  
+COPY start-server.sh "$QRPAGUE"/
 
-CMD ["npm", "start"]
-# ENTRYPOINT ["npm", "start"]
+ENTRYPOINT ["sh","start-server.sh"]
