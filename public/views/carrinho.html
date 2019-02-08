@@ -1,0 +1,33 @@
+<main class="app" ng-controller="CarrinhoController">
+     <p  ng-if="!carrinho"  class="status">seu carrinho está vazia.</p>  
+   </div>
+  <div class="cart-list" ng-repeat="item in carrinho">
+    <div class="thumb"><img src=" {{ item.thumb }}" alt=""></div>
+    <div class="desc">
+      <p>{{ item.titulo }}</p>
+    </div>
+    <div class="price">
+      <p>R$ {{ item.valor | currency:""  }}</p>
+    </div>
+    <div class="qtd">
+      <input type="text" value="1">
+    </div>
+    <div class="bot-remove" ng-click="delete( item.id )"> 
+      <img src="images/bot-remove.svg" alt=""> 
+    </div>
+  </div>
+
+  <div class="sub-options">
+    <div class="cep">
+      <p>CEP:</p>
+      <input type="text">
+    </div>
+    <div class="total">
+      <p>Total: R$ {{ total() | currency:""  }}</p>
+    </div>
+  </div>
+  <div class="action-buttons">
+    <img src="images/bot-continuar-comprando.svg" alt="" ng-click="voltar()">
+    <img src="images/bot-finalizar.svg" alt="" ng-click="finalizar()">
+  </div>
+</main>

@@ -1,5 +1,5 @@
 'use strict'
-import Api from '/tools/request-api'
+let Api  = require( global.pathRootApp + '/tools/request-api')
 
 module.exports = {
 

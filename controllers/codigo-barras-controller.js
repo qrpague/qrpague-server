@@ -1,11 +1,11 @@
 'use strict';
 
-import Error from  '../error'
-import Validador from 'boleto-brasileiro-validator' 
-  
+let Error = require( global.pathRootApp + '/error')
+let Validador = require('boleto-brasileiro-validator')
+
 
 module.exports = {
- 
+
 
 	detail: async function (req, res, next) {
 		var codigoBarras = req.params.codigoBarras;
@@ -34,5 +34,4 @@ module.exports = {
 	}
 
 }
- 
- 
+

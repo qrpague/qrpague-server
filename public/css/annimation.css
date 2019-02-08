@@ -1,0 +1,107 @@
+
+.annimation 
+{
+    -webkit-animation: swing2 2s ease;
+    animation: swing2 2s ease;
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+}
+
+ 
+  @-webkit-keyframes swing
+{
+    15%
+    {
+        -webkit-transform: translateX(5px);
+        transform: translateX(5px);
+    }
+    30%
+    {
+        -webkit-transform: translateX(-5px);
+       transform: translateX(-5px);
+    } 
+    50%
+    {
+        -webkit-transform: translateX(3px);
+        transform: translateX(3px);
+    }
+    65%
+    {
+        -webkit-transform: translateX(-3px);
+        transform: translateX(-3px);
+    }
+    80%
+    {
+        -webkit-transform: translateX(2px);
+        transform: translateX(2px);
+    }
+    100%
+    {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+@keyframes swing2
+{
+    15%
+    {
+        border-radius:100%;
+        transform: rotateZ(-10deg);
+        opacity:0.0;
+
+    }
+    30%
+    {
+        border-radius:80%;
+        transform: rotateZ(10deg);
+        opacity:0.2;
+
+    }
+    50%
+    {
+        border-radius:60%;
+        transform: rotateZ(-10deg);
+        opacity:0.2;
+    }
+    65%
+    {
+        border-radius:40%;
+        transform: rotateZ(10deg);
+        opacity:0.2;
+    }
+    80%
+    {
+        border-radius:20%;
+        transform: rotateZ(-10deg);
+        opacity:0.2;
+    }
+    85%
+    {
+        border-radius:0%;
+        transform: rotateZ(10deg);
+        opacity:0.2;
+    }
+    90%
+    {
+        opacity:0.4;
+    }
+
+    100%
+    {
+        opacity:1;
+    }
+}
+
+
+.blink {
+
+    -webkit-animation: condemned_blink_effect 1s ease;
+    animation: condemned_blink_effect 1s ease;
+    -webkit-animation-iteration-count: 2;
+    animation-iteration-count: 2; 
+}
+
+
+.form-detail .msgs {
+    color: #009900 !important;
+}

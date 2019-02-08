@@ -1,8 +1,8 @@
 'use strict';
 
 
-import monk from 'monk'
-import cfg from '../config'
+let monk  = require( 'monk')
+let cfg  = require( global.pathRootApp + '/config')
 
 const db = monk(cfg.URL_DATABASE)
 const listaOperacoes = db.get('tabOperacoes')

@@ -1,0 +1,37 @@
+{
+    "_id": "5c5b3fc0ccc2c943173dfc5c",
+    "cnpjInstituicao": "01234567890123",
+    "valor": 1398,
+    "descricao": "Mercado Azul",
+    "dataHoraSolicitacao": "2019-02-06T20:12:59.793Z",
+    "dataHoraVencimento": "2019-02-06T20:12:59.793Z",
+    "dataHoraEfetivacao": "2019-02-06T20:12:59.793Z",
+    "tipoOperacao": "PAGAMENTO",
+    "situacao": "ABERTO",
+    "callback": "http://0.0.0.0:9094/loja/qrcode/notification",
+    "terminal": {
+        "idTerminal": 36993,
+        "descricao": "Terminal  36993",
+        "uf": "DF",
+        "cep": "70000-000",
+        "latitudeTerminal": "-15.7801",
+        "longitudeTerminal": "-47.9292"
+    },
+    "beneficiario": {},
+    "itens": [
+        {
+            "id": 2,
+            "titulo": "Smartphone LG K10 Novo Dual Chip Android 7.0 Tela 5,3\" 32GB 4G 13MP - Preto",
+            "valor": 699,
+            "url": "http://0.0.0.0:9094/images/p2.png",
+            "thumb": "http://0.0.0.0:9094/images/thumb.png"
+        },
+        {
+            "id": 3,
+            "titulo": "Smartphone LG K10 Novo Dual Chip Android 7.0 Tela 5,3\" 32GB 4G 13MP - Preto",
+            "valor": 699,
+            "url": "http://0.0.0.0:9094/images/p3.png",
+            "thumb": "http://0.0.0.0:9094/images/thumb.png"
+        }
+    ]
+}

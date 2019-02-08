@@ -1,16 +1,17 @@
 'use strict';
+let path = require('path');
+global.pathRootApp = path.resolve(__dirname);
 
-import Security from'./security'
-import path from'path'
- 
-import express from'express'
-const app = express();
-import cookieParser from'cookie-parser'
-import bodyParser from'body-parser'
-import methodOverride from'method-override'
-import cfg from'./config'
 
-import ResourcesNegocio from './resources/negocio'
+let express = require('express')
+let app = express()
+let bodyParser = require('body-parser')
+let methodOverride = require('method-override')
+let cookieParser = require('cookie-parser')
+let cfg = require('./config')
+let Security = require('./security');
+let ResourcesNegocio = require('./resources/negocio');
+
 
 global.pathRootApp = path.resolve(__dirname);
 
@@ -25,13 +26,19 @@ app.use(cookieParser());
 app.use(ResourcesNegocio );
 
  
+app.use('/qrpague-admin', express.static(__dirname + '/public/', { 'index': 'index.html' }));
+app.use('/', ResourcesNegocio );
 
 
 
 app.listen(cfg.HTTP_PORT, cfg.HTTP_HOST, function () {
-    console.info("SERVIDOR INICIADO (" + cfg.HTTP_HOST + ":" + cfg.HTTP_PORT + ")");
+    console.info("########################################################################");
+    console.info("##              POWER        SERVER STARTED              POWER        ##");
+    console.info("########################################################################");
+    console.info('URL: ', cfg.HTTP_HOST + ":" + cfg.HTTP_PORT);  
+    console.info("------------------------------------------------------------------------");
 });
-
+  
 
 
 function logErrors(err, req, res, next) {

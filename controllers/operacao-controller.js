@@ -1,12 +1,12 @@
 'use strict';
+let QRCode = require("qrcode");
+let Validador = require('boleto-brasileiro-validator');
 
-var logger = require("../lib/logger.js");
-var qrPagModel = require("../models/qrpague-model.js");
-var QRCode = require("qrcode");
-var Error = require('../error')
-var Validador = require('boleto-brasileiro-validator');
-import Config from 'config'
-import CallBackServices from 'services/callback'
+let qrPagModel = require( global.pathRootApp + "/models/qrpague-model");
+let logger = require( global.pathRootApp + "/lib/logger");
+let Error = require( global.pathRootApp + '/error')
+let Config  = require( global.pathRootApp + '/config')
+let CallBackServices  = require( global.pathRootApp + '/services/callback')
 
 
 module.exports = {
