@@ -19,7 +19,8 @@ connectApp.protocol = 'http';
 connectApp.host = '0.0.0.0';
 connectApp.port = '9093';
 connectApp.websocket_url = 'ws://0.0.0.0:4000';
-connectApp.loja_url = "httsp://lab.sicoobnet.com.br/qrpague/"
+connectApp.loja_url = "http://0.0.0.0:9092"
+// connectApp.loja_url = "https://lab.sicoobnet.com.br/qrpague"
 
 connectApp.url_sms_gateway = 'https:/lab.sicoobnet.com.br/sms';
 

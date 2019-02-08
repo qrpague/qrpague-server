@@ -1,11 +1,11 @@
 'use strict';
 
 
-let monk  = require( 'monk')
-let cfg  = require( global.pathRootApp + '/config')
+let monk = require('monk')
+let cfg  = require('../config')
 
 const db = monk(cfg.URL_DATABASE)
-const listaOperacoes = db.get('tabOperacoes')
+const tab = db.get('operacoes')
 
 module.exports = {
 
@@ -13,19 +13,18 @@ module.exports = {
 
 		delete obj.versao;
 
-		return listaOperacoes.insert(obj, function (e, operacao) {
+		return tab.insert(obj, function (e, operacao) {
 			return Promise.resolve(obj._id);
 		});
 	},
-
 	recuperarOperacoes: function () {
-		return listaOperacoes.find({}, { limit : 100, sort : { dataHoraEfetivacao : -1 }} ,  function (e, operacoes) {
+		return tab.find({}, { limit : 4, sort : { dataHoraEfetivacao : -1 }} , function (e, operacoes) {
 			return Promise.resolve(operacoes);
 		});
 	},
 
 	consultarOperacao: function ( uuid ) {
-		return listaOperacoes.findOne({ _id: monk.id( uuid ) }, function (e, operacao) {
+		return tab.findOne({ _id: monk.id( uuid ) }, function (e, operacao) {
 			return Promise.resolve(operacao);
 		});
 	},
@@ -33,7 +32,7 @@ module.exports = {
 	autorizarOperacao: function (uuid, dados) {
 		var aut = (dados.operacaoAutorizada) ? 'AUTORIZADO' : 'CANCELADO';
 
-		return listaOperacoes.update({ _id: monk.id( uuid ) }, { $set: { 'situacao': aut, 'autorizacaoOperacao': dados } }, function (e, operacao) {
+		return tab.update({ _id: monk.id( uuid ) }, { $set: { 'situacao': aut, 'autorizacaoOperacao': dados } }, function (e, operacao) {
 			return Promise.resolve(operacao);
 		});
 	},
@@ -41,7 +40,7 @@ module.exports = {
 	confirmarOperacao: function (uuid, dados) {
 		var aut = (dados.operacaoConfirmada) ? 'CONFIRMADO' : 'CANCELADO';
 
-		return listaOperacoes.update({ _id: monk.id( uuid ) }, { $set: { 'situacao': aut, 'confirmacaoOperacao': dados } }, function (e, operacao) {
+		return tab.update({ _id: monk.id( uuid ) }, { $set: { 'situacao': aut, 'confirmacaoOperacao': dados } }, function (e, operacao) {
 			return Promise.resolve(operacao);
 		});
 	}

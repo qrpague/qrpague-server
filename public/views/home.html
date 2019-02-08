@@ -1,30 +1,49 @@
 <main class="app" ng-controller="CarrinhoController">
-    <p  ng-if="!carrinho"  class="status">Sem operações digitais.</p>  
+  <p ng-if="!operacoes || operacoes.length == 0" class="status">Sem operações digitais.</p>
   </div>
- <div class="cart-list" ng-repeat="item in carrinho">
-   <div class="thumb"><img src=" {{ item.thumb }}" alt=""></div>
-   <div class="desc">
-     <p>{{ item.titulo }}</p>
-   </div>
-   <div class="price">
-     <p>R$ {{ item.valor | currency:""  }}</p>
-   </div>
-   <div class="qtd">
-     <input type="text" value="1">
-   </div>
-   <div class="bot-remove" ng-click="delete( item.id )"> 
-     <img src="images/bot-remove.svg" alt=""> 
-   </div>
- </div>
 
- <div class="sub-options">
-   <div class="cep">
-     <p>CEP:</p>
-     <input type="text">
-   </div>
-   <div class="total">
-     <p>Total: R$ {{ total() | currency:""  }}</p>
-   </div>
- </div>
- 
+  <div class="sub-options">
+
+    <div class="total">
+      <span>Abertas: {{ total('ABERTO') }}</span>
+      <span>Fechadas: {{ total('FECHADO') }}</span>
+      <span>Pagamentos: {{ total('PAGAMENTO') }}</span>
+      <span>Titulos: {{ total('TITULO') }}</span>
+      <span>Convênios: {{ total('CONVENIO') }}</span>
+    </div>
+  </div>
+
+
+  <div class="cart-list" ng-repeat="item in operacoes">
+
+    <div class="desc">
+      <p>{{ item.dataHoraSolicitacao | date:"dd/MM/yyyy  H:mm" }}</p>
+    </div>
+    <div class="desc">
+      <p>{{ item.cnpjInstituicao }}</p>
+    </div>
+
+
+    <div class="desc">
+      <p>{{ item.descricao }}</p>
+    </div>
+
+    <div class="desc">
+      <p>{{ item.situacao }}</p>
+    </div>
+
+
+    <div class="qtd">
+      <!-- <p>{{ item.cnpjInstituicao }}</p> -->
+    </div>
+
+
+
+    <div class="price">
+      <p>R$ {{ item.valor | currency:"" }}</p>
+    </div>
+  </div>
+
+
+
 </main>
