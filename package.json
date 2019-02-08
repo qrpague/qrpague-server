@@ -1,11 +1,9 @@
 {
   "name": "qrpague-server",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon --exec babel-node index.js",
-    "start": "babel-node index.js",
-    "debug": "nodemon --exec babel-node --inspect=9226 index.js"
+    "start": "node index.js"
   },
   "babel": {
     "presets": [
@@ -36,9 +34,6 @@
     "winston": "^1.0.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-module-resolver": "^3.1.1",
-    "babel-preset-env": "^1.6.1",
-    "nodemon": "^1.12.1"
+ 
   }
 }
