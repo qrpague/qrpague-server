@@ -25,6 +25,7 @@ app.use(errorHandler);
 app.use(cookieParser());
 app.use(ResourcesNegocio );
 
+
  
 app.use('/qrpague-admin', express.static(__dirname + '/public/', { 'index': 'index.html' }));
 app.use('/', ResourcesNegocio );
