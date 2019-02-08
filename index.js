@@ -11,6 +11,7 @@ let cookieParser = require('cookie-parser')
 let cfg = require('./config')
 let Security = require('./security');
 let ResourcesNegocio = require('./resources/negocio');
+var cors = require('cors');
 
 
 global.pathRootApp = path.resolve(__dirname);
