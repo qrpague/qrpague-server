@@ -15,7 +15,9 @@ let ResourcesNegocio = require('./resources/negocio');
 
 global.pathRootApp = path.resolve(__dirname);
 
-app.use(Security.cors)
+app.disable('x-powered-by');
+
+app.use(cors({ origin: '*' }));
 app.use(methodOverride());
 app.use(bodyParser.json({ limit: '6mb'}));
 app.use(bodyParser.json())
