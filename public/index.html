@@ -4,18 +4,16 @@
 <head>
   <title></title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-  <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="./js/others-modules/bootstrap-notify.css">
-  <link rel="stylesheet" href="./js/others-modules/bootstrap.min.css">
-  <link rel="stylesheet" href="./js/others-modules/fontawesome.css">
-
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
   <script type="text/javascript" src="./js/others-modules/jquery-1.11.3.js"></script>
-  <script type="text/javascript" src="./js/others-modules/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+ 
+  <link rel="stylesheet" href="./css/style.css" >
 
-  <script type="text/javascript" src="./js/others-modules/bootstrap-notify.js"></script>
-
+  
   <script type="text/javascript" src="./js/others-modules/angular.min.js"></script>
   <script type="text/javascript" src="./js/others-modules/angular-route.js"></script>
  
@@ -46,18 +44,7 @@
     <!-- cabecario -->
      
     <div ng-include="'./views/menu-superior.html'" ng-controller="HomeController"></div>
-
-    <nav class="navbar">
-      <ul>
-        <li><a href="">Categoria</a></li>
-        <li><a href="">Categoria</a></li>
-        <li><a href="">Categoria</a></li>
-        <li><a href="">Categoria</a></li>
-        <li><a href="">Categoria</a></li>
-        <li><a href="">Categoria</a></li>
-      </ul>
-    </nav>
-     
+      
     <ng-view></ng-view>
 
     <footer class="footer"></footer>
