@@ -37,22 +37,22 @@
         <li class="collection-item">
 
           <label class="active">ID</label>
-          <p class="title"> {{ terminal.idTerminal }}</p>
+          <p class="title"> {{ operacao.terminal.idTerminal }}</p>
           <label class="active">Descrição</label>
-          <p>{{ terminal.descricao }} </p>
+          <p>{{ operacao.terminal.descricao }} </p>
           <label class="active">UF</label>
-          <p>{{ terminal.uf }} </p>
+          <p>{{ operacao.terminal.uf }} </p>
           <label class="active">Cep</label>
-          <p>{{ terminal.cep }}</p>
+          <p>{{ operacao.terminal.cep }}</p>
 
           <div>
             <div class="col s6">
               <label class="active">Latitude</label>
-              <p>{{ terminal.latitudeTerminal }}</p>
+              <p>{{ operacao.terminal.latitudeTerminal }}</p>
             </div>
             <div class="col s6">
               <label class="active">Longitude</label>
-              <p> {{ terminal.longitudeTerminal }}</p>
+              <p> {{ operacao.terminal.longitudeTerminal }}</p>
             </div>
             <img class="image-local" src="./images/map_example.jpg">
           </div>
@@ -66,20 +66,20 @@
         <li class="collection-item">
 
           <label class="active">Nome</label>
-          <p class="title"> {{ beneficiario.nome }}</p>
+          <p class="title"> {{ operacao.beneficiario.nome }}</p>
           <label class="active">Cpf/Cnpj</label>
-          <p>{{ beneficiario.cpfCnpj }} </p>
+          <p>{{ operacao.beneficiario.cpfCnpj }} </p>
           <label class="active">Instituição</label>
-          <p>{{ beneficiario.instituicao }} </p>
+          <p>{{ operacao.beneficiario.instituicao }} </p>
           <label class="active">Agencia</label>
-          <p>{{ beneficiario.agencia }}</p>
+          <p>{{ operacao.beneficiario.agencia }}</p>
 
           <label class="active">Conta</label>
-          <p>{{ beneficiario.conta }}</p>
+          <p>{{ operacao.beneficiario.conta }}</p>
           <label class="active">Operação</label>
-          <p> {{ beneficiario.operacao }}</p>
+          <p> {{ operacao.beneficiario.operacao }}</p>
           <label class="active">Tipo conta</label>
-          <p> {{ beneficiario.tipoConta }}</p>
+          <p> {{ operacao.beneficiario.tipoConta }}</p>
 
         </li>
       </ul>
