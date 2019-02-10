@@ -2,9 +2,11 @@
     <nav>
 
         <div class="nav-wrapper">
- 
-            <a class="brand-logo" ng-click="home()">QRPague</a>
-            <!-- <input type="text" placeholder="Buscar produtos, marcas e muito mais..."> -->
+            <a ng-click="home()" class="brand-logo">
+                <i class="material-icons">apps</i>
+                QRPague</a>
+            
+                <input type="text" ng-keyup="$event.keyCode == 13 && searchText()" ng-modal="textSearch" placeholder="Buscar ID ou CNPJ " ng-if="search" > 
 
 
 
@@ -12,7 +14,7 @@
 
 
             <ul class="right hide-on-med-and-down">
-                <li><a href="sass.html"><i class="material-icons">search</i></a></li>
+                <li><a ng-click="isSearch()"><i class="material-icons">search</i></a></li>
                 <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
                 <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li>
                 <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li>

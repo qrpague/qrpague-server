@@ -21,7 +21,7 @@ app.controller("CheckoutController", function ($http, $scope, $rootScope, $locat
 
         var rest = {
             method: 'POST',
-            url: connectApp.loja_url + "/qrcode",
+            url: connectApp.gateway_qrpague + "/qrcode",
             headers: { 'Content-Type': 'application/json' },
             data: $scope.order
         }

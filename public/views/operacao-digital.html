@@ -1,0 +1,91 @@
+<main class="app" ng-controller="OperacaoDigitalController">
+
+  <div class="row">
+
+    <div class="col  s12 m6 l6">
+      <p class="center">OPERAÇÃO DIGITAL</p>
+      <ul class="collection">
+        <li class="collection-item avatar">
+          <img src="images/logo_qrpague.png" alt="" class="circle">
+
+          <label class="active">ID</label>
+          <p class="title"> {{ operacao._id }}</p>
+          <label class="active">Data Solicitação</label>
+          <p>{{ operacao.dataHoraSolicitacao | date:"dd/MM/yyyy H:mm" }}</p>
+          <label class="active">Data Efetivação</label>
+          <p>{{ operacao.dataHoraEfetivacao | date:"dd/MM/yyyy H:mm" }}</p>
+          <label class="active">Data Vencimento</label>
+          <p>{{ operacao.dataHoraVencimento | date:"dd/MM/yyyy H:mm" }}</p>
+          <label class="active">CNPJ</label>
+          <p>{{ operacao.cnpjInstituicao }}</p>
+          <label class="active">Descrição</label>
+          <p>{{ operacao.descricao }} </p>
+          <label class="active">Tipo operação</label>
+          <p>{{ operacao.tipoOperacao }} </p>
+          <label class="active">Situação</label>
+          <p>{{ operacao.situacao }}</p>
+          <label class="active">Valor</label>
+          <p>R$ {{ operacao.valor | currency:"" }}</p>
+
+        </li>
+      </ul>
+
+    </div>
+    <div class="col s12 m3 l3">
+      <p class="center">Terminal</p>
+      <ul class="collection">
+        <li class="collection-item">
+
+          <label class="active">ID</label>
+          <p class="title"> {{ terminal.idTerminal }}</p>
+          <label class="active">Descrição</label>
+          <p>{{ terminal.descricao }} </p>
+          <label class="active">UF</label>
+          <p>{{ terminal.uf }} </p>
+          <label class="active">Cep</label>
+          <p>{{ terminal.cep }}</p>
+
+          <div>
+            <div class="col s6">
+              <label class="active">Latitude</label>
+              <p>{{ terminal.latitudeTerminal }}</p>
+            </div>
+            <div class="col s6">
+              <label class="active">Longitude</label>
+              <p> {{ terminal.longitudeTerminal }}</p>
+            </div>
+            <img class="image-local" src="./images/map_example.jpg">
+          </div>
+
+        </li>
+      </ul>
+    </div>
+    <div class="col s12 m3 l3">
+      <p class="center">Beneficiário</p>
+      <ul class="collection">
+        <li class="collection-item">
+
+          <label class="active">Nome</label>
+          <p class="title"> {{ beneficiario.nome }}</p>
+          <label class="active">Cpf/Cnpj</label>
+          <p>{{ beneficiario.cpfCnpj }} </p>
+          <label class="active">Instituição</label>
+          <p>{{ beneficiario.instituicao }} </p>
+          <label class="active">Agencia</label>
+          <p>{{ beneficiario.agencia }}</p>
+
+          <label class="active">Conta</label>
+          <p>{{ beneficiario.conta }}</p>
+          <label class="active">Operação</label>
+          <p> {{ beneficiario.operacao }}</p>
+          <label class="active">Tipo conta</label>
+          <p> {{ beneficiario.tipoConta }}</p>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+
+</main>

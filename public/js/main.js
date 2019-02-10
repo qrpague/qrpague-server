@@ -16,9 +16,9 @@ app.config(['$routeProvider', '$locationProvider', function AppConfig($routeProv
             controller: "HomeController"
 
         })
-        .when("/produto-detalhe", {
-            templateUrl: "./views/produto-detalhe.html",
-            controller: "ProdutoDetalheController"
+        .when("/operacao-digital", {
+            templateUrl: "./views/operacao-digital.html",
+            controller: "OperacaoDigitalController"
 
         })
         .when("/carrinho", {

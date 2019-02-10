@@ -2,8 +2,25 @@ nav {
     background-color: #3bc157;
 }     
 
- 
+nav .brand-logo {
+    padding-left: 10px;
+    font-size: 1.5rem;
+}
+nav .nav-wrapper input {
+    position: absolute !important;
+    width: 50% !important;
+    background-color: white !important; 
+    left: 25% !important;
+    top: 10px !important;
+    padding: 0px 10px 0px 10px !important;
+    color: black !important;
+} 
 .label>span {
-    float: right !important;
+    float: right;
     padding: 10px;
+}
+
+.image-local {
+    width: 100%;
+    height: auto;
 }

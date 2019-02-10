@@ -9,10 +9,11 @@
   <script type="text/javascript" src="./js/others-modules/jquery-1.11.3.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
  
+  
   <link rel="stylesheet" href="./css/style.css" >
-
   
   <script type="text/javascript" src="./js/others-modules/angular.min.js"></script>
   <script type="text/javascript" src="./js/others-modules/angular-route.js"></script>
@@ -31,9 +32,10 @@
 <script type="text/javascript" src="./controllers/checkout-controller.js"></script>
 <script type="text/javascript" src="./controllers/checkout-result-controller.js"></script>
 
-<script type="text/javascript" src="./controllers/produto-detalhe-controller.js"></script>
+<script type="text/javascript" src="./controllers/operacao-digital-controller.js"></script>
 <script type="text/javascript" src="./controllers/carrinho-controller.js"></script>
 <script type="text/javascript" src="./controllers/home-controller.js"></script>
+<script type="text/javascript" src="./controllers/menu-superior-controller.js"></script>
 
 <!--  -->
 
@@ -43,10 +45,10 @@
  
     <!-- cabecario -->
      
-    <div ng-include="'./views/menu-superior.html'" ng-controller="HomeController"></div>
-      
-    <ng-view></ng-view>
-
+    <div ng-include="'./views/menu-superior.html'" ng-controller="MenuSuperiorController"></div>
+    <div class="container">
+      <ng-view></ng-view>
+    </div>
     <footer class="footer"></footer>
  
 </body>

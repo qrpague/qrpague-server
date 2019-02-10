@@ -5,58 +5,71 @@
 
   <div class="section">
 
-      <div class="label">
-        <span >Abertas: {{ total('ABERTO') }}</span>
-        <span >Fechadas: {{ total('FECHADO') }}</span>
-        <span >Pagamentos: {{ total('PAGAMENTO') }}</span>
-        <span >Titulos: {{ total('TITULO') }}</span>
-        <span >Convênios: {{ total('CONVENIO') }}</span>
-      </div>
+    <div class="label highlight hide-on-small-only  ">
+      <span>Abertas: {{ total('ABERTO') }}</span>
+      <span>Fechadas: {{ total('FECHADO') }}</span>
+      <span>Pagamentos: {{ total('PAGAMENTO') }}</span>
+      <span>Titulos: {{ total('TITULO') }}</span>
+      <span>Convênios: {{ total('CONVENIO') }}</span>
     </div>
-
-    
-
-  
-    
-
-  <table class="bordered striped responsive-table"" >
-      <thead>
-        <tr>
-            <th>#</th>
-            <th>Data</th>
-            <th>Descrição</th>
-            <th>CPNJ</th>
-            <th>SITUAÇÃO</th>
-            <th>VALOR</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr ng-repeat="item in operacoes" >
-          <td>{{ item._id }}</td>
-          <td>{{ item.dataHoraSolicitacao | date:"dd/MM/yyyy  H:mm" }}</td>
-          <td>{{ item.descricao }}</td>
-          <td>{{ item.cnpjInstituicao }}</td>
-          <td>{{ item.situacao }}</td>
-          <td>R$ {{ item.valor | currency:"" }}</td>
-        </tr>
-         
-      </tbody>
-    </table>
-          
+  </div>
 
 
-    <ul class="pagination center">
-        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-        <li class="active"><a href="#!">1</a></li>
-        <li class="waves-effect"><a href="#!">2</a></li>
-        <li class="waves-effect"><a href="#!">3</a></li>
-        <li class="waves-effect"><a href="#!">4</a></li>
-        <li class="waves-effect"><a href="#!">5</a></li>
-        <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-      </ul>
 
- 
+
+
+
+  <table class="bordered  highlight hide-on-small-only " >
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Data</th>
+        <th>Descrição</th>
+        <th>CPNJ</th>
+        <th>SITUAÇÃO</th>
+        <th>VALOR</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-repeat="item in operacoes" ng-click="detail( item )">
+        <td>{{ item._id }}</td>
+        <td>{{ item.dataHoraSolicitacao | date:"dd/MM/yyyy H:mm" }}</td>
+        <td>{{ item.descricao }}</td>
+        <td>{{ item.cnpjInstituicao }}</td>
+        <td>{{ item.situacao }}</td>
+        <td>R$ {{ item.valor | currency:"" }}</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <section>
+  <ul class="collection hide-on-large-only"  >
+    <li class="collection-item avatar" ng-repeat="operacao in operacoes" ng-click="detail( operacao )">
+      <img src="images/logo_qrpague.png" alt="" class="circle">
+      <span class="title"> {{ operacao._id }}</span>
+
+      <p>{{ operacao.dataHoraSolicitacao | date:"dd/MM/yyyy H:mm" }}</p>
+      <p>{{ operacao.cnpjInstituicao }}</p>
+      <p>{{ operacao.descricao }} </p>
+      <p>{{ operacao.tipoOperacao }} </p>
+      <p>{{ operacao.situacao }}</p>
+      <p>R$ {{ operacao.valor | currency:"" }}</p>
+    </li>
+  </ul>
+  <s/ection>
+
+  <ul class="pagination center hide-on-small-only	" >
+    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+    <li class="active"><a href="#!">1</a></li>
+    <li class="waves-effect"><a href="#!">2</a></li>
+    <li class="waves-effect"><a href="#!">3</a></li>
+    <li class="waves-effect"><a href="#!">4</a></li>
+    <li class="waves-effect"><a href="#!">5</a></li>
+    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+  </ul>
+
+
 
 
 </main>
