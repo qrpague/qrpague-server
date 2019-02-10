@@ -15,6 +15,12 @@ nav .nav-wrapper input {
     padding: 0px 10px 0px 10px !important;
     color: black !important;
 } 
+
+nav .nav-wrapper input:focus {
+border-color: #66bfff;
+box-shadow: 0 0 0 4px rgba(0,149,255,0.15);
+}
+
 .label>span {
     float: right;
     padding: 10px;
