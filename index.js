@@ -11,7 +11,7 @@ let ResourcesNegocio = require('./resources/negocio');
  
 global.pathRootApp = path.resolve(__dirname);
 
-app.use(Security.cors())
+app.use(Security.cors)
  
 app.use(logErrors);
 app.use(errorHandler);
