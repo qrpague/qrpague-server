@@ -8,11 +8,18 @@ let app = express()
 let cfg = require('./config')
 let Security = require('./security');
 let ResourcesNegocio = require('./resources/negocio');
- 
+let methodOverride = require('method-override')
+let bodyParser = require('body-parser')
+
+
 global.pathRootApp = path.resolve(__dirname);
 
 app.use(Security.cors)
- 
+
+app.use(methodOverride());
+app.use(bodyParser.json({ limit: 1024102420, type: 'application/json' }));
+app.use(bodyParser.text());
+
 app.use(logErrors);
 app.use(errorHandler);
   
