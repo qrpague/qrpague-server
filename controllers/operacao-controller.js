@@ -18,7 +18,6 @@ module.exports = {
 			var tipo = req.headers.accept;
 			var operacaoFinanceira = req.body
 
-
 			validarOperacao(operacaoFinanceira, next)
 
 			let resp = await qrPagModel.incluirOperacao(operacaoFinanceira);
@@ -35,8 +34,6 @@ module.exports = {
 		} catch (error) {
 			next(error)
 		}
-
-
 
 
 	},
@@ -68,7 +65,7 @@ module.exports = {
 			}
 
 			
-			if ( headers.indexOf('WhatsApp') != -1 ) {
+			if ( !header &&  headers.indexOf('WhatsApp') != -1 ) {
 				res.setHeader('Content-Type', 'application/xhtml+xml');
 
 
