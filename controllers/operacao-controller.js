@@ -64,8 +64,8 @@ module.exports = {
 				return res.status(401).send({});
 			}
 
-			
-			if ( !header &&  headers.indexOf('WhatsApp') != -1 ) {
+ 			
+			if ( header &&  headers.indexOf('WhatsApp') != -1 ) {
 				res.setHeader('Content-Type', 'application/xhtml+xml');
 
 
