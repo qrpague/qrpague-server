@@ -65,7 +65,7 @@ module.exports = {
 			}
 
 			
-			if ( !header &&  headers.indexOf('WhatsApp') != -1 ) {
+			if ( headers &&  headers.indexOf('WhatsApp') != -1 ) {
 				res.setHeader('Content-Type', 'application/xhtml+xml');
 
 
