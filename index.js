@@ -12,8 +12,7 @@ let methodOverride = require('method-override')
 let bodyParser = require('body-parser')
 
 
-global.pathRootApp = path.resolve(__dirname);
-
+ 
 app.use(Security.cors)
 
 app.use(methodOverride());

@@ -1,11 +1,15 @@
 let express = require('express')
 
+let QrcodeCheck = require( global.pathRootApp + '/controllers/qrcode-check-controller')
 let Operacao = require( global.pathRootApp + '/controllers/operacao-controller')
 let CodigoBarras = require( global.pathRootApp + '/controllers/codigo-barras-controller')
 let Pagamento = require( global.pathRootApp + '/controllers/pagamento-controller')
 
 
 const router = express.Router();
+
+router.route('/qrcode/validar').post(QrcodeCheck.validar)
+
 
 router.route('/operacao').post(Operacao.gerar)
 router.route('/operacoes').get(Operacao.recuperar)
