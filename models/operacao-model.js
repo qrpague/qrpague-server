@@ -18,7 +18,7 @@ module.exports = {
 		});
 	},
 	recuperarOperacoes: function () {
-		return tab.find({}, { limit : 100, sort : { dataHoraEfetivacao : -1 }} , function (e, operacoes) {
+		return tab.find({}, { limit : 20, sort : { dataHoraEfetivacao : -1 }} , function (e, operacoes) {
 			return Promise.resolve(operacoes);
 		});
 	},
