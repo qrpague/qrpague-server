@@ -19,7 +19,7 @@ module.exports = {
 	},
 
 	recuperarOperacoes: function () {
-		return listaOperacoes.find({}, { limit : 500, sort : { dataHoraEfetivacao : -1 }} ,  function (e, operacoes) {
+		return listaOperacoes.find({}, { limit : 15, sort : { dataHoraEfetivacao : -1 }} ,  function (e, operacoes) {
 			return Promise.resolve(operacoes);
 		});
 	},

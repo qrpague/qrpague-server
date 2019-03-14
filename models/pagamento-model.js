@@ -30,7 +30,7 @@ module.exports = {
 	},
 
 	list: async function ( ) {
-		return await tab.find({},{ pagamentos : 1  });
+		return await tab.find({},{ limit : 20,  pagamentos : 1  });
 	},
 
 };
