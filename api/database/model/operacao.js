@@ -1,5 +1,5 @@
 const { Err } = require('@sfd-br/util');
-const { OperacaoSchema, SITUACAO } = require('../schema/operacao-financeira');
+const { OperacaoSchema, SITUACAO, TIPO_OPERACAO } = require('../schema/operacao-financeira');
 
 module.exports = (db, mongoose, promise) => {
     
@@ -7,12 +7,15 @@ module.exports = (db, mongoose, promise) => {
     let operacaoSchema = new Schema(OperacaoSchema, { collection: 'Operacao' });
     let OperacaoModel = db.model('Operacao', operacaoSchema);
 
+    OperacaoModel.TIPO_OPERACAO = TIPO_OPERACAO;
+    OperacaoModel.SITUACAO = SITUACAO;
+
     OperacaoModel.incluirOperacao = async (obj) => {
         let operacao = new OperacaoModel(obj);
 		return await operacao.save();
     },
 
-	OperacaoModel.recuperarOperacoes = async () => {
+	OperacaoModel.recuperarOperacoes = async (options) => {
         return await OperacaoModel.find({ limit : 20, sort : { dataHoraEfetivacao : -1 }});
 	},
 

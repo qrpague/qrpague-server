@@ -60,6 +60,7 @@ paths:
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   /operacoes:
+    x-swagger-router-controller: operacoes-controller
     get:
       tags:
         - Operações Financeiras Digitais
@@ -71,7 +72,7 @@ paths:
         Este endpoint deve ser implementado pela instituição financeira para
         devolver as informações complementares de uma operação financeira
         digital gerada através da solução QRPague pelo parâmetro uuid.
-      operationId: operacao-financeira-recuperar
+      operationId: consultarOperacoes
       security:
         - OAuth2: []
       parameters:
@@ -134,6 +135,7 @@ paths:
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}':
+    x-swagger-router-controller: operacoes-controller
     get:
       tags:
         - Operações Financeiras Digitais
@@ -145,7 +147,7 @@ paths:
         recuperar as informações de uma operação financeira digital
         (Transferência, Saque ou Pagamento) identificada pelo UUID passado como
         parâmetro. 
-      operationId: operacao-financeira-consultar
+      operationId: consultarOperacao
       security:
         - OAuth2: []
       parameters:
@@ -178,6 +180,7 @@ paths:
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}/autorizacao':
+    x-swagger-router-controller: operacoes-controller
     post:
       tags:
         - Operações Financeiras Digitais
@@ -188,7 +191,7 @@ paths:
         Este endpoint deve ser implementado pela instituição financeira para
         receber a autorização para realização de uma operação financeira digital
         gerada através da solução QRPague e identificada pelo seu uuid.
-      operationId: operacao-financeira-autorizar
+      operationId: autorizarOperacao
       security:
         - OAuth2: []
       parameters:
@@ -235,6 +238,7 @@ paths:
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}/confirmacao':
+    x-swagger-router-controller: operacoes-controller
     post:
       tags:
         - Operações Financeiras Digitais
@@ -245,7 +249,7 @@ paths:
         Este endpoint deve ser implementado pela instituição financeira para
         receber a confirmação da efetivação de uma operação financeira digital
         gerada através da solução QRPague e identificada pelo seu uuid.
-      operationId: operacao-financeira-confirmar
+      operationId: confirmarOperacao
       security:
         - OAuth2: []
       parameters:
