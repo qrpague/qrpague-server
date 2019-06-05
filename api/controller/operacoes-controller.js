@@ -8,7 +8,7 @@ const criarOperacao = async (req, res, next) => {
     try {
         const tipo = req.headers.accept;
 	    const operacaoFinanceira = req.body;
-        const result = await service.criarOperacao({tipo, operacaoFinanceira});
+        const result = await service.criarOperacao({ tipo, operacaoFinanceira });
         return Response.success(res, result);
     } catch (err) {
         return Response.error(res, err);

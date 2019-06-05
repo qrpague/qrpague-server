@@ -2,7 +2,7 @@ const QRCode = require('qrcode');
 const Validador = require('boleto-brasileiro-validator');
 const Operacao = require('../database/model/operacao');
 const { APPLICATION_IMAGE } = require('../enum/content-type');
-const { Err } = require('@sfd-br/util');
+const { Err, Request } = require('@sfd-br/util');
 const path = ('path');
 const fs = require('fs');
 
@@ -67,7 +67,7 @@ const consultarOperacao = async function ({ uuid, cnpjInstituicao, userAgent, is
 
 const autorizarOperacao = async ({ uuid, autorizacao }) => {
 
-	/*let operacao = await Operacao.consultarOperacao(uuid);
+	let operacao = await Operacao.consultarOperacao(uuid);
 
 	if (!operacao) {
 		// TODO: definir mensagem de exceção
@@ -76,26 +76,17 @@ const autorizarOperacao = async ({ uuid, autorizacao }) => {
 	}
 
 	let urlCallBack = operacao.callback
-
 	if (!urlCallBack) {
 		autorizacao.dispositivoConfirmacao = {}
 	} else {
-
-		let dispositivoConfirmacao = await CallBackServices.takeReturn(urlCallBack, operacao)
-
-		autorizacao.dispositivoConfirmacao = dispositivoConfirmacao
+		const dispositivoConfirmacao = await Request.post(urlCallBack, operacao);
+		autorizacao.dispositivoConfirmacao = dispositivoConfirmacao;
 
 	}
 
-
-	let aut = await qrPagModel.autorizarOperacao(uuid, autorizacao)
-
-
+	let aut = await Operacao.autorizarOperacao(uuid, autorizacao)
 	let resposta = { sucessoOperacao: true, dataReferencia: new Date() }
-
-	res.setHeader('Content-Type', ['application/json']);
-
-	return res.status(200).send(resposta);*/
+	return resposta;
 }
 
 const confirmarOperacao = async ({ uuid, confirmacao }) => {
@@ -109,5 +100,8 @@ const confirmarOperacao = async ({ uuid, confirmacao }) => {
 
 module.exports = {
 	criarOperacao,
-	consultarOperacoes
+	consultarOperacoes,
+	consultarOperacao,
+	autorizarOperacao,
+	confirmarOperacao
 }

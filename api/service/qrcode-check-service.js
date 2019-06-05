@@ -1,6 +1,6 @@
 'use strict';
 
-let Api = require(global.pathRootApp + '/tools/request-api')
+const { Request } = require('@sfd-br/util');
 let url = require('url')
 let tlsSocket = require('tls')
 
@@ -56,17 +56,12 @@ module.exports = {
 
 async function operacao(urlQRPague) {
 
-	let options = {
-		method: 'GET',
-		uri: urlQRPague,
+	const header = {
+		'Content-Type': 'application/json',
+		'user-agent': 'qrpague-validation'
+	}
 
-		headers: {
-			'Content-Type': 'application/json',
-			'user-agent': 'qrpague-validation'
-		}
-	};
-
-	return await Api.request(options)
+	return await Request.get(urlQRPague, header)
 
 
 }
