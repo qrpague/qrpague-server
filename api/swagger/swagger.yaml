@@ -17,6 +17,7 @@ servers:
   - url: 'https://<<api.dominio.com.br>>/qrpague'
 paths:
   /operacao:
+    x-swagger-router-controller: operacoes-controller
     post:
       tags:
         - Operações Financeiras Digitais
@@ -25,7 +26,7 @@ paths:
         Este endpoint deve ser implementado pela instituição financeira para que
         um cliente/beneficiário possa solicitar a geração de um QRCode para uma
         operação financeira digital.
-      operationId: operacao-financeira-criar
+      operationId: criarOperacao
       security:
         - OAuth2: []
       requestBody:
