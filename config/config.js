@@ -1,5 +1,5 @@
-const { Logger } = '@sfd-br/util';
-const middleware = './middleware';
+const { Logger } = require('@sfd-br/util');
+const middleware = require('./middleware');
 
 module.exports = (appRoot, app) => {
     Config.initialize({
