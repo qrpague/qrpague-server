@@ -12,7 +12,7 @@ const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
 	if (tipo == APPLICATION_IMAGE) {
 		resposta = await QRCode.toDataURL(JSON.stringify(operacaoFinanceira));
 	} else {
-		resposta = process.env.PROTOCOL + '://' + process.env.QRPAGUE_URL_QRCODE_CREATE + resultado._id
+		resposta = process.env.QRPAGUE_URL + '/' + resultado._id
 	}
 	return resposta;
 }
@@ -41,7 +41,7 @@ const consultarOperacao = async function ({ uuid, cnpjInstituicao, userAgent, is
 
 	
 	if ( !isWhatsApp ) {
-		let urlOperacao = process.env.PROTOCOL + '://' + process.env.HOST + ':' + process.env.HTTP_PORT +  req.originalUrl
+		let urlOperacao = process.env.SERVER_URL +  req.originalUrl
 		let content = fs.readFileSync( path.join(__dirname, '../templates/shareLink.html'), "utf8")
 
 		let tipo;

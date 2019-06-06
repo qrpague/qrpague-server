@@ -11,7 +11,7 @@ const criarOperacao = async (req, res, next) => {
         const result = await service.criarOperacao({ tipo, operacaoFinanceira });
         return Response.success(res, result, { contentType: Response.CONTENT_TYPE.JSON });
     } catch (err) {
-        return Response.error(res, err);
+        return Response.fromResponseError(res, err);
     }
 }
 
@@ -21,7 +21,7 @@ const consultarOperacoes = (req, res, next) => {
         const result = await service.consultarOperacoes(options);
         return Response.success(res, result, { contentType: Response.CONTENT_TYPE.QR_PAGUE });
     } catch (err) {
-        return Response.error(res, err);
+        return Response.fromError(res, err);
     }
 }
 
@@ -39,7 +39,7 @@ const consultarOperacao = (req, res, next) => {
             return Response.success(res, result, { contentType: Response.CONTENT_TYPE.QR_PAGUE });
         }
     } catch (err) {
-        return Response.error(res, err);
+        return Response.fromError(res, err);
     }
 }
 
@@ -52,7 +52,7 @@ const autorizarOperacao = (req, res, next) => {
 
         return Response.success(res, result, { contentType: Response.CONTENT_TYPE.JSON });
     } catch (err) {
-        return Response.error(res, err);
+        return Response.fromError(res, err);
     }
 }
 
@@ -65,7 +65,7 @@ const confirmarOperacao = (req, res, next) => {
 
         return Response.success(res, result, { contentType: Response.CONTENT_TYPE.JSON });
     } catch (err) {
-        return Response.error(res, err);
+        return Response.fromError(res, err);
     }
 }
 

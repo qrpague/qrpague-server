@@ -32,12 +32,10 @@ COPY public ./public
 COPY package.json ./  
 COPY test ./test
 
-#https://github.com/lorenwest/node-config/issues/244
+# ISSUE - https://github.com/lorenwest/node-config/issues/244
 RUN echo "{}" > "$APP"/config/default-0.json
 
-
-# Ownership
-# https://blog.openshift.com/jupyter-on-openshift-part-6-running-as-an-assigned-user-id/
+# Permissionamento
 RUN chown -R $USER:$USER $HOME && \
     chown -R $USER:$USER $APP && \
     chgrp -Rf root $HOME && \

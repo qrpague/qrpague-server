@@ -12,7 +12,7 @@ let Doc;
  * 
  * @param {Object} options - Opções da biblioteca
  */
-const initialize = (options) => {
+const setup = (options) => {
 
     if(options && options.yaml && options.yaml.filePath) {
         let yamlOptions = { ...options.yaml }
@@ -50,8 +50,37 @@ const throwInternalError = (error) => {
     Err.throwInternalError(error);
 }
 
+/**
+ * Send an error response from YAML File.
+ * @param {Object} res - Express Http Response
+ * @param {number} statusCode - Http status code
+ * @param {number} typeCode - Message type code
+ * @param {number} instanceCode - Message instance code
+ * @param {Object} params - Message parameters
+ * @returns {Object} - Http Response Error
+ */
+const error = (res, statusCode, typeCode, instanceCode, params) => {
+    try {
+        throwError(statusCode, typeCode, instanceCode, params)
+    } catch(error) {
+        return Response.fromError(res, error);
+    }
+}
+
+/**
+ * Send an error response from any error.
+ * @param {Object} res - Express Http Response
+ * @param {Error} error - Error type
+ * @returns {Object} - Http Response Error
+ */
+const fromError = (res, error) => {
+    return Response.fromError(res, error);
+}
+
+setup();
+
 module.exports = {
-    Config: { initialize },
+    Config: { setup },
     Logger: { 
         log: Logger.log,
         trace: Logger.trace,
@@ -77,7 +106,8 @@ module.exports = {
         successPlain: Http.Response.successPlain,
         created: Http.Response.created,
         noContent: Http.Response.noContent,
-        error: Http.Response.error,
+        error: error,
+        fromError: fromError,
         CONTENT_TYPE: Http.Response.CONTENT_TYPE,
         HTTP_STATUS: Http.Response.HTTP_STATUS
     },

@@ -1,0 +1,30 @@
+version: '3'
+
+networks: 
+  stack:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.29.0.0/16
+
+services:
+  api:
+    image: test/qrpague:latest
+    networks:
+        - stack
+    depends_on:
+        - mongo
+    ports:
+        - "9999:8080"
+    environment:
+        AMBIENTE: 'development'
+        PORT: 8080
+        NODE_PROJECT: 'QR-Pague Service'
+        SERVER_URL : 'http://127.0.0.1:8080'
+        QRPAGUE_URL: 'http://127.0.0.1:8080/operacoes'
+        MONGO_CONNECTION : 'mongodb://mongo:10001/QRPAGUE'
+  mongo:
+    image: mongo:4.1
+    networks:
+        - stack
