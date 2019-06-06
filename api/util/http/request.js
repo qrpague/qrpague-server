@@ -55,10 +55,27 @@ const parseJson = (data) => {
 }
 
 /**
- * Esse é um método de callback para Http
- * @param {Object} deferred - Deferred promise
+ * Parse JSON to String.
+ * @param {string} data - String
+ * @returns {Object} - JSON
+ */
+const parseString = (data) => {
+    return JSON.stringify(data);
+}
+
+function isObject(obj) {
+    return obj !== undefined && obj !== null && obj.constructor == Object;
+}
+
+function isString(obj) {
+    return obj !== undefined && obj !== null && obj.constructor == String;
+}
+
+/**
+ * This is a http callback function
+ * @param {Object} deferred - Deferred of a promise
  * @param {Error} error - Error
- * @param {Object} response - Resposta Htto
+ * @param {Object} response - Http response
  * @param {Object} body - Http body
  */
 const makeCallback = (deferred, error, response, body) => {
@@ -66,18 +83,15 @@ const makeCallback = (deferred, error, response, body) => {
         var returnError = Err.throwInternalError(error);
         Logger.error(returnError);
         deferred.reject(returnError);
-    } else if (body && body.requestError) {
-        var error = body.requestError.serviceException;
-        var returnError = Err.throwInternalError(error);
-        Logger.error(returnError);
-        Logger.reject(returnError);
     } else if (response && response.statusCode >= 400) {
-        let jsonErr = parseJson(body);
+        let jsonErr = (!isObject(body)) ? body : parseJson(body);
         if (jsonErr.typeCode && jsonErr.type && jsonErr.title && jsonErr.statusCode) {
             let returnError = new Err.ResponseError(jsonErr);
             deferred.reject(returnError);
         } else {
-            deferred.reject(new Err.ResponseError(jsonErr));
+            const detail = (!isString(body)) ? parseString(body) : body;
+            const statusCode = response.statusCode;
+            deferred.reject(new Err.ResponseError({statusCode, detail}));
         }
     } else {
         if(body){
