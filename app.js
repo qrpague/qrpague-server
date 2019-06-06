@@ -18,9 +18,9 @@ const start = (app) => {
             middleware.validateRequest()
         );
 
-        process.env.PORT = 9999;
+        const PORT = process.env.PORT || 8080;
     
-        app.listen(process.env.PORT, () => console.log('O servidor do QR-PAGUE subiu na porta: ', process.env.PORT));
+        app.listen(PORT, () => console.log('O servidor do QR-PAGUE subiu na porta: ', PORT));
     });
 }
 

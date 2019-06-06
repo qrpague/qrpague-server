@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const { Logger } = require('../api/util');
@@ -27,6 +28,6 @@ module.exports = (app) => {
 
   app.use(corsMiddleware);
 
-  app.use('/qrpague-admin', express.static(__dirname + '/public/', { 'index': 'index.html' }));
+  app.use('/qrpague-admin', express.static(path.join(__dirname, '../public/'), { 'index': 'index.html' }));
 }
 

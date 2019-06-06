@@ -3,7 +3,7 @@
   "version": "2.1.0",
   "private": true,
   "scripts": {
-    "start": "node index.js",
+    "start": "pm2 start app.js",
     "debug": "node index.js"
   },
   "dependencies": {
