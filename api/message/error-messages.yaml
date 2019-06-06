@@ -1,0 +1,8 @@
+types:
+  - operacao:
+      type_code: 1000
+      title: Erro de operação
+      instances:
+        - uuid_invalido:
+            instance_code: 1
+            detail: O ${uuid} não é um identificador válido

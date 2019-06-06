@@ -1,4 +1,4 @@
-const { Err } = require('@sfd-br/util');
+const { Err } = require('../../util');
 const { OperacaoSchema, SITUACAO, TIPO_OPERACAO } = require('../schema/operacao-financeira');
 
 module.exports = (db, mongoose, promise) => {

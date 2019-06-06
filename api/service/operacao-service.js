@@ -2,7 +2,7 @@ const QRCode = require('qrcode');
 const Validador = require('boleto-brasileiro-validator');
 const Operacao = require('../database/model/operacao');
 const { APPLICATION_IMAGE } = require('../enum/content-type');
-const { Err, Request } = require('@sfd-br/util');
+const { Err, Request } = require('../util');
 const path = ('path');
 const fs = require('fs');
 
@@ -12,7 +12,7 @@ const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
 	if (tipo == APPLICATION_IMAGE) {
 		resposta = await QRCode.toDataURL(JSON.stringify(operacaoFinanceira));
 	} else {
-		resposta = Config.PROTOCOL + '://' + Config.QRPAGUE_URL_QRCODE_CREATE + resultado._id
+		resposta = process.env.PROTOCOL + '://' + process.env.QRPAGUE_URL_QRCODE_CREATE + resultado._id
 	}
 	return resposta;
 }
@@ -41,7 +41,7 @@ const consultarOperacao = async function ({ uuid, cnpjInstituicao, userAgent, is
 
 	
 	if ( !isWhatsApp ) {
-		let urlOperacao = Config.PROTOCOL + '://' + Config.HOST + ':' + Config.HTTP_PORT +  req.originalUrl
+		let urlOperacao = process.env.PROTOCOL + '://' + process.env.HOST + ':' + process.env.HTTP_PORT +  req.originalUrl
 		let content = fs.readFileSync( path.join(__dirname, '../templates/shareLink.html'), "utf8")
 
 		let tipo;

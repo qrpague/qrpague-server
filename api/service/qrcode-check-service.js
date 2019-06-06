@@ -1,6 +1,6 @@
 'use strict';
 
-const { Request } = require('@sfd-br/util');
+const { Request } = require('../util');
 let url = require('url')
 let tlsSocket = require('tls')
 

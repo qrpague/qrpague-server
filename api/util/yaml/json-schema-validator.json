@@ -1,0 +1,46 @@
+{
+    "title": "Message Validator",
+    "type": "object",
+    "properties": {
+        "types": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "minProperties": 1,
+                "patternProperties": {
+                    "^[A-Za-z_][A-Za-z0-9_]*$": { 
+                        "type": "object",
+                        "properties": {
+                            "type": { "type": "string" },
+                            "type_code": { "type": "integer" },
+                            "title": { "type": "string" },
+                            "instances": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "minProperties": 1,
+                                    "patternProperties": { 
+                                        "^[A-Za-z_][A-Za-z0-9_]*$": { 
+                                            "type": "object",
+                                            "properties": {
+                                                "instance": { "type": "string" },
+                                                "instance_code": { "type": "integer" },
+                                                "detail": { "type": "string" }
+                                            },
+                                            "required": ["instance_code", "detail"],
+                                            "additionalProperties": false
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "required": ["type_code", "title", "instances"],
+                        "additionalProperties": false
+                    }
+                }
+            }
+        }
+    },
+    "required": ["types"],
+    "additionalProperties": false
+}

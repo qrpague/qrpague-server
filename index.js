@@ -1,51 +1,25 @@
-'use strict';
-let path = require('path');
-global.pathRootApp = path.resolve(__dirname);
+const express = require('express');
+const path = require('path');
+const createMiddleware = require('swagger-express-middleware');
+const initializeConfigurations = require('./config/config');
+const expressApp = express();
+const swaggerFile = path.join(__dirname, '/api/swagger/swagger.yaml');
 
-
-let express = require('express')
-let app = express()
-let cfg = require('./config')
-let Security = require('./security');
-let ResourcesNegocio = require('./resources/negocio');
-let methodOverride = require('method-override')
-let bodyParser = require('body-parser')
-
-
- 
-app.use(Security.cors)
-
-app.use(methodOverride());
-app.use(bodyParser.json({ limit: 1024102420, type: 'application/json' }));
-app.use(bodyParser.text());
-
-app.use(logErrors);
-app.use(errorHandler);
-  
- 
-app.use('/qrpague-admin', express.static(__dirname + '/public/', { 'index': 'index.html' }));
-app.use('/', ResourcesNegocio );
-
-
-
-app.listen(cfg.HTTP_PORT, cfg.HTTP_HOST, function () {
-    console.info("########################################################################");
-    console.info("##              POWER        SERVER STARTED              POWER        ##");
-    console.info("########################################################################");
-    console.info('URL: ', cfg.HTTP_HOST + ":" + cfg.HTTP_PORT);  
-    console.info("------------------------------------------------------------------------");
-});
-  
-
-
-function logErrors(err, req, res, next) {
-    console.error(err);
-    next(err);
+const start = (app) => {
+    
+    initializeConfigurations(app);
+    
+    createMiddleware(swaggerFile, app, function(err, middleware) {
+        app.use(
+            middleware.metadata(),
+            middleware.CORS(),
+            middleware.files(),
+            middleware.parseRequest(),
+            middleware.validateRequest()
+        );
+    
+        app.listen(process.env.PORT || 9999, () => console.log('O servidor do QR-PAGUE subiu na porta: ', process.env.PORT));
+    });
 }
 
-function errorHandler(err, req, res, next) {
-    var status = err.status || 400;
-    let retorno = { message : err.message ,  }  
-    res.status(status).send(retorno);
-
-}
+start(expressApp);

@@ -1,3 +1,4 @@
+const { Logger } = require('../util');
 const mongoose = require('mongoose');
 const operacao = require('./model/operacao');
 
@@ -10,13 +11,13 @@ const connect = () => {
     db.Promise = global.Promise;
 
     db.on('connected', function () {
-        logger.info('[MONGO] - Mongoose connected on ' + dbURI);
+        Logger.info('[MONGO] - Mongoose connected on', dbURI);
     });
     db.on('error', function (err) {
-        logger.error('[MONGO] - An error ocurred on mongoose connection: ' + err);
+        Logger.error('[MONGO] - An error ocurred on mongoose connection:', err);
     });
     db.on('disconnected', function () {
-        logger.warn('[MONGO] - Mongoose has been disconnected.');
+        Logger.warn('[MONGO] - Mongoose has been disconnected.');
     });
 }
 
@@ -25,5 +26,5 @@ connect();
 module.exports = {
     mongoose: mongoose,
     promise: mongoose.Promise,
-    Operacao: operacao(db, mongoose, promise)
+    Operacao: operacao(db, mongoose, mongoose.Promise)
 }

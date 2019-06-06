@@ -1,4 +1,4 @@
-const { ARRAY_UF } = require('../domain/uf');
+const { ARRAY_UF } = require('../enum/uf');
 
 const TerminalSchema = {
     idTerminal: { type: Number, required: true, unique: true },

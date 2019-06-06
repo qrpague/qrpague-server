@@ -7,14 +7,19 @@
     "debug": "node index.js"
   },
   "dependencies": {
-    "@sfd-br/util": "0.0.10",
+    "ajv": "^6.10.0",
     "body-parser": "^1.19.0",
     "boleto-brasileiro-validator": "^1.0.3",
     "express": "^4.17.1",
+    "js-yaml": "^3.13.1",
+    "log4js": "^4.3.0",
+    "log4js-extend": "^0.2.1",
     "method-override": "^3.0.0",
     "mongoose": "^5.5.13",
-    "monk": "latest",
-    "qrcode": "^1.3.0"
+    "q": "^1.5.1",
+    "qrcode": "^1.3.0",
+    "request": "^2.83.0",
+    "swagger-express-middleware": "^2.0.2"
   },
   "devDependencies": {}
 }

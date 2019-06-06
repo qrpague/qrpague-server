@@ -1,5 +1,7 @@
+const express = require('express');
 const bodyParser = require('body-parser');
-const { Logger } = require('@sfd-br/util');
+const methodOverride = require('method-override');
+const { Logger } = require('../api/util');
 
 const corsMiddleware = (req, res, next) => {
     logger.debug('%s %s %s', req.method, req.url, req.path);
@@ -13,8 +15,8 @@ const corsMiddleware = (req, res, next) => {
 
 module.exports = (app) => {
 
+  app.use(methodOverride());
   app.use(bodyParser.text())
-
   app.use(bodyParser.json({
     limit: 1024102420
   }));
@@ -24,5 +26,7 @@ module.exports = (app) => {
   }));
 
   app.use(corsMiddleware);
+
+  app.use('/qrpague-admin', express.static(__dirname + '/public/', { 'index': 'index.html' }));
 }
 
