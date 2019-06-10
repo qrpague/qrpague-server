@@ -9,10 +9,9 @@ let ResponseError = require('../error');
  * @param {Object} res - Express Http Response
  * @param {Object} result - Response result
  * @param {Object} options  - Options
- * @returns {Object} - Http Response 
  */
 const success = (res, result, options) => {
-  return makeResponse(res, HTTP_STATUS.OK, result, options);
+  makeResponse(res, HTTP_STATUS.OK, result, options);
 }
 
 /**
@@ -20,10 +19,9 @@ const success = (res, result, options) => {
  * @param {Object} res - Express Http Response
  * @param {Object} result - Response result
  * @param {Object} options  - Options
- * @returns {Object} - Http Response 
  */
 const created = (res, result, options) => {
-  return makeResponse(res, HTTP_STATUS.CREATED, result, options);
+  makeResponse(res, HTTP_STATUS.CREATED, result, options);
 }
 
 /**
@@ -33,14 +31,13 @@ const created = (res, result, options) => {
  * @returns {Object} - Http Response 
  */
 const noContent = (res, options) => {
-  return makeResponse(res, HTTP_STATUS.NO_CONTENT, null, options);
+  makeResponse(res, HTTP_STATUS.NO_CONTENT, null, options);
 }
 
 /**
  * Envia uma resposta de erro
  * @param {Object} res - Express Http Response
  * @param {Error} error - Error type
- * @returns {Object} - Http Response Error
  */
 const error = (res, error) => {
   let err = error;
@@ -48,11 +45,11 @@ const error = (res, error) => {
     try{
       ResponseError.throwInternalError(error);
     } catch(e) {
-      Logger.error(returnError);
+      Logger.error(e);
       err = e;
     }
   }
-  return sendError(res, error);
+  sendError(res, error);
 }
 
 /**
@@ -61,7 +58,6 @@ const error = (res, error) => {
  * @param {number} status - Http status code
  * @param {Object} result - Result response
  * @param {String} options - Options
- * @returns {Object} - Http Response 
  */
 function makeResponse(response, status, result, options){
   let type = (!options.contentType) ? CONTENT_TYPE.JSON : options.contentType;
@@ -69,10 +65,10 @@ function makeResponse(response, status, result, options){
   res.setHeader('Content-Type', type);
 
   if(result){
-    return response.status(status).send(result);
+    response.status(status).send(result);
   }
   else {
-    return response.status(status).end();
+    response.status(status).end();
   }
 }
 
@@ -80,10 +76,9 @@ function makeResponse(response, status, result, options){
  * Envia um @throws {ResponseError}
  * @param {Object} res - Objeto resposta do Express
  * @param {ResponseError} error - ResponseError
- * @returns {Object} - Http Response Error
  */
 function sendError(res, error){
-	return res.status(error.statusCode).json(error);
+	res.status(error.statusCode).json(error);
 }
 
 module.exports = {

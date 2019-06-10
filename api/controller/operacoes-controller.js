@@ -1,4 +1,4 @@
-const { Response } = require('../util');
+const { Response, Logger } = require('../util');
 const paramUtil = require('../helper/param-util');
 const service = require('../service/operacao-service');
 
@@ -9,13 +9,13 @@ const criarOperacao = async (req, res, next) => {
         const tipo = req.headers.accept;
 	    const operacaoFinanceira = req.body;
         const result = await service.criarOperacao({ tipo, operacaoFinanceira });
-        return Response.success(res, result, { contentType: Response.CONTENT_TYPE.JSON });
+        Response.success(res, result, { contentType: Response.CONTENT_TYPE.JSON });
     } catch (err) {
-        return Response.fromResponseError(res, err);
+        Response.fromResponseError(res, err);
     }
 }
 
-const consultarOperacoes = (req, res, next) => {
+const consultarOperacoes = async (req, res, next) => {
     try {
 	    const options = paramUtil.getParams(req);
         const result = await service.consultarOperacoes(options);
@@ -25,7 +25,7 @@ const consultarOperacoes = (req, res, next) => {
     }
 }
 
-const consultarOperacao = (req, res, next) => {
+const consultarOperacao = async (req, res, next) => {
     try {
         const isWhatsApp = req.headers['user-agent'] === WHATSAPP ? true : false;
         const params = paramUtil.getParams(req);
@@ -43,7 +43,7 @@ const consultarOperacao = (req, res, next) => {
     }
 }
 
-const autorizarOperacao = (req, res, next) => {
+const autorizarOperacao = async (req, res, next) => {
     try {
         const options = paramUtil.getParams(req);
         const uuid = options.uuid;
@@ -56,7 +56,7 @@ const autorizarOperacao = (req, res, next) => {
     }
 }
 
-const confirmarOperacao = (req, res, next) => {
+const confirmarOperacao = async (req, res, next) => {
     try {
         const options = paramUtil.getParams(req);
         const uuid = options.uuid;

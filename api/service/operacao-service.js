@@ -1,13 +1,20 @@
 const QRCode = require('qrcode');
 const Validador = require('boleto-brasileiro-validator');
-const Operacao = require('../database/model/operacao');
+const { Operacao } = require('../database/db');
 const { APPLICATION_IMAGE } = require('../enum/content-type');
-const { Err, Request } = require('../util');
+const { Err, Request, Response, Logger } = require('../util');
 const path = ('path');
 const fs = require('fs');
 
 const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
-	let resultado = await Operacao.incluirOperacao(operacaoFinanceira);
+	let resultado;
+	try {
+		resultado = await Operacao.incluirOperacao(operacaoFinanceira);
+	} catch(err) {
+		Logger.warn(err);
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 1000, 1);
+	}
+
 	let resposta;
 	if (tipo == APPLICATION_IMAGE) {
 		resposta = await QRCode.toDataURL(JSON.stringify(operacaoFinanceira));

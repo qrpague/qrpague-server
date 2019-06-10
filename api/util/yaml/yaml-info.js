@@ -50,12 +50,14 @@ const retrieve = ({ doc, typeCode, instanceCode, params }) => {
 
 const buildDetail = (detail, params) => {
     let newDetail = detail;
-    Object.entries(params).forEach(([key, value]) => {
-        if(detail.includes(key)){
-            const replaceStr = '${' + key + '}'
-            newDetail = newDetail.replace(replaceStr, value);
-        }
-    });
+    if(params) {
+        Object.entries(params).forEach(([key, value]) => {
+            if(detail.includes(key)){
+                const replaceStr = '${' + key + '}'
+                newDetail = newDetail.replace(replaceStr, value);
+            }
+        });
+    }
     return newDetail;
 }
 

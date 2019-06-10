@@ -59,11 +59,11 @@ const throwInternalError = (error) => {
  * @param {Object} params - Message parameters
  * @returns {Object} - Http Response Error
  */
-const error = (res, statusCode, typeCode, instanceCode, params) => {
+const fromError = (res, statusCode, typeCode, instanceCode, params) => {
     try {
         throwError(statusCode, typeCode, instanceCode, params)
     } catch(error) {
-        return Response.fromError(res, error);
+        Http.Response.error(res, error);
     }
 }
 
@@ -73,8 +73,8 @@ const error = (res, statusCode, typeCode, instanceCode, params) => {
  * @param {Error} error - Error type
  * @returns {Object} - Http Response Error
  */
-const fromError = (res, error) => {
-    return Response.fromError(res, error);
+const fromResponseError = (res, error) => {
+    Http.Response.error(res, error);
 }
 
 setup();
@@ -106,8 +106,8 @@ module.exports = {
         successPlain: Http.Response.successPlain,
         created: Http.Response.created,
         noContent: Http.Response.noContent,
-        error: error,
         fromError: fromError,
+        fromResponseError: fromResponseError,
         CONTENT_TYPE: Http.Response.CONTENT_TYPE,
         HTTP_STATUS: Http.Response.HTTP_STATUS
     },

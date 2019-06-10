@@ -1,8 +1,8 @@
 types:
   - operacao:
       type_code: 1000
-      title: Erro de operação
+      title: Erro de inserção de operação
       instances:
-        - uuid_invalido:
+        - erro_ao_salvar:
             instance_code: 1
-            detail: O ${uuid} não é um identificador válido
+            detail: A operação ${uuid} não pode ser salva
