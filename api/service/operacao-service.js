@@ -1,7 +1,7 @@
 const QRCode = require('qrcode');
 const Validador = require('boleto-brasileiro-validator');
 const { Operacao } = require('../database/db');
-const { APPLICATION_IMAGE } = require('../enum/content-type');
+const { APPLICATION_IMAGE } = require('../util/http/content-type');
 const { Err, Request, Response, Logger } = require('../util');
 const path = ('path');
 const fs = require('fs');
