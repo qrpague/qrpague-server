@@ -12,10 +12,16 @@ const MONGO = {
 }
 
 const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
-	let resultado;
 	try {
 		operacaoFinanceira.situacao = Operacao.SITUACAO.EMITIDO;
-		resultado = await Operacao.incluirOperacao(operacaoFinanceira);
+		let resultado = await Operacao.incluirOperacao(operacaoFinanceira);
+		let resposta;
+		if (tipo === APPLICATION_IMAGE) {
+			resposta = await QRCode.toDataURL(JSON.stringify(operacaoFinanceira));
+		} else {
+			resposta = process.env.QRPAGUE_URL + '/' + resultado._id
+		}
+		return resposta;
 	} catch(err) {
 		Logger.warn(err);
 		if(err.name === MONGO.ERROR_NAME && err.code === MONGO.DUPLICATE_KEY_CODE) {
@@ -23,14 +29,6 @@ const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
 		}
 		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 1000, 1, operacaoFinanceira);
 	}
-
-	let resposta;
-	if (tipo === APPLICATION_IMAGE) {
-		resposta = await QRCode.toDataURL(JSON.stringify(operacaoFinanceira));
-	} else {
-		resposta = process.env.QRPAGUE_URL + '/' + resultado._id
-	}
-	return resposta;
 }
 
 const consultarOperacoes = async ({ cnpjInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
