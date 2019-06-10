@@ -35,7 +35,7 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/OperacaoFinanceira'
+                - $ref: '#/components/schemas/InclusaoOperacaoFinanceira'
                 - $ref: '#/components/schemas/CodigoBarras'
       responses:
         '200':
@@ -168,7 +168,7 @@ paths:
           content:
             application/qrpague:
               schema:
-                $ref: '#/components/schemas/OperacaoFinanceira'
+                $ref: '#/components/schemas/ConsultaOperacaoFinanceira'
         '400':
           description: Exceção de negócio
           content:
@@ -646,7 +646,7 @@ components:
             informados.
           items:
             oneOf:
-              - $ref: '#/components/schemas/OperacaoFinanceira'
+              - $ref: '#/components/schemas/ConsultaOperacaoFinanceira'
               - $ref: '#/components/schemas/Pagamento'
       required:
         - quantidadeRegistros
@@ -676,7 +676,7 @@ components:
         - url
         - descricao
         - metodoHttp
-    OperacaoFinanceira:
+    ConsultaOperacaoFinanceira:
       type: object
       properties:
         versao:
@@ -805,6 +805,120 @@ components:
         - valor
         - dataHoraSolicitacao
         - situacao
+        - tipoOperacao
+        - terminal
+        - beneficiario
+    InclusaoOperacaoFinanceira:
+      type: object
+      properties:
+        versao:
+          type: number
+          format: float
+          description: Número da versão do formato do JSON especificado.
+          example: 1
+        cnpjInstituicao:
+          type: string
+          description: >-
+            CNPJ da instituição financeira do beneficiário da operação
+            financeira digital.
+          maxLength: 14
+          example: "01234567890123"
+        uuid:
+          type: string
+          pattern: >-
+            ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
+          description: >-
+            Identificador único da operação financeira digital na instituição
+            sacadora. RFC 4122
+          example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
+        valor:
+          type: integer
+          description: >-
+            Valor da operação financeira realizada, onde os últimos 2 dígitos
+            são as casas decimais.
+          example: 150000
+        descricao:
+          type: string
+          description: Descrição da operação financeira realizada.
+          example: Pagamento do serviço de Advocacia na Meu escritório de advogados.
+        dataHoraSolicitacao:
+          type: string
+          format: date-time
+          description: >-
+            Data e hora da solicitação da operação financeira na instituição
+            financeira. Formato RFC 3339, seção 5.6.
+          example: '2017-07-21T17:32:28Z'
+        dataHoraVencimento:
+          type: string
+          format: date-time
+          description: >-
+            Data e hora de vencimento da operação financeira na instituição
+            financeira. Formato RFC 3339, seção 5.6.
+          example: '2017-07-21T17:32:28Z'
+        tipoOperacao:
+          type: string
+          enum:
+            - SAQUE
+            - TRANSFERENCIA
+            - VENDA
+          description: >-
+            Tipo da operação financeira digital realizada.
+          example: VENDA
+        exigeEndereco:
+          type: boolean
+          enum:
+            - true
+            - false
+          description: >-
+            Operação financeira exige endereço (true). Operação
+            financeira não exige endereço (false).
+          example: true
+        pagamentoParcial:
+          type: boolean
+          enum:
+            - true
+            - false
+          description: >-
+            Operação financeira permite pagamento parcial (true). Operação
+            financeira não permite pagamento parcial (false).
+          example: false
+        exigeEmail:
+          type: boolean
+          enum:
+            - true
+            - false
+          description: >-
+            Operação financeira exige endereço de e-mail (true). Operação
+            financeira não exige endereço de e-mail (false).
+          example: false
+        terminal:
+          $ref: '#/components/schemas/Terminal'
+        beneficiario:
+          $ref: '#/components/schemas/Pessoa'
+        itens:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+          description: >-
+            Itens participantes de uma da operação financeira digital gerado
+            para um QRCode.
+        pagamentos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pagamento'
+          description: >-
+            Pagamentos realizados atrelados a uma operação financeira digital
+            para um QRCode gerado.
+        confirmacaoOperacao:
+          $ref: '#/components/schemas/ConfirmacaoOperacao'
+        autorizacaoOperacao:
+          $ref: '#/components/schemas/AutorizacaoOperacao'
+      required:
+        - versao
+        - cnpjInstituicao
+        - valor
+        - dataHoraSolicitacao
+        - dataHoraVencimento
         - tipoOperacao
         - terminal
         - beneficiario
@@ -1134,7 +1248,7 @@ components:
           format: date-time
           example: '2017-07-21T17:32:28Z'
         operacaoFinanceira:
-          $ref: '#/components/schemas/OperacaoFinanceira'
+          $ref: '#/components/schemas/ConsultaOperacaoFinanceira'
           description: Operação financeira efetuada quando for pertinente.
       required:
         - sucessoOperacao

@@ -15,7 +15,7 @@ const throwError = (doc, statusCode, typeCode, instanceCode, params) => {
     if(!error) {
         throwInternalError(new Error('No specific error found.'))
     }
-    error = { ...error, statusCode, params }
+    error = { ...error, statusCode }
     throw new ResponseError(error);
 }
 

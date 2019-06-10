@@ -1,4 +1,4 @@
-const { Err } = require('../../util');
+const { Err, Logger } = require('../../util');
 const { OperacaoSchema, SITUACAO, TIPO_OPERACAO } = require('../schema/operacao-financeira');
 
 module.exports = (db, mongoose, promise) => {
@@ -11,6 +11,7 @@ module.exports = (db, mongoose, promise) => {
     OperacaoModel.SITUACAO = SITUACAO;
 
     OperacaoModel.incluirOperacao = async (obj) => {
+        Logger.debug('Inclusão de Operação Financeira', '=>', JSON.stringify(obj));
         let operacao = new OperacaoModel(obj);
 		return await operacao.save();
     },

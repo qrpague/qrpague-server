@@ -9,10 +9,14 @@ const fs = require('fs');
 const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
 	let resultado;
 	try {
+		operacaoFinanceira.situacao = Operacao.SITUACAO.EMITIDO;
 		resultado = await Operacao.incluirOperacao(operacaoFinanceira);
 	} catch(err) {
 		Logger.warn(err);
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 1000, 1);
+		if(err.name === 'MongoError' && err.code === 11000) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 1000, 2, operacaoFinanceira);	
+		}
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 1000, 1, operacaoFinanceira);
 	}
 
 	let resposta;

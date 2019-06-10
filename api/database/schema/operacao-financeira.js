@@ -35,6 +35,7 @@ const OperacaoSchema = {
     cnpjInstituicao:  { type: String, required: true },
     valor: {type: Number, required: true },
     dataHoraSolicitacao: {type: Date, required: true, default: Date.now()},
+    dataHoraVencimento: {type: Date, required: true},
     tipoOperacao: {type: String, required: true, enum: ARRAY_TIPO_OPERACAO},
     situacao: {type: String, required: true, enum: ARRAY_SITUACAO},
     terminal: {type: TerminalSchema, required: true},
@@ -42,7 +43,6 @@ const OperacaoSchema = {
 
     uuid: { type: String, required: false, unique: true },
     descricao: {type: String, required: false },
-    dataHoraVencimento: {type: Date, required: false},
     dataHoraEfetivacao: {type: Date, required: false},
     exigeEndereco: {type: Boolean, required: false},
     pagamentoParcial: {type: Boolean, required: false},

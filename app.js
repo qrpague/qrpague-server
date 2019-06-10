@@ -5,6 +5,7 @@ const setupConfiguration = require('./config/config');
 const expressApp = express();
 const swaggerFile = path.join(__dirname, '/api/swagger/swagger.yaml');
 const Routes = require('./api/resources');
+const { Logger } = require('./api/util');
 
 const start = (app) => {
     
@@ -28,9 +29,9 @@ const start = (app) => {
         app.use(Routes);
 
         const PORT = process.env.PORT || 8080;
-    
-        app.listen(PORT, () => console.log('O servidor do QR-PAGUE subiu na porta: ', PORT));
+        app.listen(PORT, () => Logger.info('O servidor do QR-PAGUE subiu na porta:', PORT));
     });
 }
+
 
 start(expressApp);

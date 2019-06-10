@@ -62,8 +62,9 @@ const error = (res, error) => {
 function makeResponse(response, status, result, options){
   let type = (!options.contentType) ? CONTENT_TYPE.JSON : options.contentType;
   
-  res.setHeader('Content-Type', type);
-
+  Logger.debug('[Response] - Status Code', status, '- Content-Type:', type, '- Result =>', result);
+  
+  response.setHeader('Content-Type', type);
   if(result){
     response.status(status).send(result);
   }

@@ -34,12 +34,13 @@ const retrieve = ({ doc, typeCode, instanceCode, params }) => {
     if(instanceCode) {
         instance = type[YAMLReader.Constants.INSTANCE_CONST + instanceCode];
         if(instance){
-            const detail = buildDetail(instance.detail, params);
+            const response = buildDetail(instance.detail, params);
             result = {
                 ...result,
                 instanceCode: instance.instance_code,
                 instance: instance.instance,
-                detail: detail
+                detail: response.detail,
+                params: response.params
             }
         }
 
@@ -49,16 +50,18 @@ const retrieve = ({ doc, typeCode, instanceCode, params }) => {
 }
 
 const buildDetail = (detail, params) => {
+    let resultParams = {}
     let newDetail = detail;
     if(params) {
         Object.entries(params).forEach(([key, value]) => {
             if(detail.includes(key)){
                 const replaceStr = '${' + key + '}'
                 newDetail = newDetail.replace(replaceStr, value);
+                resultParams[key] = value;
             }
         });
     }
-    return newDetail;
+    return { detail: newDetail, params: resultParams };
 }
 
 module.exports = YAMLInfo;

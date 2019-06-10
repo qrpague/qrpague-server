@@ -6,3 +6,6 @@ types:
         - erro_ao_salvar:
             instance_code: 1
             detail: A operação ${uuid} não pode ser salva
+        - operacao_existente:
+            instance_code: 2
+            detail: A operação ${uuid} já existe e não pode ser incluída novamente

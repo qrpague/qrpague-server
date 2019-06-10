@@ -9,7 +9,7 @@ const criarOperacao = async (req, res, next) => {
         const tipo = req.headers.accept;
 	    const operacaoFinanceira = req.body;
         const result = await service.criarOperacao({ tipo, operacaoFinanceira });
-        Response.success(res, result, { contentType: Response.CONTENT_TYPE.JSON });
+        Response.success(res, result, { contentType: Response.CONTENT_TYPE.TEXT });
     } catch (err) {
         Response.fromResponseError(res, err);
     }
