@@ -17,19 +17,23 @@ module.exports = (db, mongoose, promise) => {
     },
 
 	OperacaoModel.recuperarOperacoes = async (options) => {
+        Logger.debug('Consulta de Operações Financeiras', '=>', JSON.stringify(options));
         return await OperacaoModel.find({ limit : 20, sort : { dataHoraEfetivacao : -1 }});
 	},
 
 	OperacaoModel.consultarOperacao = async ( uuid ) => {
+        Logger.debug('Consulta da Operação de uuid', '=>', uuid);
         return await OperacaoModel.findOne({ uuid });
 	},
 
 	OperacaoModel.autorizarOperacao = async (uuid, autorizacaoOperacao) => {
+        Logger.debug('Autorização da Operação de uuid', '=>', uuid, ' - Dados da autorização =>', autorizacaoOperacao);
 		var situacao = (dados.operacaoAutorizada) ? SITUACAO.AUTORIZADO : SITUACAO.CANCELADO;
         return await Asset.findOneAndUpdate({ uuid }, { situacao, autorizacaoOperacao });
 	},
 
 	OperacaoModel.confirmarOperacao = async (uuid, confirmacaoOperacao) => {
+        Logger.debug('Confirmação da Operação de uuid', '=>', uuid, ' - Dados da confirmação =>', confirmacaoOperacao);
         var situacao = (dados.operacaoConfirmada) ? SITUACAO.AUTORIZADO : SITUACAO.CANCELADO;
         return await Asset.findOneAndUpdate({ uuid }, { situacao, confirmacaoOperacao });
 	}

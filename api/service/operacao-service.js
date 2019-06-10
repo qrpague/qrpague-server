@@ -6,6 +6,11 @@ const { Err, Request, Response, Logger } = require('../util');
 const path = ('path');
 const fs = require('fs');
 
+const MONGO = {
+	ERROR_NAME: 'MongoError',
+	DUPLICATE_KEY_CODE: 11000
+}
+
 const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
 	let resultado;
 	try {
@@ -13,14 +18,14 @@ const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
 		resultado = await Operacao.incluirOperacao(operacaoFinanceira);
 	} catch(err) {
 		Logger.warn(err);
-		if(err.name === 'MongoError' && err.code === 11000) {
+		if(err.name === MONGO.ERROR_NAME && err.code === MONGO.DUPLICATE_KEY_CODE) {
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 1000, 2, operacaoFinanceira);	
 		}
 		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 1000, 1, operacaoFinanceira);
 	}
 
 	let resposta;
-	if (tipo == APPLICATION_IMAGE) {
+	if (tipo === APPLICATION_IMAGE) {
 		resposta = await QRCode.toDataURL(JSON.stringify(operacaoFinanceira));
 	} else {
 		resposta = process.env.QRPAGUE_URL + '/' + resultado._id
