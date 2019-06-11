@@ -9,9 +9,10 @@ const criarOperacao = async (req, res, next) => {
         const tipo = req.headers.accept;
 	    const operacaoFinanceira = req.body;
         const result = await service.criarOperacao({ tipo, operacaoFinanceira });
-        const contentType = (tipo === APPLICATION_IMAGE) ? Response.CONTENT_TYPE.APPLICATION_IMAGE : Response.CONTENT_TYPE.TEXT_PLAIN;
+        const contentType = (tipo === Response.CONTENT_TYPE.APPLICATION_IMAGE) ? tipo : Response.CONTENT_TYPE.TEXT_PLAIN;
         Response.success(res, result, { contentType });
     } catch (err) {
+        Logger.warn(err);
         Response.fromResponseError(res, err);
     }
 }

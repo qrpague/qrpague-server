@@ -31,7 +31,7 @@ module.exports = (db, mongoose, promise) => {
     OperacaoModel.SITUACAO = SITUACAO;
 
     OperacaoModel.incluirOperacao = async (obj) => {
-        obj.uuid = uuidv4()
+        obj.uuid = uuidv4();
         obj.dataHoraVencimento = new Date(obj.dataHoraVencimento);
         
         Logger.debug('Inclusão de Operação Financeira', '=>', JSON.stringify(obj));

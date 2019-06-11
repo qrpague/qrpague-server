@@ -27,7 +27,6 @@ const throwError = (doc, statusCode, typeCode, instanceCode, params) => {
 const throwInternalError = (err) => {
     let error = {
         typeCode: 0,
-        type: "abount:blank",
         title: "Internal Error",
         detail: err.message,
         statusCode: HTTP_STATUS.INTERNAL_SERVER_ERROR

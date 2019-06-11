@@ -18,13 +18,17 @@ const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
 		if (tipo === APPLICATION_IMAGE) {
 			resposta = await QRCode.toDataURL(JSON.stringify(operacaoFinanceira));
 		} else {
-			resposta = process.env.QRPAGUE_URL + '/' + resultado._id
+			resposta = process.env.QRPAGUE_URL + '/' + resultado.uuid
 		}
 		return resposta;
 	} catch(err) {
 		Logger.warn(err);
 		if(err.name === MONGO.ERROR_NAME && err.code === MONGO.DUPLICATE_KEY_CODE) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 1000, 2, operacaoFinanceira);	
+			if(err.keyPattern.uuid === 1){
+				Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 1000, 2, operacaoFinanceira);
+			} else if(err.keyPattern.idRequisicao === 1){
+				Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 1000, 3, operacaoFinanceira);
+			}
 		}
 		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 1000, 1, operacaoFinanceira);
 	}

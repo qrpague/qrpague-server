@@ -9,3 +9,6 @@ types:
         - operacao_existente:
             instance_code: 2
             detail: A operação ${uuid} já existe e não pode ser incluída novamente
+        - id_requisicao_existente:
+            instance_code: 3
+            detail: A operação com a requisição ${idRequisicao} já foi incluída

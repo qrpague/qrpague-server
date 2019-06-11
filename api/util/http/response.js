@@ -49,7 +49,7 @@ const error = (res, error) => {
       err = e;
     }
   }
-  sendError(res, error);
+  sendError(res, err);
 }
 
 /**

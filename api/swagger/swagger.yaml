@@ -55,6 +55,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MensagemRetorno'
+        '422':
+          description: Operação já registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
         '500':
           description: Erro interno no servidor
       x-auth-type: Application & Application User
