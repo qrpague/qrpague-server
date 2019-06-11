@@ -13,7 +13,6 @@ const MONGO = {
 
 const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
 	try {
-		operacaoFinanceira.situacao = Operacao.SITUACAO.EMITIDO;
 		let resultado = await Operacao.incluirOperacao(operacaoFinanceira);
 		let resposta;
 		if (tipo === APPLICATION_IMAGE) {

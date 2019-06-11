@@ -823,13 +823,12 @@ components:
             financeira digital.
           maxLength: 14
           example: "01234567890123"
-        uuid:
+        idRequisicao:
           type: string
           pattern: >-
             ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
           description: >-
-            Identificador único da operação financeira digital na instituição
-            sacadora. RFC 4122
+            Identificador opcional para controle de idempotência. RFC 4122
           example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
         valor:
           type: integer
@@ -841,13 +840,6 @@ components:
           type: string
           description: Descrição da operação financeira realizada.
           example: Pagamento do serviço de Advocacia na Meu escritório de advogados.
-        dataHoraSolicitacao:
-          type: string
-          format: date-time
-          description: >-
-            Data e hora da solicitação da operação financeira na instituição
-            financeira. Formato RFC 3339, seção 5.6.
-          example: '2017-07-21T17:32:28Z'
         dataHoraVencimento:
           type: string
           format: date-time
@@ -917,7 +909,6 @@ components:
         - versao
         - cnpjInstituicao
         - valor
-        - dataHoraSolicitacao
         - dataHoraVencimento
         - tipoOperacao
         - terminal

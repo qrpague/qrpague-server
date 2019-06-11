@@ -30,27 +30,99 @@ const PagamentoSchema = new Schema(Pagamento, { _id: false })
 const ConfirmacaoOperacaoSchema = new Schema(ConfirmacaoOperacao, { _id: false })
 const AutorizacaoOperacaoSchema = new Schema(AutorizacaoOperacao, { _id: false })
 
-const OperacaoSchema = {
-    versao: { type: Number, required: true },
-    cnpjInstituicao:  { type: String, required: true },
-    valor: {type: Number, required: true },
-    dataHoraSolicitacao: {type: Date, required: true, default: Date.now()},
-    dataHoraVencimento: {type: Date, required: true},
-    tipoOperacao: {type: String, required: true, enum: ARRAY_TIPO_OPERACAO},
-    situacao: {type: String, required: true, enum: ARRAY_SITUACAO},
-    terminal: {type: TerminalSchema, required: true},
-    beneficiario: {type: PessoaSchema, required: true},
+const UUID_PATTERN = /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$/;
 
-    uuid: { type: String, required: false, unique: true },
-    descricao: {type: String, required: false },
-    dataHoraEfetivacao: {type: Date, required: false},
-    exigeEndereco: {type: Boolean, required: false},
-    pagamentoParcial: {type: Boolean, required: false},
-    exigeEmail: {type: Boolean, required: false},
-    itens: [ItemSchema],
-    pagamentos: [PagamentoSchema],
-    confirmacaoOperacao: {type: ConfirmacaoOperacaoSchema, required: false },
-    autorizacaoOperacao: {type: AutorizacaoOperacaoSchema, required: false },
+const OperacaoSchema = {
+    uuid: { 
+        type: String,
+        required: [true, 'O campo uuid é obrigatório'],
+        unique: true,
+        validate: {
+            validator: (field) => UUID_PATTERN.test(field),
+            message: (props) => `O campo ${props.path} - ${props.value} não está seguindo o padrão ${UUID_PATTERN}.`
+        }
+    },
+    versao: { 
+        type: Number,
+        required: [true, 'O campo versao é obrigatório'] 
+    },
+    cnpjInstituicao:  { 
+        type: String,
+        required: [true, 'O campo cnpjInstituicao é obrigatório'] 
+    },
+    valor: { 
+        type: Number,
+        required: [true, 'O campo valor é obrigatório']  
+    },
+    dataHoraSolicitacao: { 
+        type: Date,
+        required: [true, 'O campo dataHoraSolicitacao é obrigatório'],
+        default: Date.now() 
+    },
+    dataHoraVencimento: {
+        type: Date,
+        required: [true, 'O campo dataHoraVencimento é obrigatório']
+    },
+    tipoOperacao: {
+        type: String,
+        required: [true, 'O campo tipoOperacao é obrigatório'],
+        enum: ARRAY_TIPO_OPERACAO
+    },
+    situacao: { 
+        type: String,
+        required: [true, 'O campo situacao é obrigatório'],
+        enum: ARRAY_SITUACAO,
+        default: SITUACAO.EMITIDO 
+    },
+    terminal: {
+        type: TerminalSchema,
+        required: [true, 'O campo terminal é obrigatório'],
+    },
+    beneficiario: {
+        type: PessoaSchema,
+        required: [true, 'O campo beneficiario é obrigatório'],
+    },
+
+    idRequisicao: { 
+        type: String,
+        required: false,
+        unique: true,
+        sparse: true,
+        validate: {
+            validator: (field) => UUID_PATTERN.test(field),
+            message: (props) => `O campo ${props.path} não está seguindo o padrão ${UUID_PATTERN}`
+        }
+    },
+    descricao: {
+        type: String,
+        required: false 
+    },
+    dataHoraEfetivacao: {
+        type: Date,
+        required: false
+    },
+    exigeEndereco: {
+        type: Boolean,
+        required: false
+    },
+    pagamentoParcial: {
+        type: Boolean,
+        required: false
+    },
+    exigeEmail: {
+        type: Boolean,
+        required: false
+    },
+    confirmacaoOperacao: {
+        type: ConfirmacaoOperacaoSchema,
+        required: false 
+    },
+    autorizacaoOperacao: {
+        type: AutorizacaoOperacaoSchema,
+        required: false 
+    },
+    itens: [ ItemSchema ],
+    pagamentos: [ PagamentoSchema ],
 }
 
 module.exports = { OperacaoSchema, TIPO_OPERACAO, SITUACAO };
