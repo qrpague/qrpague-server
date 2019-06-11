@@ -11,11 +11,11 @@ const MONGO = {
 	DUPLICATE_KEY_CODE: 11000
 }
 
-const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
+const criarOperacao = async ({ contentType, operacaoFinanceira }) => {
 	try {
 		let resultado = await Operacao.incluirOperacao(operacaoFinanceira);
 		let resposta;
-		if (tipo === APPLICATION_IMAGE) {
+		if (contentType === APPLICATION_IMAGE) {
 			resposta = await QRCode.toDataURL(JSON.stringify(operacaoFinanceira));
 		} else {
 			resposta = process.env.QRPAGUE_URL + '/' + resultado.uuid
@@ -35,15 +35,8 @@ const criarOperacao = async ({ tipo, operacaoFinanceira }) => {
 }
 
 const consultarOperacoes = async ({ cnpjInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
-	let options = { 
-		cnpjInstituicao,
-		cpfCnpjBeneficiario,
-		paginaInicial,
-		tamanhoPagina,
-		periodoInicio,
-		periodoFim
-	}
-	let resposta = await Operacao.recuperarOperacoes(options)
+	let options = { cnpjInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }
+	let resposta = await Operacao.recuperarOperacoes(options);
 	return resposta;
 }
 
@@ -52,12 +45,10 @@ const consultarOperacao = async function ({ uuid, cnpjInstituicao, userAgent, is
 	let operacao = await Operacao.consultarOperacao(uuid);
 
 	if (!operacao) {
-		// TODO: definir mensagem de exceção
-		Err.throwError(401, 1000, 1);
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 1, { uuid });
 	}
-
 	
-	if ( !isWhatsApp ) {
+	if ( isWhatsApp ) {
 		let urlOperacao = process.env.SERVER_URL +  req.originalUrl
 		let content = fs.readFileSync( path.join(__dirname, '../templates/shareLink.html'), "utf8")
 

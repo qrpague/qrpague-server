@@ -16,7 +16,7 @@ info:
 servers:
   - url: 'https://<<api.dominio.com.br>>/qrpague'
 paths:
-  /operacao:
+  /operacoes:
     x-swagger-router-controller: operacoes-controller
     post:
       tags:
@@ -65,8 +65,6 @@ paths:
           description: Erro interno no servidor
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  /operacoes:
-    x-swagger-router-controller: operacoes-controller
     get:
       tags:
         - Operações Financeiras Digitais

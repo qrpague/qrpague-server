@@ -8,12 +8,12 @@ const criarOperacao = async (req, res, next) => {
     try {
         const tipo = req.headers.accept;
 	    const operacaoFinanceira = req.body;
-        const result = await service.criarOperacao({ tipo, operacaoFinanceira });
+        const result = await service.criarOperacao({ contentType: tipo, operacaoFinanceira });
         const contentType = (tipo === Response.CONTENT_TYPE.APPLICATION_IMAGE) ? tipo : Response.CONTENT_TYPE.TEXT_PLAIN;
         Response.success(res, result, { contentType });
     } catch (err) {
         Logger.warn(err);
-        Response.fromResponseError(res, err);
+        Response.fromError(res, err);
     }
 }
 
@@ -35,7 +35,7 @@ const consultarOperacao = async (req, res, next) => {
         
         const result = await service.consultarOperacao(options);
 
-        if(!isWhatsApp) {
+        if(isWhatsApp) {
             return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_XHTML });
         } else {
             return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });

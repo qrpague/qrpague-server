@@ -4,7 +4,7 @@ const createMiddleware = require('swagger-express-middleware');
 const setupConfiguration = require('./config/config');
 const expressApp = express();
 const swaggerFile = path.join(__dirname, '/api/swagger/swagger.yaml');
-const Routes = require('./api/resources');
+const Routes = require('./api/routes');
 const { Logger } = require('./api/util');
 
 const start = (app) => {

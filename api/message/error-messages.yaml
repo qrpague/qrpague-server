@@ -1,14 +1,21 @@
 types:
-  - operacao:
-      type_code: 1000
-      title: Erro de inserção de operação
-      instances:
-        - erro_ao_salvar:
-            instance_code: 1
-            detail: A operação ${uuid} não pode ser salva
-        - operacao_existente:
-            instance_code: 2
-            detail: A operação ${uuid} já existe e não pode ser incluída novamente
-        - id_requisicao_existente:
-            instance_code: 3
-            detail: A operação com a requisição ${idRequisicao} já foi incluída
+    - insercao_operacao:
+        type_code: 1000
+        title: Erro de inserção de operação
+        instances:
+            - erro_ao_salvar:
+                instance_code: 1
+                detail: A operação ${uuid} não pode ser salva
+            - operacao_existente:
+                instance_code: 2
+                detail: A operação ${uuid} já existe e não pode ser incluída novamente
+            - id_requisicao_existente:
+                instance_code: 3
+                detail: A operação com a requisição ${idRequisicao} já foi incluída
+    - consulta_operacao:
+        type_code: 2000
+        title: Erro de consulta de operação
+        instances:
+            - erro_ao_salvar:
+                instance_code: 1
+                detail: A operação ${uuid} não existe

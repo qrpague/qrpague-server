@@ -34,13 +34,13 @@ module.exports = (db, mongoose, promise) => {
         obj.uuid = uuidv4();
         obj.dataHoraVencimento = new Date(obj.dataHoraVencimento);
         
-        Logger.debug('Inclusão de Operação Financeira', '=>', JSON.stringify(obj));
+        Logger.debug('Inclusão de Operação Financeira', '=>', obj);
         let operacao = new OperacaoModel(obj);
 		return await operacao.save();
     },
 
 	OperacaoModel.recuperarOperacoes = async (options) => {
-        Logger.debug('Consulta de Operações Financeiras', '=>', JSON.stringify(options));
+        Logger.debug('Consulta de Operações Financeiras', '=>', options);
         return await OperacaoModel.find({ limit : 20, sort : { dataHoraEfetivacao : -1 }});
 	},
 
