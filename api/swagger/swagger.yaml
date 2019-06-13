@@ -601,8 +601,7 @@ components:
         digital.
       required: true
       schema:
-        type: number
-        format: integer
+        type: string
   schemas:
     CodigoBarras:
       type: object

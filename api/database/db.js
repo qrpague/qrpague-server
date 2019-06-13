@@ -2,16 +2,22 @@ const { Logger } = require('../util');
 const mongoose = require('mongoose');
 const operacao = require('./model/operacao');
 
-let dbURI = process.env.MONGO_CONNECTION || 'mongodb://localhost:27017/QRPAGUE';
+const MONGO_CONNECTION = process.env.MONGO_CONNECTION || 'mongodb://localhost:27017/QRPAGUE';
+const MONGOOSE_DEBUG = process.env.MONGOOSE_DEBUG;
+
 let db;
 
 const connect = () => {
 
-    db = mongoose.createConnection(dbURI);
+    db = mongoose.createConnection(MONGO_CONNECTION);
     db.Promise = global.Promise;
 
+    if(MONGOOSE_DEBUG == 'true') {
+        mongoose.set('debug', true);
+    }
+
     db.on('connected', function () {
-        Logger.info('[MONGO] - Mongoose connected on', dbURI);
+        Logger.info('[MONGO] - Mongoose connected on', MONGO_CONNECTION);
     });
     db.on('error', function (err) {
         Logger.error('[MONGO] - An error ocurred on mongoose connection:', err);

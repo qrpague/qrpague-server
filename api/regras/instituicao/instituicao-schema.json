@@ -1,0 +1,26 @@
+{
+    "title": "Instituicao Validator",
+    "type": "object",
+    "properties": {
+        "instituicoes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "minProperties": 1,
+                "patternProperties": {
+                    "^[A-Za-z_][A-Za-z0-9_]*$": { 
+                        "type": "object",
+                        "properties": {
+                            "nome": { "type": "string" },
+                            "cnpj": { "type": "string" }
+                        },
+                        "required": ["nome", "cnpj"],
+                        "additionalProperties": false
+                    }
+                }
+            }
+        }
+    },
+    "required": ["instituicoes"],
+    "additionalProperties": false
+}

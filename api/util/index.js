@@ -1,7 +1,8 @@
 const Logger = require('./logger');;
 const Err = require('./error');
 const Http = require('./http');
-const YAMLInfo = require('./yaml/yaml-info');
+const MessageInfo = require('./message/message-info');
+const YAMLReader = require('./yaml/yaml-reader');
 
 /**
  * @type {Object} - Representação do arquivo YAML
@@ -14,10 +15,10 @@ let Doc;
  */
 const setup = (options) => {
 
-    if(options && options.yaml && options.yaml.filePath) {
-        let yamlOptions = { ...options.yaml }
-        const yamlFilePath = yamlOptions.filePath;
-        Doc = new YAMLInfo(yamlFilePath);
+    if(options && options.messages && options.messages.filePath) {
+        let messageOptions = { ...options.messages }
+        const messageFilePath = messageOptions.filePath;
+        Doc = new MessageInfo(messageFilePath);
     }
 
     if(options && options.logger) {
@@ -37,7 +38,7 @@ const setup = (options) => {
  */
 const throwError = (statusCode, typeCode, instanceCode, params) => {
     if(!Doc) {
-        throwInternalError(new Error('Você precisa inicializar a configuração do arquivo YAML nas opções de inicialização.'));
+        throwInternalError(new Error('Você precisa inicializar a configuração do arquivo YAML de mensagens nas opções de inicialização.'));
     }
     Err.throwError(Doc, statusCode, typeCode, instanceCode, params);
 }
@@ -81,6 +82,9 @@ setup();
 
 module.exports = {
     Config: { setup },
+    YAMLReader: {
+        readYAML: YAMLReader.readYAML
+    },
     Logger: { 
         log: Logger.log,
         trace: Logger.trace,
@@ -115,5 +119,5 @@ module.exports = {
         throwError,
         throwInternalError
     },
-    ResponseError: Err.ResponseError,
+    ResponseError: Err.ResponseError
 }

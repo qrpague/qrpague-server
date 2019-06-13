@@ -19,8 +19,8 @@ const criarOperacao = async (req, res, next) => {
 
 const consultarOperacoes = async (req, res, next) => {
     try {
-	    const options = paramUtil.getParams(req);
-        const result = await service.consultarOperacoes(options);
+	    const params = paramUtil.getParams(req);
+        const result = await service.consultarOperacoes(params);
         return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
     } catch (err) {
         return Response.fromError(res, err);
@@ -30,8 +30,9 @@ const consultarOperacoes = async (req, res, next) => {
 const consultarOperacao = async (req, res, next) => {
     try {
         const isWhatsApp = req.headers['user-agent'] === WHATSAPP ? true : false;
+        const originalUrl = req.originalUrl;
         const params = paramUtil.getParams(req);
-        const options = { ...params, isWhatsApp }
+        const options = { ...params, isWhatsApp, originalUrl }
         
         const result = await service.consultarOperacao(options);
 

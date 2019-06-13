@@ -1,8 +1,9 @@
+const { Logger } = require('../util');
+
 const getParams = (req) => {
-    return Object.entries(req.swagger.params).reduce((params, [ key, value ]) => { 
-        params[key] = value.value
-        return params;
-    }, {});
+    const params = { ...req.query, ...req.params, ...req.headers }
+    Logger.debug('Request Parameters >>> ', params);
+    return params;
 }
 
 module.exports = {

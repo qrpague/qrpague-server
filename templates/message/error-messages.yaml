@@ -19,3 +19,6 @@ types:
             - erro_ao_salvar:
                 instance_code: 1
                 detail: A operação ${uuid} não existe
+            - cnpj_nao_autorizado:
+                instance_code: 2
+                detail: A instituição de cnpj ${cnpj} não está autorizada

@@ -1,12 +1,45 @@
-const path = require('path');
 const { Config, Logger } = require('../api/util');
+const Regras = require('../api/regras');
+const Middlewares = require('./middleware/middlewares');
 
-const MESSAGE_FILE = path.join(__dirname, '../api/message/error-messages.yaml');
+const CONFIG_OPTIONS = {
+    ERROR_MESSAGE_FILE: process.env.ERROR_MESSAGE_FILE,
+    NODE_PROJECT: process.env.NODE_PROJECT,
+    LOG_LEVEL: process.env.LOG_LEVEL
+}
+
+const RULE_OPTIONS = {
+    INSTITUICOES_FILE: process.env.INSTITUICOES_FILE
+}
+
+const setupMiddlewares = (app) => {
+    Middlewares.setup(app);
+}
+
+const setupConfigOptions = () => {
+    let configOptions = {}
+    if(CONFIG_OPTIONS.ERROR_MESSAGE_FILE) {
+        configOptions = { ...configOptions, messages: { filePath: CONFIG_OPTIONS.ERROR_MESSAGE_FILE } }
+    }
+    if(CONFIG_OPTIONS.NODE_PROJECT || CONFIG_OPTIONS.LOG_LEVEL) {
+        configOptions = { ...configOptions, logger: { name: CONFIG_OPTIONS.NODE_PROJECT, level: CONFIG_OPTIONS.LOG_LEVEL } }
+    }
+    Config.setup(configOptions);
+}
+
+const setupRuleOptions = () => {
+    let ruleOptions = {}
+    if(RULE_OPTIONS.INSTITUICOES_FILE) {
+        ruleOptions = { ...ruleOptions, instituicoes: { filePath: RULE_OPTIONS. INSTITUICOES_FILE } }
+    }
+    Regras.setup(ruleOptions);
+}
 
 module.exports = (app) => {
-    Config.setup({
-        yaml: { filePath: MESSAGE_FILE },
-        logger: { name: process.env.NODE_PROJECT, level: process.env.LOG_LEVEL }
-    })
+
+    setupMiddlewares(app);
+    setupConfigOptions();
+    setupRuleOptions();
+
     require('../api/database/db');
 }
