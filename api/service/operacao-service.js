@@ -37,10 +37,11 @@ const criarOperacao = async ({ contentType, operacaoFinanceira }) => {
 	}
 }
 
-const consultarOperacoes = async ({ cnpjInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
+const consultarOperacoes = async ({ idRequisicao, cnpjInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
 	const options = {
 		cnpjInstituicao,
 		cpfCnpjBeneficiario,
+		idRequisicao,
 		paginaInicial,
 		tamanhoPagina,
 		periodoInicio,
@@ -50,11 +51,11 @@ const consultarOperacoes = async ({ cnpjInstituicao, cpfCnpjBeneficiario, pagina
 	return resposta;
 }
 
-const consultarOperacao = async ({  uuid, cnpjinstituicao, originalUrl, userAgent, isWhatsApp }) => {
+const consultarOperacao = async ({  uuid, cnpjInstituicao, originalUrl, userAgent, isWhatsApp }) => {
 
-	const instituicaoSolicitante = Instituicao.buscar(cnpjinstituicao);
+	const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
 	if(!instituicaoSolicitante) {
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjinstituicao });
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
 	}
 
 	let operacao = await Operacao.consultarOperacao(uuid);

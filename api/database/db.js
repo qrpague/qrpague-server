@@ -13,7 +13,9 @@ const connect = () => {
     db.Promise = global.Promise;
 
     if(MONGOOSE_DEBUG == 'true') {
-        mongoose.set('debug', true);
+        mongoose.set("debug", (collectionName, method, query, doc) => {
+            Logger.debug(`${collectionName}.${method}`, JSON.stringify(query), doc);
+        });
     }
 
     db.on('connected', function () {

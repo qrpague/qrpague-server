@@ -92,6 +92,12 @@ paths:
             minLength: 11
             maxLength: 14
         - in: query
+          name: idRequisicao
+          description: >-
+              Identificador opcional para controle de idempotência. RFC 4122
+          schema:
+            type: string
+        - in: query
           name: paginaInicial
           description: >-
             Especificação de uma página inicial para consulta de operações
