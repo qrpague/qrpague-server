@@ -38,7 +38,7 @@ paths:
                 - $ref: '#/components/schemas/InclusaoOperacaoFinanceira'
                 - $ref: '#/components/schemas/CodigoBarras'
       responses:
-        '200':
+        '201':
           description: Imagem do QRCode gerado a partir do mecanismo do QRPAGUE.
           content:
             image:
@@ -339,7 +339,7 @@ paths:
             schema:
               $ref: '#/components/schemas/InclusaoPagamento'
       responses:
-        '200':
+        '201':
           description: Requisição realizada com sucesso
           content:
             application/json:

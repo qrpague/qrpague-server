@@ -9,7 +9,8 @@ const criarPagamento = async (req, res, next) => {
         const params = paramUtil.getParams(req);
 	    const pagamento = req.body;
         const result = await service.criarPagamento({ uuidOperacao: params.uuid,  pagamento });
-        Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
+        const contentType = Response.CONTENT_TYPE.APPLICATION_JSON;
+        Response.created(res, result, { contentType });
     } catch (err) {
         Logger.warn(err);
         Response.fromError(res, err);
