@@ -56,7 +56,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/MensagemRetorno'
         '422':
-          description: Operação já registrada
+          description: >-
+            Exceção de negócio quando uma operação financeira digital
+            já foi emitida.
           content:
             application/json:
               schema:
@@ -351,8 +353,16 @@ paths:
                 $ref: '#/components/schemas/MensagemRetorno'
         '406':
           description: >-
-            Exceção de negócio quando realização de um pagamento de uma operação
-            não for feito corretamente.
+            Exceção de negócio quando a realização de um pagamento de uma operação
+            não for feita corretamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
+        '422':
+          description: >-
+            Exceção de negócio quando a realização de um pagamento 
+            já foi efetuada.
           content:
             application/json:
               schema:
