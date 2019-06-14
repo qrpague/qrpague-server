@@ -1280,33 +1280,33 @@ components:
     MensagemRetorno:
       type: object
       properties:
-        sucessoOperacao:
-          type: boolean
-          enum:
-            - true
-            - false
-          description: >-
-            Operação financeira realizada com sucesso (true). Operação
-            financeira com falha (false).
-          example: true
-        codigoErro:
-          type: number
-          format: integer
-          description: Código de erro de negócio quando houver.
-          example: 1
-        mensagemErro:
-          type: string
-          description: Mensagem de suceosso ou erro da operação.
-          example: QRCode inválido.
         dataReferencia:
           description: 'Data hora de referência da transação no formato RFC 3339, seção 5.6.'
           type: string
           format: date-time
           example: '2017-07-21T17:32:28Z'
-        operacaoFinanceira:
-          $ref: '#/components/schemas/ConsultaOperacaoFinanceira'
-          description: Operação financeira efetuada quando for pertinente.
+        codigoErro:
+          type: number
+          format: integer
+          description: Faixa de código de erro que representa a falha de uma ação.
+          example: 1000
+        mensagemErro:
+          type: string
+          description: Mensagem de erro.
+          example: Erro na inserção de uma operação.
+        codigoDetalheErro:
+          type: number
+          format: integer
+          description: Código de detalhamento do erro.
+          example: 1
+        detalheErro:
+          type: string
+          description: Mensagem de detalhamento do erro.
+          example: Você não possui permissão para inserir uma operação.
+        parametros:
+          type: object
+          description: Objeto que contêm chave/valor de parâmetros que possam ser retornados.
       required:
-        - sucessoOperacao
-        - mensagem
+        - codigoErro
+        - mensagemErro
         - dataReferencia

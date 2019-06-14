@@ -11,19 +11,19 @@ const MessageInfo = class MessageInfo {
         this.doc = formatDoc(YAMLReader.readYAML(yamlFilePath, schemaValidatorFilePath));
     }
 
-    find(typeCode, instanceCode, params) {
+    find(codigoErro, codigoDetalheErro, parametros) {
         return retrieve({
             doc: this.doc,
-            typeCode,
-            instanceCode,
-            params
+            codigoErro,
+            codigoDetalheErro,
+            parametros
         });
     }
 }
 
-const retrieve = ({ doc, typeCode, instanceCode, params }) => {
+const retrieve = ({ doc, codigoErro, codigoDetalheErro, parametros }) => {
 
-    let type = doc[TYPE_CONST + typeCode];
+    let type = doc[TYPE_CONST + codigoErro];
     let instance;
 
     if(!type) {
@@ -31,21 +31,19 @@ const retrieve = ({ doc, typeCode, instanceCode, params }) => {
     }
     
     let result = {
-        typeCode: type.type_code,
-        type: type.type,
-        title: type.title
+        codigoErro: type.codigoErro,
+        mensagemErro: type.mensagemErro
     }
 
-    if(instanceCode) {
-        instance = type[INSTANCE_CONST + instanceCode];
+    if(codigoDetalheErro) {
+        instance = type[INSTANCE_CONST + codigoDetalheErro];
         if(instance){
-            const response = buildDetail(instance.detail, params);
+            const response = buildDetail(instance.detalheErro, parametros);
             result = {
                 ...result,
-                instanceCode: instance.instance_code,
-                instance: instance.instance,
-                detail: response.detail,
-                params: response.params
+                codigoDetalheErro: instance.codigoDetalheErro,
+                detalheErro: response.detalheErro,
+                parametros: response.parametros
             }
         }
 
@@ -54,38 +52,36 @@ const retrieve = ({ doc, typeCode, instanceCode, params }) => {
     return result;
 }
 
-const buildDetail = (detail, params) => {
+const buildDetail = (detalheErro, parametros) => {
     let resultParams = {}
-    let newDetail = detail;
-    if(params) {
-        Object.entries(params).forEach(([key, value]) => {
-            if(detail.includes(key)){
+    let novoDetalheErro = detalheErro;
+    if(parametros) {
+        Object.entries(parametros).forEach(([key, value]) => {
+            if(detalheErro.includes(key)){
                 const replaceStr = '${' + key + '}'
-                newDetail = newDetail.replace(replaceStr, value);
+                novoDetalheErro = novoDetalheErro.replace(replaceStr, value);
                 resultParams[key] = value;
             }
         });
     }
-    return { detail: newDetail, params: resultParams };
+    return { detalheErro: novoDetalheErro, parametros: resultParams };
 }
 
 const formatDoc = (doc) => {
     let newDoc = {};
-    for (let i=0; i<doc.types.length; i++) {
-        let typeObject = doc.types[i];
+    for (let i=0; i<doc.erros.length; i++) {
+        let typeObject = doc.erros[i];
         let typeValue = Object.values(typeObject)[0];
-        newDoc[TYPE_CONST + typeValue.type_code] = {
-            type_code: typeValue.type_code,
-            type: typeValue.type,
-            title: typeValue.title
+        newDoc[TYPE_CONST + typeValue.codigoErro] = {
+            codigoErro: typeValue.codigoErro,
+            mensagemErro: typeValue.mensagemErro
         }
-        for(let j=0; j<typeValue.instances.length; j++) {
-            let instanceObject = typeValue.instances[j];
+        for(let j=0; j<typeValue.detalhes.length; j++) {
+            let instanceObject = typeValue.detalhes[j];
             let instanceValue = Object.values(instanceObject)[0];
-            newDoc[TYPE_CONST + typeValue.type_code][INSTANCE_CONST + instanceValue.instance_code] = {
-                instance_code: instanceValue.instance_code,
-                instance: instanceValue.instance,
-                detail: instanceValue.detail
+            newDoc[TYPE_CONST + typeValue.codigoErro][INSTANCE_CONST + instanceValue.codigoDetalheErro] = {
+                codigoDetalheErro: instanceValue.codigoDetalheErro,
+                detalheErro: instanceValue.detalheErro
             }
         }
     }

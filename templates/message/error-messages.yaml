@@ -1,53 +1,53 @@
-types:
+erros:
     - insercao_operacao:
-        type_code: 1000
-        title: Erro de inserção de operação
-        instances:
+        codigoErro: 1000
+        mensagemErro: Erro de inserção de operação
+        detalhes:
             - erro_ao_salvar:
-                instance_code: 1
-                detail: A operação ${uuid} não pode ser salva
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuid} não pode ser salva
             - operacao_existente:
-                instance_code: 2
-                detail: A operação ${uuid} já existe e não pode ser incluída novamente
+                codigoDetalheErro: 2
+                detalheErro: A operação ${uuid} já existe e não pode ser incluída novamente
             - id_requisicao_existente:
-                instance_code: 3
-                detail: A operação com a requisição ${idRequisicao} já foi incluída
+                codigoDetalheErro: 3
+                detalheErro: A operação com a requisição ${idRequisicao} já foi incluída
     - consulta_operacao:
-        type_code: 2000
-        title: Erro de consulta de operação
-        instances:
+        codigoErro: 2000
+        mensagemErro: Erro de consulta de operação
+        detalhes:
             - erro_ao_salvar:
-                instance_code: 1
-                detail: A operação ${uuid} não existe
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuid} não existe
             - cnpj_nao_autorizado:
-                instance_code: 2
-                detail: A instituição de cnpj ${cnpj} não está autorizada
+                codigoDetalheErro: 2
+                detalheErro: A instituição de cnpj ${cnpj} não está autorizada
     - insercao_pagamento:
-        type_code: 3000
-        title: Erro de inserção de pagamento
-        instances:
+        codigoErro: 3000
+        mensagemErro: Erro de inserção de pagamento
+        detalhes:
             - operacao_nao_encontrada:
-                instance_code: 1
-                detail: A operação ${uuidOperacao} não existe
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuidOperacao} não existe
             - chave_publica_nao_autorizada:
-                instance_code: 2
-                detail: A chave publica ${chavePublica} não possui autorização
+                codigoDetalheErro: 2
+                detalheErro: A chave publica ${chavePublica} não possui autorização
             - erro_ao_salvar:
-                instance_code: 3
-                detail: O pagamento ${uuid} não pode ser salvo
+                codigoDetalheErro: 3
+                detalheErro: O pagamento ${uuid} não pode ser salvo
             - pagamento_existente:
-                instance_code: 4
-                detail: O pagamento ${uuid} já existe e não pode ser incluído novamente
+                codigoDetalheErro: 4
+                detalheErro: O pagamento ${uuid} já existe e não pode ser incluído novamente
             - id_requisicao_existente:
-                instance_code: 5
-                detail: O pagamento com a requisição ${idRequisicao} já foi incluído
+                codigoDetalheErro: 5
+                detalheErro: O pagamento com a requisição ${idRequisicao} já foi incluído
     - consulta_pagamento:
-        type_code: 4000
-        title: Erro de consulta de pagamento
-        instances:
+        codigoErro: 4000
+        mensagemErro: Erro de consulta de pagamento
+        detalhes:
             - erro_ao_salvar:
-                instance_code: 1
-                detail: O pagamento ${uuid} não existe
+                codigoDetalheErro: 1
+                detalheErro: O pagamento ${uuid} não existe
             - cnpj_nao_autorizado:
-                instance_code: 2
-                detail: A instituição de cnpj ${cnpj} não está autorizada
+                codigoDetalheErro: 2
+                detalheErro: A instituição de cnpj ${cnpj} não está autorizada

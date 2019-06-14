@@ -85,7 +85,7 @@ const makeCallback = (deferred, error, response, body) => {
         deferred.reject(returnError);
     } else if (response && response.statusCode >= 400) {
         let jsonErr = (!isObject(body)) ? body : parseJson(body);
-        if (jsonErr.typeCode && jsonErr.type && jsonErr.title && jsonErr.statusCode) {
+        if (jsonErr.codigoErro && jsonErr.mensagemErro && jsonErr.statusCode) {
             let returnError = new Err.ResponseError(jsonErr);
             deferred.reject(returnError);
         } else {

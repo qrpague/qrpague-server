@@ -18,12 +18,12 @@ services:
     ports:
         - "9999:8080"
     volumes:
-        - ~/dev/workspace/qrpague-server/templates:/home/qrpague/templates
+        - ./templates:/home/qrpague/templates
     environment:
         AMBIENTE: 'development'
         PORT: 8080
         NODE_PROJECT: 'QR-Pague Service'
-        LOG_LEVEL: 'error'
+        LOG_LEVEL: 'debug'
         MONGO_CONNECTION : 'mongodb://mongo:27017/QRPAGUE'
         MONGOOSE_DEBUG: 'true'
         SERVER_URL : 'http://127.0.0.1:8080'

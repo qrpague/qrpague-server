@@ -79,7 +79,9 @@ function makeResponse(response, status, result, options){
  * @param {ResponseError} error - ResponseError
  */
 function sendError(res, error){
-	res.status(error.statusCode).json(error);
+  error.dataReferencia = new Date();
+  const { statusCode, ...responseError } = error;
+	res.status(statusCode).json(responseError);
 }
 
 module.exports = {

@@ -31,16 +31,16 @@ const setup = (options) => {
 
 /**
  * Lança um @throws {ResponseError}
- * @param {number} statusCode - Http status code
- * @param {number} typeCode - type_code da mensagem
- * @param {number} instanceCode - instance_code da mensagem
- * @param {Object} params - Parâmetros da mensagem
+ * @param {number} statusCode - Código de Status HTTP
+ * @param {number} codigoErro - Código de mensagem do erro
+ * @param {number} codigoDetalheErro - Código de detalhamento do erro
+ * @param {Object} parametros - Parametros da mensagem de erro (Key/Value)
  */
-const throwError = (statusCode, typeCode, instanceCode, params) => {
+const throwError = (statusCode, codigoErro, codigoDetalheErro, parametros) => {
     if(!Doc) {
         throwInternalError(new Error('Você precisa inicializar a configuração do arquivo YAML de mensagens nas opções de inicialização.'));
     }
-    Err.throwError(Doc, statusCode, typeCode, instanceCode, params);
+    Err.throwError(Doc, statusCode, codigoErro, codigoDetalheErro, parametros);
 }
 
 /**
@@ -52,27 +52,25 @@ const throwInternalError = (error) => {
 }
 
 /**
- * Send an error response from YAML File.
+ * Envia uma resposta de erro de acordo com a definição do arquivo de mensagens de erro.
  * @param {Object} res - Express Http Response
- * @param {number} statusCode - Http status code
- * @param {number} typeCode - Message type code
- * @param {number} instanceCode - Message instance code
- * @param {Object} params - Message parameters
- * @returns {Object} - Http Response Error
+ * @param {number} statusCode - Código de Status HTTP
+ * @param {number} codigoErro - Código de mensagem do erro
+ * @param {number} codigoDetalheErro - Código de detalhamento do erro
+ * @param {Object} parametros - Parametros da mensagem de erro (Key/Value)
  */
-const error = (res, statusCode, typeCode, instanceCode, params) => {
+const error = (res, statusCode, codigoErro, codigoDetalheErro, parametros) => {
     try {
-        throwError(statusCode, typeCode, instanceCode, params)
+        throwError(statusCode, codigoErro, codigoDetalheErro, parametros)
     } catch(error) {
         Http.Response.error(res, error);
     }
 }
 
 /**
- * Send an error response from any error.
+ * Envia uma resposta de erro a partir de qualquer tipo de erro.
  * @param {Object} res - Express Http Response
  * @param {Error} error - Error type
- * @returns {Object} - Http Response Error
  */
 const fromError = (res, error) => {
     Http.Response.error(res, error);
