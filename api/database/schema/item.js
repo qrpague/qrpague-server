@@ -1,4 +1,4 @@
-const ItemSchema = {
+const Item = {
     descricaoCompleta: { type: String, required: true },
     quantidade: { type: Number, required: true },
     valorUnitario: {type: Number, required: true },
@@ -10,4 +10,4 @@ const ItemSchema = {
     urlThumbImg: { type:String, required: false }
 }
 
-module.exports = { ItemSchema };
+module.exports = { Item };

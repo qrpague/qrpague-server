@@ -1,6 +1,6 @@
 const uuidv4 = require('uuid/v4');
 const { Err, Logger } = require('../../util');
-const { OperacaoSchema, SITUACAO, TIPO_OPERACAO } = require('../schema/operacao-financeira');
+const { Operacao, SITUACAO, TIPO_OPERACAO } = require('../schema/operacao-financeira');
 
 const DEFAULT_MONGOOSE_LIMIT = 30;
 const DEFAULT_MONGOOSE_SKIP = 0;
@@ -17,7 +17,7 @@ const validarDatas = ({ dataHoraSolicitacao, dataHoraVencimento }) => {
 module.exports = (db, mongoose, promise) => {
     
     let Schema = mongoose.Schema;
-    let operacaoSchema = new Schema(OperacaoSchema, { collection: 'Operacao' });
+    let operacaoSchema = new Schema(Operacao, { collection: 'Operacao' });
 
     operacaoSchema.pre('save', function (next) {
         try {
@@ -37,6 +37,7 @@ module.exports = (db, mongoose, promise) => {
         Logger.debug('Inclusão de Operação Financeira');
         
         op.uuid = uuidv4();
+        op.dataHoraSolicitacao = new Date();
         op.dataHoraVencimento = new Date(op.dataHoraVencimento);
         let operacao = new OperacaoModel(op);
 		return await operacao.save();

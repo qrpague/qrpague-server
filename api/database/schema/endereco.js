@@ -1,6 +1,6 @@
 const { UF, ARRAY_UF } = require('../enum/uf');
 
-const EnderecoSchema = {
+const Endereco = {
     logradouro: { type: String, required: false },
     complemento:  { type: String, required: false },
     uf: { type: String, required: false, enum: ARRAY_UF },
@@ -10,4 +10,4 @@ const EnderecoSchema = {
     cep: {type: String, required: false }
 }
 
-module.exports = { EnderecoSchema, UF };
+module.exports = { Endereco, UF };

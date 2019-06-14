@@ -32,7 +32,7 @@ const AutorizacaoOperacaoSchema = new Schema(AutorizacaoOperacao, { _id: false }
 
 const UUID_PATTERN = /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$/;
 
-const OperacaoSchema = {
+const Operacao = {
     uuid: { 
         type: String,
         required: [true, 'O campo uuid é obrigatório'],
@@ -57,7 +57,6 @@ const OperacaoSchema = {
     dataHoraSolicitacao: { 
         type: Date,
         required: [true, 'O campo dataHoraSolicitacao é obrigatório'],
-        default: Date.now() 
     },
     dataHoraVencimento: {
         type: Date,
@@ -125,4 +124,4 @@ const OperacaoSchema = {
     pagamentos: [ PagamentoSchema ],
 }
 
-module.exports = { OperacaoSchema, TIPO_OPERACAO, SITUACAO };
+module.exports = { Operacao, TIPO_OPERACAO, SITUACAO };

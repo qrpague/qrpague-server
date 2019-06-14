@@ -1,6 +1,6 @@
 const { ARRAY_UF } = require('../enum/uf');
 
-const TerminalSchema = {
+const Terminal = {
     idTerminal: { type: Number, required: true },
     descricao:  { type: String, required: true },
     uf: { type: String, required: true, enum: ARRAY_UF },
@@ -9,4 +9,4 @@ const TerminalSchema = {
     longitudeTerminal: {type: Number, required: true }
 }
 
-module.exports = { TerminalSchema };
+module.exports = { Terminal };

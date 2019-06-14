@@ -3,10 +3,10 @@ const { Terminal } = require('./terminal')
 
 const TerminalSchema = new Schema(Terminal, { _id: false })
 
-const AutorizacaoOperacaoSchema = {
+const AutorizacaoOperacao = {
     operacaoAutorizada: { type: Boolean, required: true, unique: true },
-    dataHoraAutorizacao:  { type: Date, required: true, default: Date.now() },
+    dataHoraAutorizacao:  { type: Date, required: true },
     dispositivoConfirmacao: {type: TerminalSchema, required: true }
 }
 
-module.exports = { AutorizacaoOperacaoSchema };
+module.exports = { AutorizacaoOperacao };

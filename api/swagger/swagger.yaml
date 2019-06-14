@@ -305,7 +305,7 @@ paths:
           description: Erro interno no servidor
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  '/operacoes/{uuid}/pagamento':
+  '/operacoes/{uuid}/pagamentos':
     post:
       tags:
         - Pagamentos
@@ -330,13 +330,12 @@ paths:
             type: string
             pattern: >-
               ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
-        - $ref: '#/components/parameters/cnpjInstituicao'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pagamento'
+              $ref: '#/components/schemas/InclusaoPagamento'
       responses:
         '200':
           description: Requisição realizada com sucesso
@@ -477,7 +476,7 @@ paths:
           content:
             application/qrpague:
               schema:
-                $ref: '#/components/schemas/Pagamento'
+                $ref: '#/components/schemas/ConsultaPagamento'
         '400':
           description: Exceção de negócio
           content:
@@ -656,7 +655,7 @@ components:
           items:
             oneOf:
               - $ref: '#/components/schemas/ConsultaOperacaoFinanceira'
-              - $ref: '#/components/schemas/Pagamento'
+              - $ref: '#/components/schemas/ConsultaPagamento'
       required:
         - quantidadeRegistros
         - resultados
@@ -800,7 +799,7 @@ components:
         pagamentos:
           type: array
           items:
-            $ref: '#/components/schemas/Pagamento'
+            $ref: '#/components/schemas/ConsultaPagamento'
           description: >-
             Pagamentos realizados atrelados a uma operação financeira digital
             para um QRCode gerado.
@@ -903,13 +902,6 @@ components:
           description: >-
             Itens participantes de uma da operação financeira digital gerado
             para um QRCode.
-        pagamentos:
-          type: array
-          items:
-            $ref: '#/components/schemas/Pagamento'
-          description: >-
-            Pagamentos realizados atrelados a uma operação financeira digital
-            para um QRCode gerado.
         confirmacaoOperacao:
           $ref: '#/components/schemas/ConfirmacaoOperacao'
         autorizacaoOperacao:
@@ -922,7 +914,7 @@ components:
         - tipoOperacao
         - terminal
         - beneficiario
-    Pagamento:
+    ConsultaPagamento:
       type: object
       properties:
         uuid:
@@ -977,6 +969,33 @@ components:
         - pagador
         - valor
         - situacao
+    InclusaoPagamento:
+      type: object
+      properties:
+        chavePublicaInstituicao:
+          type: string
+          description: >-
+            Chave pública em Base64 da instiuicação na qual um pagamento foi realizado para uma operação financeira digital na instituição sacadora.
+          example: "MIIBCgKCAQEA+xGZ/wcz9ugFpP07Nspo6U17l0YhFiFpxxU4pTk3Lifz9R3zsIsuERwta7+fWIfxOo208ett/jhskiVodSEt3QBGh4XBipyWopKwZ93HHaDVZAALi/2A+xTBtWdEo7XGUujKDvC2/aZKukfjpOiUI8AhLAfjmlcD/UZ1QPh0mHsglRNCmpCwmwSXA9VNmhz+PiB+Dml4WWnKW/VHo2ujTXxq7+efMU4H2fny3Se3KYOsFPFGZ1TNQSYlFuShWrHPtiLmUdPoP6CV2mML1tk+l7DIIqXrQhLUKDACeM5roMx0kLhUWB8P+0uj1CNlNN4JRZlC7xFfqiMbFRU9Z4N6YwIDAQAB"
+        cnpjInstituicao:
+          type: string
+          description: >-
+            CNPJ da instituição financeira na qual um pagamento foi realizado para uma operação financeira digital.
+          maxLength: 14
+          example: "01234567890123"
+        pagador:
+          $ref: '#/components/schemas/Pessoa'
+        valor:
+          type: integer
+          description: >-
+            Valor de um pagamento realizado para uma operação financeira
+            realizada, onde os últimos 2 dígitos são as casas decimais.
+          example: 20000
+      required:
+        - cnpjInstituicao
+        - chavePublicaInstituicao
+        - pagador
+        - valor
     Pessoa:
       type: object
       properties:

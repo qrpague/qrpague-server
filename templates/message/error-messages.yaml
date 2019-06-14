@@ -22,3 +22,13 @@ types:
             - cnpj_nao_autorizado:
                 instance_code: 2
                 detail: A instituição de cnpj ${cnpj} não está autorizada
+    - insercao_pagamento:
+        type_code: 3000
+        title: Erro de inserção de pagamento
+        instances:
+            - operacao_nao_encontrada:
+                instance_code: 1
+                detail: A operação ${uuidOperacao} não existe
+            - chave_publica_nao_autorizada:
+                instance_code: 2
+                detail: A chave publica ${chavePublica} não possui autorização

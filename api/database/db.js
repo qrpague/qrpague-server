@@ -1,6 +1,7 @@
 const { Logger } = require('../util');
 const mongoose = require('mongoose');
 const operacao = require('./model/operacao');
+const pagamento = require('./model/pagamento');
 
 const MONGO_CONNECTION = process.env.MONGO_CONNECTION || 'mongodb://localhost:27017/QRPAGUE';
 const MONGOOSE_DEBUG = process.env.MONGOOSE_DEBUG;
@@ -34,5 +35,6 @@ connect();
 module.exports = {
     mongoose: mongoose,
     promise: mongoose.Promise,
-    Operacao: operacao(db, mongoose, mongoose.Promise)
+    Operacao: operacao(db, mongoose, mongoose.Promise),
+    Pagamento: pagamento(db, mongoose, mongoose.Promise)
 }

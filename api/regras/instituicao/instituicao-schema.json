@@ -1,5 +1,5 @@
 {
-    "title": "Instituicao Validator",
+    "title": "Validador de Instituicao",
     "type": "object",
     "properties": {
         "instituicoes": {
@@ -12,9 +12,10 @@
                         "type": "object",
                         "properties": {
                             "nome": { "type": "string" },
-                            "cnpj": { "type": "string" }
+                            "cnpj": { "type": "string" },
+                            "chavePublica": { "type": "string" }
                         },
-                        "required": ["nome", "cnpj"],
+                        "required": ["nome", "cnpj", "chavePublica"],
                         "additionalProperties": false
                     }
                 }

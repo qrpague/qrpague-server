@@ -9,9 +9,9 @@ const ARRAY_TIPO_CONTA = Object.values(TIPO_CONTA);
 
 const EnderecoSchema = new Schema(Endereco, { _id: false })
 
-const PessoaSchema = {
+const Pessoa = {
     nome: { type: String, required: true },
-    cpfCnpj:  { type: String, required: true, unique: true },
+    cpfCnpj:  { type: String, required: true },
     instituicao: {type: String, required: true },
 
     agencia: {type: String, required: false },
@@ -21,4 +21,4 @@ const PessoaSchema = {
     endereco: { type: EnderecoSchema, required: false },
 }
 
-module.exports = { PessoaSchema, TIPO_CONTA };
+module.exports = { Pessoa, TIPO_CONTA };
