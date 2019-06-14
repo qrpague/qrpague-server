@@ -1,4 +1,3 @@
-const uuidv4 = require('uuid/v4');
 const { Err, Logger } = require('../../util');
 const { Pagamento, SITUACAO } = require('../schema/pagamento');
 const { Operacao } = require('../db');
@@ -16,17 +15,19 @@ module.exports = (db, mongoose, promise) => {
 
     PagamentoModel.incluirPagamento = async (pag, operacao) => {
         Logger.debug('Inclusão de Pagamento');
-        
-        pag.uuid = uuidv4();
+
         pag.dataHoraPagamento = new Date();
         pag.situacao = SITUACAO.REALIZADO;
+        pag.uuidOperacaoFinanceira = operacao.uuid;
 
         let session;
         try {
             session = await db.startSession();
             session.startTransaction();
             let pagamento = new PagamentoModel(pag);
-            await pagamento.save();
+            pagamento = await pagamento.save();
+            operacao.pagamentos.push(pagamento);
+            await operacao.save();
             await session.commitTransaction();
             return PagamentoModel.findOne({ uuid: pag.uuid })
         } catch(err) {
@@ -36,8 +37,8 @@ module.exports = (db, mongoose, promise) => {
         }
     },
 
-	PagamentoModel.recuperarOperacoes = async ({ idRequisicao, cnpjInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
-        Logger.debug('Consulta de Operações Financeiras');
+	PagamentoModel.recuperarOperacoes = async ({ idRequisicao, cnpjInstituicao, cpfCnpjPagador, uuidOperacaoFinanceira, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
+        Logger.debug('Consulta de Pagamentos');
 
         let query = {}
         if(cnpjInstituicao){
@@ -46,30 +47,30 @@ module.exports = (db, mongoose, promise) => {
         if(idRequisicao){
             query = { ...query, idRequisicao: idRequisicao }
         }
-        if(idRequisicao){
-            query = { ...query, idRequisicao: idRequisicao }
+        if(cpfCnpjPagador){
+            query = { ...query, "pagador.cpfCnpj": cpfCnpjPagador }
         }
         if(periodoInicio){
-            query = { ...query, dataHoraSolicitacao: { ...query.dataHoraSolicitacao, $gte: periodoInicio } }
+            query = { ...query, dataHoraPagamento: { ...query.dataHoraPagamento, $gte: periodoInicio } }
         }
         if(periodoFim){
-            query = { ...query, dataHoraSolicitacao: { ...query.dataHoraSolicitacao, $lte: periodoFim } }
+            query = { ...query, dataHoraPagamento: { ...query.dataHoraPagamento, $lte: periodoFim } }
         }
 
-        const limit = tamanhoPagina ? tamanhoPagina : DEFAULT_MONGOOSE_LIMIT;
-        const skip = paginaInicial ? paginaInicial * limit : DEFAULT_MONGOOSE_SKIP;
+        const limit = tamanhoPagina ? parseInt(tamanhoPagina) : DEFAULT_MONGOOSE_LIMIT;
+        const skip = paginaInicial ? parseInt(paginaInicial) * limit : DEFAULT_MONGOOSE_SKIP;
         const opt = { skip, limit }
         return await PagamentoModel.find(query, null, opt);
 	},
 
 	PagamentoModel.consultarPagamento = async ( uuid ) => {
-        Logger.debug('Consulta da Operação de uuid');
+        Logger.debug('Consulta de Pagamento');
 
         return await PagamentoModel.findOne({ uuid });
 	},
 
 	PagamentoModel.confirmarPagamento = async (uuid, confirmacaoPagamento) => {
-        Logger.debug('Confirmação da Operação de uuid');
+        Logger.debug('Confirmação de Pagamento');
 
         const situacao = (confirmacaoPagamento.operacaoConfirmada) ? SITUACAO.CONFIRMADO : SITUACAO.CANCELADO;
         return await PagamentoModel.findOneAndUpdate({ uuid }, { situacao, confirmacaoPagamento });

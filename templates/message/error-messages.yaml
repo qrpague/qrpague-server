@@ -32,3 +32,22 @@ types:
             - chave_publica_nao_autorizada:
                 instance_code: 2
                 detail: A chave publica ${chavePublica} não possui autorização
+            - erro_ao_salvar:
+                instance_code: 3
+                detail: O pagamento ${uuid} não pode ser salvo
+            - pagamento_existente:
+                instance_code: 4
+                detail: O pagamento ${uuid} já existe e não pode ser incluído novamente
+            - id_requisicao_existente:
+                instance_code: 5
+                detail: O pagamento com a requisição ${idRequisicao} já foi incluído
+    - consulta_pagamento:
+        type_code: 4000
+        title: Erro de consulta de pagamento
+        instances:
+            - erro_ao_salvar:
+                instance_code: 1
+                detail: O pagamento ${uuid} não existe
+            - cnpj_nao_autorizado:
+                instance_code: 2
+                detail: A instituição de cnpj ${cnpj} não está autorizada

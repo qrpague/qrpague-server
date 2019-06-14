@@ -1,3 +1,4 @@
+const uuidv4 = require('uuid/v4');
 const QRCode = require('qrcode');
 const Validador = require('boleto-brasileiro-validator');
 const { Operacao, Pagamento } = require('../database/db');
@@ -20,7 +21,8 @@ const criarPagamento = async ({ uuidOperacao, pagamento }) => {
 		if(!instituicaoSolicitante) {
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 3000, 2, { chavePublica: pagamento.chavePublicaInstituicao });
 		}
-		
+
+		pagamento.uuid = uuidv4();
 		const resultado = await Pagamento.incluirPagamento(pagamento, operacao);
 		return resultado;
 	} catch(err) {
@@ -28,21 +30,27 @@ const criarPagamento = async ({ uuidOperacao, pagamento }) => {
 		if(!(err instanceof ResponseError)) {
 			if(err.name === MONGO.ERROR_NAME && err.code === MONGO.DUPLICATE_KEY_CODE) {
 				if(err.keyPattern.uuid === 1){
-					Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 1000, 2, pagamento);
+					Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 3000, 4, pagamento);
 				} else if(err.keyPattern.idRequisicao === 1){
-					Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 1000, 3, pagamento);
+					Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 3000, 5, pagamento);
 				}
 			}
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 1000, 1, pagamento);
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 3000, 3, pagamento);
 		}
 		throw err;
 	}
 }
 
-const consultarPagamentos = async ({ idRequisicao, cnpjInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
+const consultarPagamentos = async ({ idRequisicao, cnpjInstituicao, cpfCnpjPagador, uuidOperacaoFinanceira, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
+	const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
+	if(!instituicaoSolicitante) {
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 2, { cnpj: cnpjInstituicao });
+	}
+	
 	const options = {
 		cnpjInstituicao,
-		cpfCnpjBeneficiario,
+		cpfCnpjPagador,
+		uuidOperacaoFinanceira,
 		idRequisicao,
 		paginaInicial,
 		tamanhoPagina,
@@ -53,38 +61,18 @@ const consultarPagamentos = async ({ idRequisicao, cnpjInstituicao, cpfCnpjBenef
 	return resposta;
 }
 
-const consultarPagamento = async ({  uuid, cnpjInstituicao, originalUrl, userAgent, isWhatsApp }) => {
+const consultarPagamento = async ({  uuid, cnpjInstituicao }) => {
 
 	const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
 	if(!instituicaoSolicitante) {
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 2, { cnpj: cnpjInstituicao });
 	}
 
-	let operacao = await Pagamento.consultarPagamento(uuid);
-	if (!operacao) {
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 1, { uuid });
+	const pagamento = await Pagamento.consultarPagamento(uuid);
+	if (!pagamento) {
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 1, { uuid });
 	}
-	if (isWhatsApp) {
-		operacao = buildWhatsappContent({ operacao, originalUrl })
-	}
-	return operacao;
-}
-
-const autorizarPagamento = async ({ uuid, autorizacao }) => {
-	const operacao = await Pagamento.consultarPagamento(uuid);
-	if (!operacao) {
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 1, { uuid });
-	}
-	const urlCallBack = operacao.callback;
-	if (!urlCallBack) {
-		autorizacao.dispositivoConfirmacao = {}
-	} else {
-		const dispositivoConfirmacao = await Request.post(urlCallBack, operacao);
-		autorizacao.dispositivoConfirmacao = dispositivoConfirmacao;
-	}
-	await Pagamento.autorizarPagamento(uuid, autorizacao);
-	let resposta = { sucessoPagamento: true, dataReferencia: new Date() }
-	return resposta;
+	return pagamento;
 }
 
 const confirmarPagamento = async ({ uuid, confirmacao }) => {

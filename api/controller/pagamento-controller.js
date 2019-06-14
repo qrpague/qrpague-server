@@ -29,18 +29,12 @@ const consultarPagamentos = async (req, res, next) => {
 
 const consultarPagamento = async (req, res, next) => {
     try {
-        const isWhatsApp = req.headers['user-agent'] === WHATSAPP ? true : false;
-        const originalUrl = req.originalUrl;
         const params = paramUtil.getParams(req);
-        const options = { ...params, cnpjInstituicao: params.cnpjinstituicao, isWhatsApp, originalUrl }
+        const options = { ...params, cnpjInstituicao: params.cnpjinstituicao }
         
         const result = await service.consultarPagamento(options);
 
-        if(isWhatsApp) {
-            return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_XHTML });
-        } else {
-            return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
-        }
+        return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
     } catch (err) {
         return Response.fromError(res, err);
     }

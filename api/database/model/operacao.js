@@ -1,4 +1,3 @@
-const uuidv4 = require('uuid/v4');
 const { Err, Logger } = require('../../util');
 const { Operacao, SITUACAO, TIPO_OPERACAO } = require('../schema/operacao-financeira');
 
@@ -35,8 +34,7 @@ module.exports = (db, mongoose, promise) => {
 
     OperacaoModel.incluirOperacao = async (op) => {
         Logger.debug('Inclusão de Operação Financeira');
-        
-        op.uuid = uuidv4();
+
         op.dataHoraSolicitacao = new Date();
         op.dataHoraVencimento = new Date(op.dataHoraVencimento);
         let operacao = new OperacaoModel(op);
@@ -53,8 +51,8 @@ module.exports = (db, mongoose, promise) => {
         if(idRequisicao){
             query = { ...query, idRequisicao: idRequisicao }
         }
-        if(idRequisicao){
-            query = { ...query, idRequisicao: idRequisicao }
+        if(cpfCnpjBeneficiario){
+            query = { ...query, "beneficiario.cpfCnpj": cpfCnpjBeneficiario }
         }
         if(periodoInicio){
             query = { ...query, dataHoraSolicitacao: { ...query.dataHoraSolicitacao, $gte: periodoInicio } }
@@ -63,27 +61,27 @@ module.exports = (db, mongoose, promise) => {
             query = { ...query, dataHoraSolicitacao: { ...query.dataHoraSolicitacao, $lte: periodoFim } }
         }
 
-        const limit = tamanhoPagina ? tamanhoPagina : DEFAULT_MONGOOSE_LIMIT;
-        const skip = paginaInicial ? paginaInicial * limit : DEFAULT_MONGOOSE_SKIP;
+        const limit = tamanhoPagina ? parseInt(tamanhoPagina) : DEFAULT_MONGOOSE_LIMIT;
+        const skip = paginaInicial ? parseInt(paginaInicial) * limit : DEFAULT_MONGOOSE_SKIP;
         const opt = { skip, limit }
         return await OperacaoModel.find(query, null, opt);
 	},
 
 	OperacaoModel.consultarOperacao = async ( uuid ) => {
-        Logger.debug('Consulta da Operação de uuid');
+        Logger.debug('Consulta de Operação Financeira');
 
         return await OperacaoModel.findOne({ uuid });
 	},
 
 	OperacaoModel.autorizarOperacao = async (uuid, autorizacaoOperacao) => {
-        Logger.debug('Autorização da Operação de uuid');
+        Logger.debug('Autorização de Operação Financeira');
 
 		const situacao = (autorizacaoOperacao.operacaoAutorizada) ? SITUACAO.AUTORIZADO : SITUACAO.CANCELADO;
         return await Asset.findOneAndUpdate({ uuid }, { situacao, autorizacaoOperacao });
 	},
 
 	OperacaoModel.confirmarOperacao = async (uuid, confirmacaoOperacao) => {
-        Logger.debug('Confirmação da Operação de uuid');
+        Logger.debug('Confirmação de Operação Financeira');
 
         const situacao = (confirmacaoOperacao.operacaoConfirmada) ? SITUACAO.AUTORIZADO : SITUACAO.CANCELADO;
         return await Asset.findOneAndUpdate({ uuid }, { situacao, confirmacaoOperacao });

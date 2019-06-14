@@ -1,3 +1,4 @@
+const uuidv4 = require('uuid/v4');
 const QRCode = require('qrcode');
 const Validador = require('boleto-brasileiro-validator');
 const { Operacao } = require('../database/db');
@@ -16,6 +17,7 @@ const MONGO = { ERROR_NAME: 'MongoError', DUPLICATE_KEY_CODE: 11000 }
 
 const criarOperacao = async ({ contentType, operacaoFinanceira }) => {
 	try {
+		operacaoFinanceira.uuid = uuidv4();
 		const resultado = await Operacao.incluirOperacao(operacaoFinanceira);
 		let resposta;
 		if (contentType === APPLICATION_IMAGE) {
@@ -38,6 +40,11 @@ const criarOperacao = async ({ contentType, operacaoFinanceira }) => {
 }
 
 const consultarOperacoes = async ({ idRequisicao, cnpjInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
+	const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
+	if(!instituicaoSolicitante) {
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
+	}
+	
 	const options = {
 		cnpjInstituicao,
 		cpfCnpjBeneficiario,

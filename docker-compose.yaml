@@ -23,7 +23,7 @@ services:
         AMBIENTE: 'development'
         PORT: 8080
         NODE_PROJECT: 'QR-Pague Service'
-        LOG_LEVEL: 'debug'
+        LOG_LEVEL: 'error'
         MONGO_CONNECTION : 'mongodb://mongo:27017/QRPAGUE'
         MONGOOSE_DEBUG: 'true'
         SERVER_URL : 'http://127.0.0.1:8080'

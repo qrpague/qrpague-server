@@ -94,7 +94,7 @@ paths:
         - in: query
           name: idRequisicao
           description: >-
-              Identificador opcional para controle de idempotência. RFC 4122
+              Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
           schema:
             type: string
         - in: query
@@ -379,6 +379,12 @@ paths:
       parameters:
         - $ref: '#/components/parameters/cnpjInstituicao'
         - in: query
+          name: idRequisicao
+          description: >-
+              Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
+          schema:
+            type: string
+        - in: query
           name: cpfCnpjPagador
           description: >-
             Especificação do CPF ou CPNJ do pagador para os pagamentos de
@@ -519,7 +525,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConfirmacaoOperacao'
+              $ref: '#/components/schemas/ConfirmacaoPagamento'
       responses:
         '200':
           description: Requisição realizada com sucesso
@@ -707,6 +713,13 @@ components:
             Identificador único da operação financeira digital na instituição
             sacadora. RFC 4122
           example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
+        idRequisicao:
+          type: string
+          pattern: >-
+            ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
+          description: >-
+            Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
+          example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
         valor:
           type: integer
           description: >-
@@ -808,6 +821,7 @@ components:
         autorizacaoOperacao:
           $ref: '#/components/schemas/AutorizacaoOperacao'
       required:
+        - uuid
         - versao
         - cnpjInstituicao
         - valor
@@ -836,7 +850,7 @@ components:
           pattern: >-
             ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
           description: >-
-            Identificador opcional para controle de idempotência. RFC 4122
+            Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
           example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
         valor:
           type: integer
@@ -902,10 +916,6 @@ components:
           description: >-
             Itens participantes de uma da operação financeira digital gerado
             para um QRCode.
-        confirmacaoOperacao:
-          $ref: '#/components/schemas/ConfirmacaoOperacao'
-        autorizacaoOperacao:
-          $ref: '#/components/schemas/AutorizacaoOperacao'
       required:
         - versao
         - cnpjInstituicao
@@ -925,17 +935,13 @@ components:
             Identificador único de um pagamento realizado para uma operação
             financeira digital na instituição sacadora. RFC 4122
           example: "3d0ca315-aff9–4fc2-be61–3b76b9a2d798"
-        chavePublicaInstituicao:
+        idRequisicao:
           type: string
+          pattern: >-
+            ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
           description: >-
-            Chave pública em Base64 da instiuicação na qual um pagamento foi realizado para uma operação financeira digital na instituição sacadora.
-          example: "MIIBCgKCAQEA+xGZ/wcz9ugFpP07Nspo6U17l0YhFiFpxxU4pTk3Lifz9R3zsIsuERwta7+fWIfxOo208ett/jhskiVodSEt3QBGh4XBipyWopKwZ93HHaDVZAALi/2A+xTBtWdEo7XGUujKDvC2/aZKukfjpOiUI8AhLAfjmlcD/UZ1QPh0mHsglRNCmpCwmwSXA9VNmhz+PiB+Dml4WWnKW/VHo2ujTXxq7+efMU4H2fny3Se3KYOsFPFGZ1TNQSYlFuShWrHPtiLmUdPoP6CV2mML1tk+l7DIIqXrQhLUKDACeM5roMx0kLhUWB8P+0uj1CNlNN4JRZlC7xFfqiMbFRU9Z4N6YwIDAQAB"
-        cnpjInstituicao:
-          type: string
-          description: >-
-            CNPJ da instituição financeira na qual um pagamento foi realizado para uma operação financeira digital.
-          maxLength: 14
-          example: "01234567890123"
+            Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
+          example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
         dataHoraPagamento:
           type: string
           format: date-time
@@ -961,8 +967,8 @@ components:
             Situação do pagmento ligado a uma operação financeira digital
             realizada.
           example: REALIZADO
-        confirmacaoOperacao:
-          $ref: '#/components/schemas/ConfirmacaoOperacao'
+        confirmacaoPagamento:
+          $ref: '#/components/schemas/ConfirmacaoPagamento'
       required:
         - uuid
         - dataHoraPagamento
@@ -991,6 +997,13 @@ components:
             Valor de um pagamento realizado para uma operação financeira
             realizada, onde os últimos 2 dígitos são as casas decimais.
           example: 20000
+        idRequisicao:
+          type: string
+          pattern: >-
+            ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
+          description: >-
+            Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
+          example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
       required:
         - cnpjInstituicao
         - chavePublicaInstituicao
@@ -1188,6 +1201,31 @@ components:
         - cep
         - latitudeTerminal
         - longitudeTerminal
+    ConfirmacaoPagamento:
+      type: object
+      properties:
+        pagamentoConfirmado:
+          type: boolean
+          enum:
+            - true
+            - false
+          description: >-
+            Pagamento confirmado (true). Pagamento não confirmado (false).
+          example: true
+        dataHoraConfirmacao:
+          type: string
+          format: date-time
+          description: >-
+            Data e hora da confirmação do pagamento 
+            na instituição financeira. Formato RFC 3339, seção 5.6.
+          example: '2017-07-21T17:32:28Z'
+        dispositivoConfirmacao:
+          $ref: '#/components/schemas/Terminal'
+          description: Dados do dispositivo que autorizou o pagamento.
+      required:
+        - operacaoConfirmada
+        - dataHoraConfirmacao
+        - dispositivoConfirmacao
     ConfirmacaoOperacao:
       type: object
       properties:
@@ -1197,15 +1235,14 @@ components:
             - true
             - false
           description: >-
-            Operação financeira ou pagamento confirmado (true). Operação
-            financeira ou pagamento não confirmada (false).
+            Operação financeira confirmada (true). Operação financeira não confirmada (false).
           example: true
         dataHoraConfirmacao:
           type: string
           format: date-time
           description: >-
-            Data e hora da confirmação da operação financeira digital ou
-            pagamento na instituição financeira. Formato RFC 3339, seção 5.6.
+            Data e hora da confirmação da operação financeira digital 
+            na instituição financeira. Formato RFC 3339, seção 5.6.
           example: '2017-07-21T17:32:28Z'
         dispositivoConfirmacao:
           $ref: '#/components/schemas/Terminal'
