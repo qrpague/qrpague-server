@@ -14,7 +14,18 @@ info:
   contact:
     email: dev@sicoob.com.br
 servers:
-  - url: 'https://<<api.dominio.com.br>>/qrpague'
+  - url: http://{hostname}:{port}/{basePath}
+    description: The production API server
+    variables:
+      hostname:
+        default: localhost
+        description: Nome do host
+      port:
+        enum:
+          - '443'
+        default: '443'
+      basePath:
+        default: qrpague
 paths:
   /operacoes:
     x-swagger-router-controller: operacoes-controller
