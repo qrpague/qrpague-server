@@ -1,11 +1,12 @@
 const { Config, Logger } = require('../api/util');
 const Regras = require('../api/regras');
 const Middlewares = require('./middleware/middlewares');
+const path = require('path');
 
 const CONFIG_OPTIONS = {
     ERROR_MESSAGE_FILE: process.env.ERROR_MESSAGE_FILE || path.join(__dirname, '../api/templates/mensagens/error-messages.yaml'),
     NODE_PROJECT: process.env.NODE_PROJECT || 'QRPAGUE-Service',
-    LOG_LEVEL: process.env.LOG_LEVEL
+    LOG_LEVEL: process.env.LOG_LEVEL || 'error'
 }
 
 const RULE_OPTIONS = {

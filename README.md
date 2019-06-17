@@ -10,12 +10,12 @@ A solução QRPague utiliza as tecnologias de QRCode e API para implementar oper
 # 1. Instalação
 
 Para rodar o serviço você irá utilizar uma solução de contêiners através de uma imagem Docker.
-***OBS**.:Em nosso tutorial utilizaremos o `docker-compose` para facilitar a configuração do ambiente*.
+**Em nosso tutorial utilizaremos o `docker-compose` para facilitar a configuração do ambiente**.
 
 - Primeiro faça o download do projeto para sua máquina local, através do comando: `git clone https://github.com/qrpague/qrpague-server.git`
 - Na pasta raiz do projeto, **execute um dos seguintes comandos**:
 
-## 1.1 Com Docker
+## 1.1 Docker
 
 ```
 docker run -d -t -i \ 
@@ -32,34 +32,51 @@ docker run -d -t -i \
     --name qrpague-api qrpague/qrpague-api
 ```
 
-## 1.2 Com docker-compose
+## 1.2 Docker-compose
+
+### 1.2.1 Docker-compose simples
 
 ```
 docker-compose up
+```
+
+### 1.2.2 Docker-compose completo
+
+```
+docker-compose -f docker-compose-full.yaml up
 ```
 
 # 2. Configurações
 
 ## 2.1 Variáveis de ambiente
 
-- `MONGO_CONNECTION` **OBRIGATÓRIA**
+- `MONGO_CONNECTION`
+    - **OBRIGATÓRIA**
     - Conexão do MongoDB.
-- `SERVER_URL` **OBRIGATÓRIA**
+- `SERVER_URL`
+    - **OBRIGATÓRIA**
     - URL do serviço de API.
-- `ERROR_MESSAGE_FILE` **OPCIONAL | DEFAULT = Arquivo de template já determinado no projeto**
+- `ERROR_MESSAGE_FILE`
+    - **OPCIONAL | DEFAULT = Arquivo de template já determinado no projeto**
     - FilePath do arquivo de mensagens de erro.
-- `INSTITUICOES_FILE` **OPCIONAL | DEFAULT = Arquivo de template já determinado no projeto, porém você DEVE substituí-lo**
+- `INSTITUICOES_FILE`
+    - **OPCIONAL | DEFAULT = Arquivo de template já determinado no projeto, porém você DEVE substituí-lo**
     - FilePath do arquivo responsável por carregar as informações das instituições autorizadas pelo QRpague.
     - **É DESEJÁVEL que você preencha esta variável e substitua o arquivo existente, pois este arquivo possui preenchimento padrão apenas para fins didáticos e ilustrativos.**
-- `QRPAGUE_IMAGE_URL` **OPCIONAL | DEFAULT = 'https://avatars1.githubusercontent.com/u/43270555?s=460&v=4'**
+- `QRPAGUE_IMAGE_URL`
+    - **OPCIONAL | DEFAULT = 'https://avatars1.githubusercontent.com/u/43270555?s=460&v=4'**
     - URL do ícone do QRPague
-- `PORT` **OPCIONAL | DEFAULT = 8080**
+- `PORT` 
+    - **OPCIONAL | DEFAULT = 8080**
     - Porta na qual o serviço irá subir.
-- `NODE_PROJECT` **OPCIONAL | DEFAULT = 'QRPAGUE-Service'**
+- `NODE_PROJECT`
+    - **OPCIONAL | DEFAULT = 'QRPAGUE-Service'**
     - Nome do micro-serviço.
-- `LOG_LEVEL` **OPCIONAL | DEFAULT = 'error' | VALUES = (trace, debug, info, warn, error, fatal)**
+- `LOG_LEVEL`
+    - **OPCIONAL | DEFAULT = 'error' | VALUES = (trace, debug, info, warn, error, fatal)**
     - Level do log.
-- `MONGOOSE_DEBUG` **OPCIONAL | DEFAULT = 'false' | VALUES = (true, false)**
+- `MONGOOSE_DEBUG`
+    - **OPCIONAL | DEFAULT = 'false' | VALUES = (true, false)**
     - Booleano para ativar modo debug do MongoDB.
  
 ## 2.2 Arquivo de mensagem de erro
@@ -68,7 +85,7 @@ Na maioria dos projetos de serviços REST, as mensagens de erro não são tratad
 
 **OBSERVAÇÕES**
 
-- **O serviço do QRPague já vem com um arquivo default de mensagens de erro, mas você pode substituir este arquivo através da variável de ambiente `ERROR_MESSAGE_FILE`.**
+- **O serviço do QRPague já vem com um arquivo padrão de mensagens de erro, mas você pode substituir este arquivo através da variável de ambiente `ERROR_MESSAGE_FILE`.**
 - **O arquivo de mensagens de erro serve para a substituição do arquivo padrão no projeto, caso seja necessária a adaptação conforme sua preferência.**
 - **Caso deseje substituir o arquivo, favor seguir orientação no exemplo abaixo:**
 
@@ -118,7 +135,7 @@ O serviço QRPague permite a autorização de instituições que podem operar no
 
 **OBSERVAÇÕES**
 
-- **O serviço do QRPague já vem com um arquivo default de instituições, mas você DEVE substituir este arquivo através da variável de ambiente `INSTITUICOES_FILE`.**
+- **O serviço do QRPague já vem com um arquivo padrão de instituições, mas você DEVE substituir este arquivo através da variável de ambiente `INSTITUICOES_FILE`.**
 - **Caso deseje substituir o arquivo, favor seguir orientação no exemplo abaixo:**
 
 ### 2.2.2 Exemplo

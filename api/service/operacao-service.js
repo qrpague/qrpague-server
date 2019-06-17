@@ -5,7 +5,7 @@ const { Operacao } = require('../database/db');
 const { APPLICATION_IMAGE } = require('../util/http/content-type');
 const { Err, Request, Response, Logger, YAMLReader } = require('../util');
 const { Instituicao } = require('../regras');
-const path = ('path');
+const path = require('path');
 const fs = require('fs');
 
 const SERVER_URL = process.env.SERVER_URL;
