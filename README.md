@@ -19,15 +19,8 @@ Para rodar o serviço você irá utilizar uma solução de contêiners através 
 
 ```
 docker run -d -t -i \ 
-    -e PORT=8080 \
-    -e NODE_PROJECT='QR-Pague Service' \
-    -e LOG_LEVEL='debug' \
     -e MONGO_CONNECTION ='mongodb://localhost:27017/qrpague' \
-    -e MONGOOSE_DEBUG='true' \
     -e SERVER_URL ='http://127.0.0.1:8080' \
-    -e ERROR_MESSAGE_FILE='./api/templates/message/error-messages.yaml' \
-    -e INSTITUICOES_FILE='./api/templates/instituicoes/instituicoes.yaml' \
-    -e QRPAGUE_IMAGE_URL='https://avatars1.githubusercontent.com/u/43270555?s=460&v=4' \
     -p 9999:8080 \
     --name qrpague-api qrpague/qrpague-api
 ```
