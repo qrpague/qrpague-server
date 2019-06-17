@@ -26,7 +26,7 @@ module.exports = (db, mongoose, promise) => {
             session.startTransaction();
             let pagamento = new PagamentoModel(pag);
             pagamento = await pagamento.save();
-            operacao.pagamentos.push(pagamento);
+            operacao.pagamentos.push(pagamento._id);
             await operacao.save();
             await session.commitTransaction();
             return PagamentoModel.findOne({ uuid: pag.uuid })

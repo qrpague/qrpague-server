@@ -15,7 +15,7 @@ const connect = () => {
 
     if(MONGOOSE_DEBUG == 'true') {
         mongoose.set("debug", (collectionName, method, query, doc) => {
-            Logger.debug(`${collectionName}.${method}`, JSON.stringify(query), doc);
+            Logger.debug(`${collectionName}.${method}`, JSON.stringify(query), JSON.stringify(doc));
         });
     }
 

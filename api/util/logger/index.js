@@ -29,7 +29,13 @@ const config = (level='debug', name='service', appRoot=__dirname) => {
  * @param {Array} messages - Array de mensagens
  */
 const log = (logLevel, ...messages) => {
-    const message = messages.map(m => JSON.stringify(m)).join(' ');
+    const message = messages.map( (m) => { 
+        try {
+            return JSON.stringify(JSON.parse(m));
+        } catch(e) {
+            return m;
+        }
+    }).join(' ');
     switch(logLevel) {
         case LOG_LEVEL.TRACE:
             Logger.trace(message);

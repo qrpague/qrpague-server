@@ -131,7 +131,7 @@ paths:
             digitais para filtragem. RFC 3339, Exemplo: 2017-07-21.
           schema:
             type: string
-            format: date
+            format: date-time
         - in: query
           name: periodoFim
           description: >-
@@ -139,7 +139,7 @@ paths:
             para filtragem. RFC 3339, Exemplo: 2017-07-21.
           schema:
             type: string
-            format: date
+            format: date-time
       responses:
         '200':
           description: Requisição realizada com sucesso
@@ -445,7 +445,7 @@ paths:
             digitais para filtragem. RFC 3339, Exemplo: 2017-07-21.
           schema:
             type: string
-            format: date
+            format: date-time
         - in: query
           name: periodoFim
           description: >-
@@ -453,7 +453,7 @@ paths:
             para filtragem. RFC 3339, Exemplo: 2017-07-21.
           schema:
             type: string
-            format: date
+            format: date-time
       responses:
         '200':
           description: Requisição realizada com sucesso

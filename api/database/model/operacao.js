@@ -41,13 +41,10 @@ module.exports = (db, mongoose, promise) => {
 		return await operacao.save();
     },
 
-	OperacaoModel.recuperarOperacoes = async ({ idRequisicao, cnpjInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
+	OperacaoModel.recuperarOperacoes = async ({ idRequisicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
         Logger.debug('Consulta de Operações Financeiras');
 
         let query = {}
-        if(cnpjInstituicao){
-            query = { ...query, cnpjInstituicao: cnpjInstituicao }
-        }
         if(idRequisicao){
             query = { ...query, idRequisicao: idRequisicao }
         }
@@ -64,13 +61,13 @@ module.exports = (db, mongoose, promise) => {
         const limit = tamanhoPagina ? parseInt(tamanhoPagina) : DEFAULT_MONGOOSE_LIMIT;
         const skip = paginaInicial ? parseInt(paginaInicial) * limit : DEFAULT_MONGOOSE_SKIP;
         const opt = { skip, limit }
-        return await OperacaoModel.find(query, null, opt);
+        return await OperacaoModel.find(query, null, opt).populate('pagamentos');
 	},
 
 	OperacaoModel.consultarOperacao = async ( uuid ) => {
         Logger.debug('Consulta de Operação Financeira');
 
-        return await OperacaoModel.findOne({ uuid });
+        return await OperacaoModel.findOne({ uuid }).populate('pagamentos');
 	},
 
 	OperacaoModel.autorizarOperacao = async (uuid, autorizacaoOperacao) => {

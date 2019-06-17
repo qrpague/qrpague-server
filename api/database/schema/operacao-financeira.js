@@ -121,7 +121,7 @@ const Operacao = {
         required: false 
     },
     itens: [ ItemSchema ],
-    pagamentos: [ PagamentoSchema ],
+    pagamentos: [{ type: Schema.ObjectId, ref: 'Pagamento' }],
 }
 
 module.exports = { Operacao, TIPO_OPERACAO, SITUACAO };

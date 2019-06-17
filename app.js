@@ -12,9 +12,9 @@ const PORT = process.env.PORT || 8080;
 
 const start = (app) => {
 
-    createMiddleware(swaggerFilePath, app, function(err, middleware, api, parser) {
+    setupConfiguration(app);
     
-        setupConfiguration(app);
+    createMiddleware(swaggerFilePath, app, function(err, middleware, api, parser) {
 
         app.use(middleware.metadata())
         app.use(middleware.CORS());
