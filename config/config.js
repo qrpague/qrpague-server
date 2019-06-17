@@ -3,13 +3,13 @@ const Regras = require('../api/regras');
 const Middlewares = require('./middleware/middlewares');
 
 const CONFIG_OPTIONS = {
-    ERROR_MESSAGE_FILE: process.env.ERROR_MESSAGE_FILE,
-    NODE_PROJECT: process.env.NODE_PROJECT,
+    ERROR_MESSAGE_FILE: process.env.ERROR_MESSAGE_FILE || path.join(__dirname, '../api/templates/mensagens/error-messages.yaml'),
+    NODE_PROJECT: process.env.NODE_PROJECT || 'QRPAGUE-Service',
     LOG_LEVEL: process.env.LOG_LEVEL
 }
 
 const RULE_OPTIONS = {
-    INSTITUICOES_FILE: process.env.INSTITUICOES_FILE
+    INSTITUICOES_FILE: process.env.INSTITUICOES_FILE  || path.join(__dirname, '../api/templates/instituicoes/autorizadas.yaml')
 }
 
 const setupMiddlewares = (app) => {

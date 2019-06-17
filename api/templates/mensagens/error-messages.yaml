@@ -1,0 +1,63 @@
+erros:
+    - insercao_operacao:
+        codigoErro: 1000
+        mensagemErro: Erro de inserção de operação
+        detalhes:
+            - erro_ao_salvar:
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuid} não pode ser salva
+            - operacao_existente:
+                codigoDetalheErro: 2
+                detalheErro: A operação ${uuid} já existe e não pode ser incluída novamente
+            - id_requisicao_existente:
+                codigoDetalheErro: 3
+                detalheErro: A operação com a requisição ${idRequisicao} já foi incluída
+    - consulta_operacao:
+        codigoErro: 2000
+        mensagemErro: Erro de consulta de operação
+        detalhes:
+            - erro_ao_salvar:
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuid} não existe
+            - cnpj_nao_autorizado:
+                codigoDetalheErro: 2
+                detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+    - insercao_pagamento:
+        codigoErro: 3000
+        mensagemErro: Erro de inserção de pagamento
+        detalhes:
+            - operacao_nao_encontrada:
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuidOperacao} não existe
+            - chave_publica_nao_autorizada:
+                codigoDetalheErro: 2
+                detalheErro: A chave publica ${chavePublica} não possui autorização
+            - erro_ao_salvar:
+                codigoDetalheErro: 3
+                detalheErro: O pagamento ${uuid} não pode ser salvo
+            - pagamento_existente:
+                codigoDetalheErro: 4
+                detalheErro: O pagamento ${uuid} já existe e não pode ser incluído novamente
+            - id_requisicao_existente:
+                codigoDetalheErro: 5
+                detalheErro: O pagamento com a requisição ${idRequisicao} já foi incluído
+    - consulta_pagamento:
+        codigoErro: 4000
+        mensagemErro: Erro de consulta de pagamento
+        detalhes:
+            - erro_ao_salvar:
+                codigoDetalheErro: 1
+                detalheErro: O pagamento ${uuid} não existe
+            - cnpj_nao_autorizado:
+                codigoDetalheErro: 2
+                detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+    - confirmacao_pagamento:
+        codigoErro: 5000
+        mensagemErro: Erro de confirmação de pagamento
+        detalhes:
+            - erro_ao_salvar:
+                codigoDetalheErro: 1
+                detalheErro: O pagamento ${uuid} não existe
+            - pagamento_confirmado:
+                codigoDetalheErro: 2
+                detalheErro: O pagamento ${uuid} já foi confirmado/cancelado

@@ -8,10 +8,9 @@ const { Instituicao } = require('../regras');
 const path = ('path');
 const fs = require('fs');
 
-const QRPAGUE_URL = process.env.QRPAGUE_URL;
 const SERVER_URL = process.env.SERVER_URL;
-const WHATSAPP_IMAGE_URL = process.env.WHATSAPP_IMAGE_URL;
-const WHATSAPP_TEMPLATE_FILE = process.env.WHATSAPP_TEMPLATE_FILE;
+const QRPAGUE_IMAGE_URL = process.env.QRPAGUE_IMAGE_URL || 'https://avatars1.githubusercontent.com/u/43270555?s=460&v=4';
+const WHATSAPP_TEMPLATE_FILE = path.join(__dirname, '../templates/whatsapp/shareLink.html');
 
 const MONGO = { ERROR_NAME: 'MongoError', DUPLICATE_KEY_CODE: 11000 }
 
@@ -23,7 +22,7 @@ const criarOperacao = async ({ contentType, operacaoFinanceira }) => {
 		if (contentType === APPLICATION_IMAGE) {
 			resposta = await QRCode.toDataURL(JSON.stringify(operacaoFinanceira));
 		} else {
-			resposta = QRPAGUE_URL + '/' + resultado.uuid
+			resposta = SERVER_URL + '/operacoes/' + resultado.uuid
 		}
 		return resposta;
 	} catch(err) {
@@ -114,7 +113,7 @@ const buildWhatsappContent = ({ operacao, originalUrl }) => {
 	content = content.replaceAll( '$TITLE$' , ' ' + tipo  )
 	content = content.replaceAll( '$URL$' , urlOperacao )
 	content = content.replaceAll( '$DESCRIPTION$' , descricao )
-	content = content.replaceAll( '$URL_IMAGE$' , WHATSAPP_IMAGE_URL )
+	content = content.replaceAll( '$URL_IMAGE$' , QRPAGUE_IMAGE_URL )
 	content = content.replaceAll( '$TYPE$' , type )
 	return content;
 }
