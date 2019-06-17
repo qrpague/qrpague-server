@@ -76,9 +76,14 @@ const consultarPagamento = async ({  uuid, cnpjInstituicao }) => {
 }
 
 const confirmarPagamento = async ({ uuid, confirmacao }) => {
-	let pagamento = await Pagamento.confirmarPagamento(uuid, confirmacao);
+	let pagamento = await Pagamento.consultarPagamento(uuid);
 	if (!pagamento) {
 		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 1, { uuid });
+	}
+
+	pagamento = await Pagamento.confirmarPagamento(uuid, confirmacao);
+	if (!pagamento) {
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 2, { uuid });
 	}
 }
 

@@ -57,4 +57,7 @@ erros:
         detalhes:
             - erro_ao_salvar:
                 codigoDetalheErro: 1
-                detalheErro: O pagamento ${uuid} já foi confirmado/cancelado.
+                detalheErro: O pagamento ${uuid} não existe
+            - pagamento_confirmado:
+                codigoDetalheErro: 2
+                detalheErro: O pagamento ${uuid} já foi confirmado/cancelado
