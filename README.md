@@ -18,11 +18,10 @@ Para rodar o serviço você irá utilizar uma solução de contêiners através 
 ## 1.1 Docker
 
 ```
-docker run -d -t -i \ 
-    -e MONGO_CONNECTION ='mongodb://localhost:27017/qrpague' \
-    -e SERVER_URL ='http://127.0.0.1:8080' \
-    -p 9999:8080 \
-    --name qrpague-api qrpague/qrpague-api
+docker run -e MONGO_CONNECTION='mongodb://localhost:27017/qrpague' \ 
+-e SERVER_URL='http://127.0.0.1:8080' \
+-p 9999:8080 \
+--name qrpague-api qrpague/qrpague-api
 ```
 
 ## 1.2 Docker-compose
