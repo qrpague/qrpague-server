@@ -33,7 +33,7 @@ docker run -d -t -i \
 docker-compose up
 ```
 
-### 1.2.2 Docker-compose completo
+### 1.2.2 Docker-compose completo - Demonstrando o uso das variáveis opcionais
 
 ```
 docker-compose -f docker-compose-full.yaml up
