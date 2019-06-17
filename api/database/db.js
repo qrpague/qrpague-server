@@ -10,7 +10,7 @@ let db;
 
 const connect = () => {
 
-    db = mongoose.createConnection(MONGO_CONNECTION);
+    db = mongoose.createConnection(MONGO_CONNECTION, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false });
     db.Promise = global.Promise;
 
     if(MONGOOSE_DEBUG == 'true') {

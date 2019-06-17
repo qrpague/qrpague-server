@@ -72,8 +72,9 @@ module.exports = (db, mongoose, promise) => {
 	PagamentoModel.confirmarPagamento = async (uuid, confirmacaoPagamento) => {
         Logger.debug('Confirmação de Pagamento');
 
-        const situacao = (confirmacaoPagamento.operacaoConfirmada) ? SITUACAO.CONFIRMADO : SITUACAO.CANCELADO;
-        return await PagamentoModel.findOneAndUpdate({ uuid }, { situacao, confirmacaoPagamento });
+        const situacao = (confirmacaoPagamento.pagamentoConfirmado) ? SITUACAO.CONFIRMADO : SITUACAO.CANCELADO;
+        confirmacaoPagamento.dataHoraConfirmacao = new Date();
+        return await PagamentoModel.findOneAndUpdate({ uuid, situacao: SITUACAO.REALIZADO }, { situacao, confirmacaoPagamento });
 	}
 
     return PagamentoModel;

@@ -292,7 +292,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConfirmacaoOperacao'
+              $ref: '#/components/schemas/InclusaoConfirmacaoOperacao'
       responses:
         '200':
           description: Requisição realizada com sucesso
@@ -546,7 +546,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConfirmacaoPagamento'
+              $ref: '#/components/schemas/InclusaoConfirmacaoPagamento'
       responses:
         '200':
           description: Requisição realizada com sucesso
@@ -838,7 +838,7 @@ components:
             Pagamentos realizados atrelados a uma operação financeira digital
             para um QRCode gerado.
         confirmacaoOperacao:
-          $ref: '#/components/schemas/ConfirmacaoOperacao'
+          $ref: '#/components/schemas/ConsultaConfirmacaoOperacao'
         autorizacaoOperacao:
           $ref: '#/components/schemas/AutorizacaoOperacao'
       required:
@@ -989,7 +989,7 @@ components:
             realizada.
           example: REALIZADO
         confirmacaoPagamento:
-          $ref: '#/components/schemas/ConfirmacaoPagamento'
+          $ref: '#/components/schemas/ConsultaConfirmacaoPagamento'
       required:
         - uuid
         - dataHoraPagamento
@@ -1222,7 +1222,7 @@ components:
         - cep
         - latitudeTerminal
         - longitudeTerminal
-    ConfirmacaoPagamento:
+    ConsultaConfirmacaoPagamento:
       type: object
       properties:
         pagamentoConfirmado:
@@ -1244,10 +1244,27 @@ components:
           $ref: '#/components/schemas/Terminal'
           description: Dados do dispositivo que autorizou o pagamento.
       required:
-        - operacaoConfirmada
+        - pagamentoConfirmado
         - dataHoraConfirmacao
         - dispositivoConfirmacao
-    ConfirmacaoOperacao:
+    InclusaoConfirmacaoPagamento:
+      type: object
+      properties:
+        pagamentoConfirmado:
+          type: boolean
+          enum:
+            - true
+            - false
+          description: >-
+            Pagamento confirmado (true). Pagamento não confirmado (false).
+          example: true
+        dispositivoConfirmacao:
+          $ref: '#/components/schemas/Terminal'
+          description: Dados do dispositivo que autorizou o pagamento.
+      required:
+        - pagamentoConfirmado
+        - dispositivoConfirmacao
+    ConsultaConfirmacaoOperacao:
       type: object
       properties:
         operacaoConfirmada:
@@ -1271,6 +1288,23 @@ components:
       required:
         - operacaoConfirmada
         - dataHoraConfirmacao
+        - dispositivoConfirmacao
+    InclusaoConfirmacaoOperacao:
+      type: object
+      properties:
+        operacaoConfirmada:
+          type: boolean
+          enum:
+            - true
+            - false
+          description: >-
+            Operação financeira confirmada (true). Operação financeira não confirmada (false).
+          example: true
+        dispositivoConfirmacao:
+          $ref: '#/components/schemas/Terminal'
+          description: Dados do dispositivo que autorizou a operação.
+      required:
+        - operacaoConfirmada
         - dispositivoConfirmacao
     AutorizacaoOperacao:
       type: object

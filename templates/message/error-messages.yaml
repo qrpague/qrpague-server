@@ -51,3 +51,10 @@ erros:
             - cnpj_nao_autorizado:
                 codigoDetalheErro: 2
                 detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+    - confirmacao_pagamento:
+        codigoErro: 5000
+        mensagemErro: Erro de confirmação de pagamento
+        detalhes:
+            - erro_ao_salvar:
+                codigoDetalheErro: 1
+                detalheErro: O pagamento ${uuid} já foi confirmado/cancelado.

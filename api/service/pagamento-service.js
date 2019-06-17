@@ -76,9 +76,10 @@ const consultarPagamento = async ({  uuid, cnpjInstituicao }) => {
 }
 
 const confirmarPagamento = async ({ uuid, confirmacao }) => {
-	const resposta = await Pagamento.confirmarPagamento(uuid, confirmacao);
-	const result = { sucessoPagamento: true, dataReferencia: new Date() }
-	return result;
+	let pagamento = await Pagamento.confirmarPagamento(uuid, confirmacao);
+	if (!pagamento) {
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 1, { uuid });
+	}
 }
 
 module.exports = {

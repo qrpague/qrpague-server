@@ -46,9 +46,9 @@ const confirmarPagamento = async (req, res, next) => {
         const options = paramUtil.getParams(req);
         const uuid = options.uuid;
         const confirmacao = req.body;
-        const result = await service.receber({ uuid, confirmacao});
+        const result = await service.confirmarPagamento({ uuid, confirmacao});
 
-        return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
+        return Response.noContent(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
     } catch (err) {
         return Response.fromError(res, err);
     }

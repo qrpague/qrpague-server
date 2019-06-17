@@ -14,5 +14,6 @@ router.route('/operacoes/:uuid/confirmacao').post(Operacao.confirmarOperacao);
 router.route('/operacoes/:uuid/pagamentos').post(Pagamento.criarPagamento);
 router.route('/pagamentos').get(Pagamento.consultarPagamentos);
 router.route('/pagamentos/:uuid').get(Pagamento.consultarPagamento);
+router.route('/pagamentos/:uuid/confirmacao').post(Pagamento.confirmarPagamento);
 
 module.exports = router;
