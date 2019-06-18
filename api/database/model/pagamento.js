@@ -29,7 +29,7 @@ module.exports = (db, mongoose, promise) => {
             operacao.pagamentos.push(pagamento._id);
             await operacao.save();
             await session.commitTransaction();
-            return PagamentoModel.findOne({ uuid: pag.uuid })
+            return PagamentoModel.findOne({ uuid: pag.uuid });
         } catch(err) {
             Logger.warn(err);
             session.abortTransaction();

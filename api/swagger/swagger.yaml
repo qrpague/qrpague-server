@@ -204,7 +204,7 @@ paths:
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}/autorizacao':
     x-swagger-router-controller: operacoes-controller
-    post:
+    put:
       tags:
         - Operações Financeiras Digitais
       summary: >-
@@ -258,7 +258,7 @@ paths:
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}/confirmacao':
     x-swagger-router-controller: operacoes-controller
-    post:
+    put:
       tags:
         - Operações Financeiras Digitais
       summary: >-
@@ -507,7 +507,7 @@ paths:
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/pagamentos/{uuid}/confirmacao':
-    post:
+    put:
       tags:
         - Pagamentos
       summary: >-
