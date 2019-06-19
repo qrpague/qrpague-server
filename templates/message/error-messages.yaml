@@ -61,3 +61,13 @@ erros:
             - pagamento_confirmado:
                 codigoDetalheErro: 2
                 detalheErro: O pagamento ${uuid} já foi confirmado/cancelado
+    - confirmacao_operacao:
+        codigoErro: 6000
+        mensagemErro: Erro de confirmação da operação
+        detalhes:
+            - erro_ao_salvar:
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuid} não existe
+            - operacao_confirmada:
+                codigoDetalheErro: 2
+                detalheErro: A operação ${uuid} já foi confirmado/cancelado

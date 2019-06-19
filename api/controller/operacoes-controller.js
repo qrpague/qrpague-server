@@ -54,7 +54,7 @@ const autorizarOperacao = async (req, res, next) => {
         const autorizacao = req.body;
         const result = await service.autorizarOperacao({ uuid, autorizacao});
 
-        return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
+        return Response.created(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
     } catch (err) {
         return Response.fromError(res, err);
     }
@@ -65,9 +65,9 @@ const confirmarOperacao = async (req, res, next) => {
         const options = paramUtil.getParams(req);
         const uuid = options.uuid;
         const confirmacao = req.body;
-        const result = await service.receber({ uuid, confirmacao});
+        const result = await service.confirmarOperacao({ uuid, confirmacao});
 
-        return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
+        return Response.created(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
     } catch (err) {
         return Response.fromError(res, err);
     }

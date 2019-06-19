@@ -92,9 +92,15 @@ const autorizarOperacao = async ({ uuid, autorizacao }) => {
 }
 
 const confirmarOperacao = async ({ uuid, confirmacao }) => {
-	const resposta = await Operacao.confirmarOperacao(uuid, confirmacao);
-	const result = { sucessoOperacao: true, dataReferencia: new Date() }
-	return result;
+	let operacao = await Operacao.consultarOperacao(uuid);
+	if (!operacao) {
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 6000, 1, { uuid });
+	}
+
+	operacao = await Operacao.confirmarOperacao(uuid, confirmacao);
+	if (!operacao) {
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 6000, 2, { uuid });
+	}
 }
 
 const buildWhatsappContent = ({ operacao, originalUrl }) => {

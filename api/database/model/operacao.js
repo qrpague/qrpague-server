@@ -78,10 +78,11 @@ module.exports = (db, mongoose, promise) => {
 	},
 
 	OperacaoModel.confirmarOperacao = async (uuid, confirmacaoOperacao) => {
-        Logger.debug('Confirmação de Operação Financeira');
+        Logger.debug('Confirmação da Operação');
 
-        const situacao = (confirmacaoOperacao.operacaoConfirmada) ? SITUACAO.AUTORIZADO : SITUACAO.CANCELADO;
-        return await Asset.findOneAndUpdate({ uuid }, { situacao, confirmacaoOperacao });
+        const situacao = (confirmacaoOperacao.operacaoConfirmada) ? SITUACAO.CONFIRMADO : SITUACAO.CANCELADO;
+        confirmacaoOperacao.dataHoraConfirmacao = new Date();
+        return await OperacaoModel.findOneAndUpdate({ uuid, situacao: SITUACAO.EMITIDO }, { situacao, confirmacaoOperacao });
 	}
 
     return OperacaoModel;
