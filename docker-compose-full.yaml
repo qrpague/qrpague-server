@@ -19,6 +19,7 @@ services:
         - "9999:8080"
     volumes:
         - ./templates:/home/qrpague/templates
+        - ./keys:/run/secrets
     environment:
         MONGO_CONNECTION : 'mongodb://mongo:27017/QRPAGUE'
         SERVER_URL : 'http://127.0.0.1:8080'

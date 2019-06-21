@@ -1,5 +1,6 @@
 const { YAMLReader } = require('../../util');
 const path = require('path');
+const fs = require('fs');
 
 const INST_CONST = 'I_';
 const PUB_KEY_CONST = 'P_';
@@ -37,7 +38,7 @@ const recuperar = (doc, sigla, valorChaveComposta) => {
     let result = {
         nome: instituicao.nome,
         cnpj: instituicao.cnpj,
-        chavePublica: instituicao.chavePublica
+        chavePublica: fs.readFileSync(instituicao.chavePublica)
     }
     return result;
 }
