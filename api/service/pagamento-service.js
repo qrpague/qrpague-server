@@ -8,6 +8,7 @@ const { Instituicao } = require('../regras');
 const path = ('path');
 const fs = require('fs');
 
+const MY_PRIVATE_KEY = fs.readFileSync(process.env.MY_PRIVATE_KEY);
 const MONGO = { ERROR_NAME: 'MongoError', DUPLICATE_KEY_CODE: 11000 }
 
 const criarPagamento = async ({ uuidOperacao, pagamento }) => {
@@ -57,8 +58,19 @@ const consultarPagamentos = async ({ idRequisicao, cnpjInstituicao, cpfCnpjPagad
 		periodoInicio,
 		periodoFim
 	}
-	const resposta = await Pagamento.recuperarOperacoes(options);
-	return resposta;
+	const pagamentos = await Pagamento.recuperarOperacoes(options);
+	const hashObj = Crypto.hash(JSON.stringify(pagamentos));
+	const signatureObj = Crypto.sign(hashObj.hash, MY_PRIVATE_KEY);
+	const resultado = {
+		quantidadeRegistros: pagamentos.length,
+		paginaAtual: paginaInicial,
+		tamanhoPagina: tamanhoPagina,
+		resultados: pagamentos,
+		hash: hashObj.hash,
+		assinatura: signatureObj.signature,
+		algoritmo: signatureObj.algorithm
+	}
+	return resultado;
 }
 
 const consultarPagamento = async ({  uuid, cnpjInstituicao }) => {
@@ -72,7 +84,16 @@ const consultarPagamento = async ({  uuid, cnpjInstituicao }) => {
 	if (!pagamento) {
 		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 1, { uuid });
 	}
-	return pagamento;
+
+	const hashObj = Crypto.hash(JSON.stringify(pagamento));
+	const signatureObj = Crypto.sign(hashObj.hash, MY_PRIVATE_KEY);
+	const resultado = {
+		resultado: pagamento,
+		hash: hashObj.hash,
+		assinatura: signatureObj.signature,
+		algoritmo: signatureObj.algorithm
+	}
+	return resultado;
 }
 
 const confirmarPagamento = async ({ uuid, confirmacao }) => {

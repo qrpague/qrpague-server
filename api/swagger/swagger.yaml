@@ -495,7 +495,7 @@ paths:
           content:
             application/qrpague:
               schema:
-                $ref: '#/components/schemas/ConsultaPagamento'
+                $ref: '#/components/schemas/RespostaConsultaPagamento'
         '400':
           description: Exceção de negócio
           content:
@@ -970,6 +970,28 @@ components:
         - tipoOperacao
         - terminal
         - beneficiario
+    RespostaConsultaPagamento:
+      type: object
+      properties:
+        resultado:
+          $ref: "#/components/schemas/ConsultaPagamento"
+        hash:
+          type: string
+          description: >-
+            Hash do resultado na consulta.
+        assinatura:
+          type: string
+          description: >-
+            Assinatura da instituição que gera o resultado.
+        algoritmo:
+          type: string
+          description: >-
+            Algoritmo utilizado na assinatura.
+      required:
+        - resultado
+        - hash
+        - assinatura
+        - algoritmo
     ConsultaPagamento:
       type: object
       properties:
