@@ -59,7 +59,10 @@ const consultarOperacoes = async ({ idRequisicao, cnpjInstituicao, cpfCnpjBenefi
 	const hashObj = Crypto.hash(JSON.stringify(operacoes));
 	const signatureObj = Crypto.sign(hashObj.hash, MY_PRIVATE_KEY);
 	const resultado = {
-		resultado: operacao,
+		quantidadeRegistros: operacoes.length,
+		paginaAtual: paginaInicial,
+		tamanhoPagina: tamanhoPagina,
+		resultados: operacoes,
 		hash: hashObj.hash,
 		assinatura: signatureObj.signature,
 		algoritmo: signatureObj.algorithm

@@ -191,7 +191,7 @@ paths:
           content:
             application/qrpague:
               schema:
-                $ref: '#/components/schemas/ConsultaOperacaoFinanceira'
+                $ref: '#/components/schemas/RespostaConsultaOperacaoFinanceira'
         '400':
           description: Exceção de negócio
           content:
@@ -671,9 +671,24 @@ components:
             oneOf:
               - $ref: '#/components/schemas/ConsultaOperacaoFinanceira'
               - $ref: '#/components/schemas/ConsultaPagamento'
+        hash:
+          type: string
+          description: >-
+            Hash do resultado na consulta.
+        assinatura:
+          type: string
+          description: >-
+            Assinatura da instituição que gera o resultado.
+        algoritmo:
+          type: string
+          description: >-
+            Algoritmo utilizado na assinatura.
       required:
         - quantidadeRegistros
         - resultados
+        - hash
+        - assinatura
+        - algoritmo
     Link:
       type: object
       properties:
@@ -699,6 +714,28 @@ components:
         - url
         - descricao
         - metodoHttp
+    RespostaConsultaOperacaoFinanceira:
+      type: object
+      properties:
+        resultado:
+          $ref: "#/components/schemas/ConsultaOperacaoFinanceira"
+        hash:
+          type: string
+          description: >-
+            Hash do resultado na consulta.
+        assinatura:
+          type: string
+          description: >-
+            Assinatura da instituição que gera o resultado.
+        algoritmo:
+          type: string
+          description: >-
+            Algoritmo utilizado na assinatura.
+      required:
+        - resultado
+        - hash
+        - assinatura
+        - algoritmo
     ConsultaOperacaoFinanceira:
       type: object
       properties:
