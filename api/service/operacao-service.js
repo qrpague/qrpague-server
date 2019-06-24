@@ -1,3 +1,5 @@
+const path = require('path');
+const fs = require('fs');
 const uuidv4 = require('uuid/v4');
 const QRCode = require('qrcode');
 const Validador = require('boleto-brasileiro-validator');
@@ -5,9 +7,9 @@ const { Operacao } = require('../database/db');
 const { APPLICATION_IMAGE } = require('../util/http/content-type');
 const { Err, Request, Response, Logger, YAMLReader } = require('../util');
 const { Instituicao } = require('../regras');
-const path = require('path');
-const fs = require('fs');
+const Crypto = require('../crypto');
 
+const MY_PRIVATE_KEY = fs.readFileSync(process.env.MY_PRIVATE_KEY);
 const SERVER_URL = process.env.SERVER_URL;
 const QRPAGUE_IMAGE_URL = process.env.QRPAGUE_IMAGE_URL || 'https://avatars1.githubusercontent.com/u/43270555?s=460&v=4';
 const WHATSAPP_TEMPLATE_FILE = path.join(__dirname, '../templates/whatsapp/shareLink.html');
@@ -53,8 +55,16 @@ const consultarOperacoes = async ({ idRequisicao, cnpjInstituicao, cpfCnpjBenefi
 		periodoInicio,
 		periodoFim
 	}
-	const resposta = await Operacao.recuperarOperacoes(options);
-	return resposta;
+	const operacoes = await Operacao.recuperarOperacoes(options);
+	const hashObj = Crypto.hash(JSON.stringify(operacoes));
+	const signatureObj = Crypto.sign(hashObj.hash, MY_PRIVATE_KEY);
+	const resultado = {
+		resultado: operacao,
+		hash: hashObj.hash,
+		assinatura: signatureObj.signature,
+		algoritmo: signatureObj.algorithm
+	}
+	return resultado;
 }
 
 const consultarOperacao = async ({  uuid, cnpjInstituicao, originalUrl, userAgent, isWhatsApp }) => {
@@ -68,10 +78,16 @@ const consultarOperacao = async ({  uuid, cnpjInstituicao, originalUrl, userAgen
 	if (!operacao) {
 		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 1, { uuid });
 	}
-	if (isWhatsApp) {
-		operacao = buildWhatsappContent({ operacao, originalUrl })
+
+	const hashObj = Crypto.hash(JSON.stringify(operacao));
+	const signatureObj = Crypto.sign(hashObj.hash, MY_PRIVATE_KEY);
+	const resultado = {
+		resultado: operacao,
+		hash: hashObj.hash,
+		assinatura: signatureObj.signature,
+		algoritmo: signatureObj.algorithm
 	}
-	return operacao;
+	return resultado;
 }
 
 const autorizarOperacao = async ({ uuid, autorizacao }) => {

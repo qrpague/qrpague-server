@@ -30,6 +30,7 @@ services:
         ERROR_MESSAGE_FILE: '/home/qrpague/templates/message/error-messages.yaml'
         INSTITUICOES_FILE: '/home/qrpague/templates/instituicoes/instituicoes.yaml'
         QRPAGUE_IMAGE_URL: 'https://avatars1.githubusercontent.com/u/43270555?s=460&v=4'
+        MY_PRIVATE_KEY: /run/secrets/sicoob/sicoob_private.pem
   mongo:
     image: mongo:4.1
     networks:
