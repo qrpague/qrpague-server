@@ -325,6 +325,7 @@ paths:
       security:
         - OAuth2: []
       parameters:
+        - $ref: '#/components/parameters/token-instituicao'
         - in: path
           name: uuid
           description: >-
@@ -390,7 +391,7 @@ paths:
       security:
         - OAuth2: []
       parameters:
-        - $ref: '#/components/parameters/cnpjInstituicao'
+        - $ref: '#/components/parameters/token-instituicao'
         - in: query
           name: idRequisicao
           description: >-
@@ -478,6 +479,7 @@ paths:
       security:
         - OAuth2: []
       parameters:
+        - $ref: '#/components/parameters/token-instituicao'
         - in: path
           name: uuid
           description: >-
@@ -488,7 +490,6 @@ paths:
             type: string
             pattern: >-
               ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
-        - $ref: '#/components/parameters/cnpjInstituicao'
       responses:
         '200':
           description: Requisição realizada com sucesso
@@ -522,6 +523,7 @@ paths:
       security:
         - OAuth2: []
       parameters:
+        - $ref: '#/components/parameters/token-instituicao'
         - in: path
           name: uuid
           description: >-
@@ -532,7 +534,6 @@ paths:
             type: string
             pattern: >-
               ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
-        - $ref: '#/components/parameters/cnpjInstituicao'
       requestBody:
         required: true
         content:
@@ -619,6 +620,15 @@ components:
       description: >-
         CNPJ Matriz da instituição finaneira que referente à operação financeira
         digital.
+      required: true
+      schema:
+        type: string
+    token-instituicao:
+      in: header
+      name: token-instituicao
+      description: >-
+        JSON Web Token de pagamento assinado pela instituição 
+        que solicita o pagamento. RFC 7519
       required: true
       schema:
         type: string
@@ -1046,17 +1056,6 @@ components:
     InclusaoPagamento:
       type: object
       properties:
-        chavePublicaInstituicao:
-          type: string
-          description: >-
-            Chave pública em Base64 da instiuicação na qual um pagamento foi realizado para uma operação financeira digital na instituição sacadora.
-          example: "MIIBCgKCAQEA+xGZ/wcz9ugFpP07Nspo6U17l0YhFiFpxxU4pTk3Lifz9R3zsIsuERwta7+fWIfxOo208ett/jhskiVodSEt3QBGh4XBipyWopKwZ93HHaDVZAALi/2A+xTBtWdEo7XGUujKDvC2/aZKukfjpOiUI8AhLAfjmlcD/UZ1QPh0mHsglRNCmpCwmwSXA9VNmhz+PiB+Dml4WWnKW/VHo2ujTXxq7+efMU4H2fny3Se3KYOsFPFGZ1TNQSYlFuShWrHPtiLmUdPoP6CV2mML1tk+l7DIIqXrQhLUKDACeM5roMx0kLhUWB8P+0uj1CNlNN4JRZlC7xFfqiMbFRU9Z4N6YwIDAQAB"
-        cnpjInstituicao:
-          type: string
-          description: >-
-            CNPJ da instituição financeira na qual um pagamento foi realizado para uma operação financeira digital.
-          maxLength: 14
-          example: "01234567890123"
         pagador:
           $ref: '#/components/schemas/Pessoa'
         valor:
@@ -1073,8 +1072,6 @@ components:
             Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
           example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
       required:
-        - cnpjInstituicao
-        - chavePublicaInstituicao
         - pagador
         - valor
     Pessoa:

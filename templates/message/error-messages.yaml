@@ -29,9 +29,9 @@ erros:
             - operacao_nao_encontrada:
                 codigoDetalheErro: 1
                 detalheErro: A operação ${uuidOperacao} não existe
-            - chave_publica_nao_autorizada:
+            - cnpj_nao_autorizado:
                 codigoDetalheErro: 2
-                detalheErro: A chave publica ${chavePublica} não possui autorização
+                detalheErro: A instituição de cnpj ${cnpj} não está autorizada
             - erro_ao_salvar:
                 codigoDetalheErro: 3
                 detalheErro: O pagamento ${uuid} não pode ser salvo
@@ -41,6 +41,9 @@ erros:
             - id_requisicao_existente:
                 codigoDetalheErro: 5
                 detalheErro: O pagamento com a requisição ${idRequisicao} já foi incluído
+            - cnpj_nao_informado:
+                codigoDetalheErro: 6
+                detalheErro: O CNPJ não foi informado.
     - consulta_pagamento:
         codigoErro: 4000
         mensagemErro: Erro de consulta de pagamento
@@ -51,6 +54,12 @@ erros:
             - cnpj_nao_autorizado:
                 codigoDetalheErro: 2
                 detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+            - cnpj_nao_informado:
+                codigoDetalheErro: 3
+                detalheErro: O CNPJ não foi informado.
+            - erro_ao_consultar:
+                codigoDetalheErro: 4
+                detalheErro: Erro ao consulta na consulta de operação.
     - confirmacao_pagamento:
         codigoErro: 5000
         mensagemErro: Erro de confirmação de pagamento
@@ -61,13 +70,13 @@ erros:
             - pagamento_confirmado:
                 codigoDetalheErro: 2
                 detalheErro: O pagamento ${uuid} já foi confirmado/cancelado
-    - confirmacao_operacao:
-        codigoErro: 6000
-        mensagemErro: Erro de confirmação da operação
+    - jwt:
+        codigoErro: 999000
+        mensagemErro: Erro no JSON Web Token
         detalhes:
-            - erro_ao_salvar:
+            - token_nao_informado:
                 codigoDetalheErro: 1
-                detalheErro: A operação ${uuid} não existe
-            - operacao_confirmada:
+                detalheErro: O token não foi informado.
+            - assinatura_invalida:
                 codigoDetalheErro: 2
-                detalheErro: A operação ${uuid} já foi confirmado/cancelado
+                detalheErro: Assinatura inválida para o token de pagamento informado.

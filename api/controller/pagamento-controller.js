@@ -7,8 +7,11 @@ const WHATSAPP = 'WHATSAPP';
 const criarPagamento = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
-	    const pagamento = req.body;
-        const result = await service.criarPagamento({ uuidOperacao: params.uuid,  pagamento });
+        const pagamento = req.body;
+        const tokenInstituicao = params['token-instituicao'];
+        const uuidOperacao = params.uuid;
+
+        const result = await service.criarPagamento({ tokenInstituicao, uuidOperacao, pagamento });
         const contentType = Response.CONTENT_TYPE.APPLICATION_JSON;
         Response.created(res, result, { contentType });
     } catch (err) {
@@ -20,7 +23,9 @@ const criarPagamento = async (req, res, next) => {
 const consultarPagamentos = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
-        const options = { ...params, cnpjInstituicao: params.cnpjinstituicao }
+        const tokenInstituicao = params['token-instituicao'];
+        const options = { ...params, tokenInstituicao }
+
         const result = await service.consultarPagamentos(options);
         return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
     } catch (err) {
@@ -31,7 +36,8 @@ const consultarPagamentos = async (req, res, next) => {
 const consultarPagamento = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
-        const options = { ...params, cnpjInstituicao: params.cnpjinstituicao }
+        const tokenInstituicao = params['token-instituicao'];
+        const options = { ...params, tokenInstituicao }
         
         const result = await service.consultarPagamento(options);
 

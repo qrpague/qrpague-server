@@ -63,10 +63,10 @@ module.exports = (db, mongoose, promise) => {
         return await PagamentoModel.find(query, null, opt);
 	},
 
-	PagamentoModel.consultarPagamento = async ( uuid ) => {
+	PagamentoModel.consultarPagamento = async ( uuid, cnpjInstituicao ) => {
         Logger.debug('Consulta de Pagamento');
 
-        return await PagamentoModel.findOne({ uuid });
+        return await PagamentoModel.findOne({ uuid, cnpjInstituicao });
 	},
 
 	PagamentoModel.confirmarPagamento = async (uuid, confirmacaoPagamento) => {

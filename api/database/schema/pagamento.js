@@ -18,7 +18,6 @@ const Pagamento = {
     uuid: { type: String, required: true, unique: true },
     uuidOperacaoFinanceira: { type: String, required: true },
     cnpjInstituicao: { type: String, required: true },
-    chavePublicaInstituicao:  { type: String, required: true },
     dataHoraPagamento: {type: Date, required: true },
     pagador: { type: PessoaSchema, required: true },
     valor: {type: Number, required: true },
