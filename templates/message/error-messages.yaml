@@ -43,40 +43,46 @@ erros:
                 detalheErro: O pagamento com a requisição ${idRequisicao} já foi incluído
             - cnpj_nao_informado:
                 codigoDetalheErro: 6
-                detalheErro: O CNPJ não foi informado.
+                detalheErro: O CNPJ não foi informado
     - consulta_pagamento:
         codigoErro: 4000
         mensagemErro: Erro de consulta de pagamento
         detalhes:
             - erro_ao_salvar:
                 codigoDetalheErro: 1
-                detalheErro: O pagamento ${uuid} não existe
+                detalheErro: O pagamento ${uuid} não existe ou não pertence ao cnpj ${cnpj}
             - cnpj_nao_autorizado:
                 codigoDetalheErro: 2
                 detalheErro: A instituição de cnpj ${cnpj} não está autorizada
             - cnpj_nao_informado:
                 codigoDetalheErro: 3
                 detalheErro: O CNPJ não foi informado.
-            - erro_ao_consultar:
-                codigoDetalheErro: 4
-                detalheErro: Erro ao consulta na consulta de operação.
     - confirmacao_pagamento:
         codigoErro: 5000
         mensagemErro: Erro de confirmação de pagamento
         detalhes:
             - erro_ao_salvar:
                 codigoDetalheErro: 1
-                detalheErro: O pagamento ${uuid} não existe
+                detalheErro: O pagamento ${uuid} não existe ou não pertence ao cnpj ${cnpj}
             - pagamento_confirmado:
                 codigoDetalheErro: 2
                 detalheErro: O pagamento ${uuid} já foi confirmado/cancelado
+            - cnpj_nao_informado:
+                codigoDetalheErro: 3
+                detalheErro: O CNPJ não foi informado.
+            - cnpj_nao_autorizado:
+                codigoDetalheErro: 4
+                detalheErro: A instituição de cnpj ${cnpj} não está autorizada
     - jwt:
         codigoErro: 999000
         mensagemErro: Erro no JSON Web Token
         detalhes:
             - token_nao_informado:
                 codigoDetalheErro: 1
-                detalheErro: O token não foi informado.
+                detalheErro: O token não foi informado
             - assinatura_invalida:
                 codigoDetalheErro: 2
-                detalheErro: Assinatura inválida para o token de pagamento informado.
+                detalheErro: Assinatura inválida para o token de pagamento informado
+            - decodificacao_invalida:
+                codigoDetalheErro: 3
+                detalheErro: Houve um erro na decodificação do token

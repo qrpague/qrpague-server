@@ -131,7 +131,7 @@ const consultarPagamentos = async ({ idRequisicao, tokenInstituicao, cpfCnpjPaga
 					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
 				}
 			}
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 4);
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000);
 		}
 		throw err;
 	}
@@ -156,7 +156,7 @@ const consultarPagamento = async ({  uuid, tokenInstituicao }) => {
 	
 		const pagamento = await Pagamento.consultarPagamento(uuid, cnpjInstituicao);
 		if (!pagamento) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 1, { uuid });
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 1, { uuid, cnpj: cnpjInstituicao });
 		}
 	
 		const hashObj = Crypto.hash(JSON.stringify(pagamento));
@@ -180,31 +180,65 @@ const consultarPagamento = async ({  uuid, tokenInstituicao }) => {
 					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
 				}
 			}
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 4);
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000);
 		}
 		throw err;
 	}
 }
 
-const confirmarPagamento = async ({ uuid, confirmacao }) => {
-	let pagamento = await Pagamento.consultarPagamento(uuid);
-	if (!pagamento) {
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 1, { uuid });
-	}
+const confirmarPagamento = async ({ uuid, tokenInstituicao, confirmacao }) => {
 
-	pagamento = await Pagamento.confirmarPagamento(uuid, confirmacao);
-	if (!pagamento) {
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 2, { uuid });
+	let cnpjInstituicao;
+
+	try {
+		cnpjInstituicao = extrairCNPJDoJWT(tokenInstituicao);
+		if(!cnpjInstituicao) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 3);
+		}
+	
+		const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
+		if(!instituicaoSolicitante) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 4, { cnpj: cnpjInstituicao });
+		}
+		
+		await verificarTokenInstituicao(tokenInstituicao, instituicaoSolicitante.chavePublica, cnpjInstituicao);
+	
+		let pagamento = await Pagamento.consultarPagamento(uuid, cnpjInstituicao);
+		if (!pagamento) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 1, { uuid, cnpj: cnpjInstituicao });
+		}
+
+		pagamento = await Pagamento.confirmarPagamento(uuid, confirmacao);
+		if (!pagamento) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 2, { uuid });
+		}
+	} catch(err) {
+
+		Logger.warn(err);
+
+		if(!(err instanceof ResponseError)){
+			if(err.name === JWT.ERROR_NAME) {
+				if(err.message.includes(JWT.INVALID_SUBJECT.ERROR_MESSAGE)) {
+					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 50000, 4, { cnpj: cnpjInstituicao });
+				} else if(err.message.includes(JWT.INVALID_SIGNATURE.ERROR_MESSAGE)) {
+					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
+				}
+			}
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000);
+		}
+		throw err;
 	}
 }
 
 const extrairCNPJDoJWT = (token) => {
+	if(!token) {
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 1);
+	}
 	const decodedJwt = jwt.decode(token);
 	if(!decodedJwt){
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 7);
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 3);
 	}
-	return decodedJwt.sub;
-	
+	return decodedJwt.sub;	
 }
 
 const verificarTokenInstituicao = async (token, key, cnpj) => {
