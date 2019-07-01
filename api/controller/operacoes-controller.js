@@ -28,6 +28,7 @@ const consultarOperacoes = async (req, res, next) => {
         const resposta = await service.consultarOperacoes(options);
         return Response.success(res, resposta, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
     } catch (err) {
+        Logger.warn(err);
         return Response.fromError(res, err);
     }
 }
@@ -40,6 +41,7 @@ const consultarOperacao = async (req, res, next) => {
         const resposta = await service.consultarOperacao(options);
         return Response.success(res, resposta, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
     } catch (err) {
+        Logger.warn(err);
         return Response.fromError(res, err);
     }
 }
@@ -53,6 +55,7 @@ const autorizarOperacao = async (req, res, next) => {
         await service.autorizarOperacao({ uuid, autorizacao});
         return Response.noContent(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
     } catch (err) {
+        Logger.warn(err);
         return Response.fromError(res, err);
     }
 }
@@ -65,6 +68,7 @@ const confirmarOperacao = async (req, res, next) => {
         await service.confirmarOperacao(options);
         return Response.noContent(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
     } catch (err) {
+        Logger.warn(err);
         return Response.fromError(res, err);
     }
 }

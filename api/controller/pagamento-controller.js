@@ -27,6 +27,7 @@ const consultarPagamentos = async (req, res, next) => {
         const resposta = await service.consultarPagamentos(options);
         return Response.success(res, resposta, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
     } catch (err) {
+        Logger.warn(err);
         return Response.fromError(res, err);
     }
 }
@@ -39,6 +40,7 @@ const consultarPagamento = async (req, res, next) => {
         const resposta = await service.consultarPagamento(options);
         return Response.success(res, resposta, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
     } catch (err) {
+        Logger.warn(err);
         return Response.fromError(res, err);
     }
 }
@@ -51,6 +53,7 @@ const confirmarPagamento = async (req, res, next) => {
         const resposta = await service.confirmarPagamento(options);
         return Response.noContent(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
     } catch (err) {
+        Logger.warn(err);
         return Response.fromError(res, err);
     }
 }
