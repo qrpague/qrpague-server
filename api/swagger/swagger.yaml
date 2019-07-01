@@ -342,12 +342,8 @@ paths:
             schema:
               $ref: '#/components/schemas/InclusaoPagamento'
       responses:
-        '201':
-          description: Requisição realizada com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MensagemRetorno'
+        '204':
+          description: Pagamento realizado com sucesso
         '400':
           description: Exceção de negócio
           content:
