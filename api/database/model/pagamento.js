@@ -8,7 +8,16 @@ const DEFAULT_MONGOOSE_SKIP = 0;
 module.exports = (db, mongoose, promise) => {
 
     let Schema = mongoose.Schema;
-    let pagamentoSchema = new Schema(Pagamento, { collection: 'Pagamento' });
+    let pagamentoSchema = new Schema(Pagamento, { 
+        collection: 'Pagamento',
+        toJSON: {
+            transform: function (doc, ret) {
+                delete ret._id
+                delete ret.__v
+            }
+        }
+    });
+
     let PagamentoModel = db.model('Pagamento', pagamentoSchema);
 
     PagamentoModel.SITUACAO = SITUACAO;

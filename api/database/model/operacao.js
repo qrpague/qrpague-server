@@ -16,7 +16,15 @@ const validarDatas = ({ dataHoraSolicitacao, dataHoraVencimento }) => {
 module.exports = (db, mongoose, promise) => {
     
     let Schema = mongoose.Schema;
-    let operacaoSchema = new Schema(Operacao, { collection: 'Operacao' });
+    let operacaoSchema = new Schema(Operacao, { 
+        collection: 'Operacao',
+        toJSON: {
+            transform: function (doc, ret) {
+                delete ret._id
+                delete ret.__v
+            }
+        }
+    });
 
     operacaoSchema.pre('save', function (next) {
         try {
