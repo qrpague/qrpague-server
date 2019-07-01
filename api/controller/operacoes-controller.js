@@ -1,7 +1,6 @@
 const { Response, Logger } = require('../util');
 const paramUtil = require('../helper/param-util');
 const service = require('../service/operacao-service');
-const { CONSTANTS } = require('../jwt');
 const OperacaoValidator = require('../http-validators/operacoes-validator');
 
 const WHATSAPP = 'WHATSAPP';

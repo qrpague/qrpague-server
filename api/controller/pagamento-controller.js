@@ -1,20 +1,18 @@
 const { Response, Logger } = require('../util');
 const paramUtil = require('../helper/param-util');
 const service = require('../service/pagamento-service');
-const { CONSTANTS } = require('../jwt');
+const PagamentoValidator = require('../http-validators/pagamento-validator');
 
 const WHATSAPP = 'WHATSAPP';
 
 const criarPagamento = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
-        const pagamento = req.body;
-        const tokenInstituicao = params[CONSTANTS.TOKEN_NAME];
-        const uuidOperacao = params.uuid;
-
-        const result = await service.criarPagamento({ tokenInstituicao, uuidOperacao, pagamento });
+        const body = req.body;
+        const options = PagamentoValidator.requisicaoCriarPagamento(params, body);
+        const resposta = await service.criarPagamento(options);
         const contentType = Response.CONTENT_TYPE.APPLICATION_JSON;
-        Response.created(res, result, { contentType });
+        Response.created(res, resposta, { contentType });
     } catch (err) {
         Logger.warn(err);
         Response.fromError(res, err);
@@ -24,11 +22,10 @@ const criarPagamento = async (req, res, next) => {
 const consultarPagamentos = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
-        const tokenInstituicao = params[CONSTANTS.TOKEN_NAME];
-        const options = { ...params, tokenInstituicao }
-
-        const result = await service.consultarPagamentos(options);
-        return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
+        const body = req.body;
+        const options = PagamentoValidator.requisicaoConsultarPagamentos(params, body);
+        const resposta = await service.consultarPagamentos(options);
+        return Response.success(res, resposta, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
     } catch (err) {
         return Response.fromError(res, err);
     }
@@ -37,12 +34,10 @@ const consultarPagamentos = async (req, res, next) => {
 const consultarPagamento = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
-        const tokenInstituicao = params[CONSTANTS.TOKEN_NAME];
-        const options = { ...params, tokenInstituicao }
-        
-        const result = await service.consultarPagamento(options);
-
-        return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
+        const body = req.body;
+        const options = PagamentoValidator.requisicaoConsultarPagamento(params, body);
+        const resposta = await service.consultarPagamento(options);
+        return Response.success(res, resposta, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
     } catch (err) {
         return Response.fromError(res, err);
     }
@@ -50,12 +45,10 @@ const consultarPagamento = async (req, res, next) => {
 
 const confirmarPagamento = async (req, res, next) => {
     try {
-        const options = paramUtil.getParams(req);
-        const uuid = options.uuid;
-        const tokenInstituicao = options[CONSTANTS.TOKEN_NAME];
-        const confirmacao = req.body;
-        const result = await service.confirmarPagamento({ uuid, tokenInstituicao, confirmacao});
-
+        const params = paramUtil.getParams(req);
+        const body = req.body;
+        const options = PagamentoValidator.requisicaoConfirmarPagamento(params, body);
+        const resposta = await service.confirmarPagamento(options);
         return Response.noContent(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
     } catch (err) {
         return Response.fromError(res, err);

@@ -17,6 +17,19 @@ const WHATSAPP_TEMPLATE_FILE = path.join(__dirname, '../templates/whatsapp/share
 
 const MONGO = { ERROR_NAME: 'MongoError', DUPLICATE_KEY_CODE: 11000 }
 
+const JWT = {
+	ERROR_NAME: ['JsonWebTokenError', 'TokenExpiredError'],
+	INVALID_SUBJECT: {
+		ERROR_MESSAGE: 'jwt subject invalid'
+	},
+	INVALID_SIGNATURE: {
+		ERROR_MESSAGE: 'invalid signature'
+	},
+	TOKEN_EXPIRED: {
+		ERROR_MESSAGE: 'jwt expired'
+	}
+}
+
 const criarOperacao = async ({ contentType, operacaoFinanceira }) => {
 	try {
 		operacaoFinanceira.uuid = uuidv4();
@@ -86,11 +99,13 @@ const consultarOperacoes = async ({ idRequisicao, tokenInstituicao, cpfCnpjBenef
 		Logger.warn(err);
 
 		if(!(err instanceof ResponseError)){
-			if(err.name === JWT.ERROR_NAME) {
+			if(isErroJWT(err)) {
 				if(err.message.includes(JWT.INVALID_SUBJECT.ERROR_MESSAGE)) {
 					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
 				} else if(err.message.includes(JWT.INVALID_SIGNATURE.ERROR_MESSAGE)) {
 					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
+				} else if(err.message.includes(JWT.TOKEN_EXPIRED.ERROR_MESSAGE)) {
+					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 4);
 				}
 			}
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000);
@@ -136,11 +151,13 @@ const consultarOperacao = async ({  uuid, tokenInstituicao }) => {
 		Logger.warn(err);
 
 		if(!(err instanceof ResponseError)){
-			if(err.name === JWT.ERROR_NAME) {
+			if(isErroJWT(err)) {
 				if(err.message.includes(JWT.INVALID_SUBJECT.ERROR_MESSAGE)) {
 					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
 				} else if(err.message.includes(JWT.INVALID_SIGNATURE.ERROR_MESSAGE)) {
 					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
+				} else if(err.message.includes(JWT.TOKEN_EXPIRED.ERROR_MESSAGE)) {
+					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 4);
 				}
 			}
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000);
@@ -200,6 +217,10 @@ const extrairCNPJDoJWT = (token) => {
 const verificarTokenInstituicao = async (token, key, cnpj) => {
 	const options = { subject: cnpj }
 	await jwt.verify(token, key, options);
+}
+
+const isErroJWT = (err) => {
+	return JWT.ERROR_NAME.includes(err.name);
 }
 
 module.exports = {

@@ -92,14 +92,14 @@ erros:
         detalhes:
             - campo_obrigatorio:
                 codigoDetalheErro: 1
-                detalheErro: O campo ${campo} é obrigatório
+                detalheErro: O campo '${campo}' é obrigatório
     - resposta:
         codigoErro: 998000
         mensagemErro: Erro na resposta
         detalhes:
             - campo_obrigatorio:
                 codigoDetalheErro: 1
-                detalheErro: O campo ${campo} é obrigatório
+                detalheErro: O campo '${campo}' é obrigatório
     - jwt:
         codigoErro: 999000
         mensagemErro: Erro no JSON Web Token
@@ -113,3 +113,6 @@ erros:
             - decodificacao_invalida:
                 codigoDetalheErro: 3
                 detalheErro: Houve um erro na decodificação do token
+            - jwt_expirado:
+                codigoDetalheErro: 4
+                detalheErro: O token está expirado
