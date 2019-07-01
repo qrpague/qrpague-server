@@ -2,16 +2,19 @@ const { Response, Logger } = require('../util');
 const paramUtil = require('../helper/param-util');
 const service = require('../service/operacao-service');
 const { CONSTANTS } = require('../jwt');
+const OperacaoValidator = require('../http-validators/operacoes-validator');
 
 const WHATSAPP = 'WHATSAPP';
 
 const criarOperacao = async (req, res, next) => {
     try {
-        const tipo = req.headers.accept;
-	    const operacaoFinanceira = req.body;
-        const result = await service.criarOperacao({ contentType: tipo, operacaoFinanceira });
+        const params = paramUtil.getParams(req);
+        const tipo = params.accept;
         const contentType = (tipo === Response.CONTENT_TYPE.APPLICATION_IMAGE) ? tipo : Response.CONTENT_TYPE.TEXT_PLAIN;
-        Response.created(res, result, { contentType });
+        const body = req.body;
+        const operacaoFinanceira = OperacaoValidator.requisicaoCriarOperacao(params, body);
+        const resposta = await service.criarOperacao({ contentType, operacaoFinanceira });
+        Response.created(res, resposta, { contentType });
     } catch (err) {
         Logger.warn(err);
         Response.fromError(res, err);
@@ -21,10 +24,10 @@ const criarOperacao = async (req, res, next) => {
 const consultarOperacoes = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
-        const tokenInstituicao = params[CONSTANTS.TOKEN_NAME];
-        const options = { ...params, tokenInstituicao }
-        const result = await service.consultarOperacoes(options);
-        return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
+        const body = req.body;
+        const options = OperacaoValidator.requisicaoConsultarOperacoes(params, body);
+        const resposta = await service.consultarOperacoes(options);
+        return Response.success(res, resposta, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
     } catch (err) {
         return Response.fromError(res, err);
     }
@@ -33,12 +36,10 @@ const consultarOperacoes = async (req, res, next) => {
 const consultarOperacao = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
-        const tokenInstituicao = params[CONSTANTS.TOKEN_NAME];
-        const options = { ...params, tokenInstituicao }
-        
-        const result = await service.consultarOperacao(options);
-        
-        return Response.success(res, result, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
+        const body = req.body;
+        const options = OperacaoValidator.requisicaoConsultarOperacao(params, body);
+        const resposta = await service.consultarOperacao(options);
+        return Response.success(res, resposta, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
     } catch (err) {
         return Response.fromError(res, err);
     }
@@ -46,12 +47,12 @@ const consultarOperacao = async (req, res, next) => {
 
 const autorizarOperacao = async (req, res, next) => {
     try {
-        const options = paramUtil.getParams(req);
-        const uuid = options.uuid;
+        const params = paramUtil.getParams(req);
+        const body = req.body;
+        const uuid = params.uuid;
         const autorizacao = req.body;
-        const result = await service.autorizarOperacao({ uuid, autorizacao});
-
-        return Response.created(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
+        await service.autorizarOperacao({ uuid, autorizacao});
+        return Response.noContent(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
     } catch (err) {
         return Response.fromError(res, err);
     }
@@ -59,12 +60,11 @@ const autorizarOperacao = async (req, res, next) => {
 
 const confirmarOperacao = async (req, res, next) => {
     try {
-        const options = paramUtil.getParams(req);
-        const uuid = options.uuid;
-        const confirmacao = req.body;
-        const result = await service.confirmarOperacao({ uuid, confirmacao});
-
-        return Response.created(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
+        const params = paramUtil.getParams(req);
+        const body = req.body;
+        const options = OperacaoValidator.requisicaoConfirmarOperacao(params, body);
+        await service.confirmarOperacao(options);
+        return Response.noContent(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
     } catch (err) {
         return Response.fromError(res, err);
     }

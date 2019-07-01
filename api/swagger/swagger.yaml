@@ -282,7 +282,6 @@ paths:
             type: string
             pattern: >-
               ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
-        - $ref: '#/components/parameters/cnpjInstituicao'
       requestBody:
         required: true
         content:
@@ -854,8 +853,6 @@ components:
             - CANCELADO
           description: Situação da operação financeira digital realizada.
           example: PAGO
-        terminal:
-          $ref: '#/components/schemas/Terminal'
         beneficiario:
           $ref: '#/components/schemas/Pessoa'
         itens:
@@ -884,7 +881,6 @@ components:
         - dataHoraSolicitacao
         - situacao
         - tipoOperacao
-        - terminal
         - beneficiario
     InclusaoOperacaoFinanceira:
       type: object
@@ -961,8 +957,6 @@ components:
             Operação financeira exige endereço de e-mail (true). Operação
             financeira não exige endereço de e-mail (false).
           example: false
-        terminal:
-          $ref: '#/components/schemas/Terminal'
         beneficiario:
           $ref: '#/components/schemas/Pessoa'
         itens:
@@ -978,7 +972,6 @@ components:
         - valor
         - dataHoraVencimento
         - tipoOperacao
-        - terminal
         - beneficiario
     RespostaConsultaPagamento:
       type: object
@@ -1284,13 +1277,9 @@ components:
             Data e hora da confirmação do pagamento 
             na instituição financeira. Formato RFC 3339, seção 5.6.
           example: '2017-07-21T17:32:28Z'
-        dispositivoConfirmacao:
-          $ref: '#/components/schemas/Terminal'
-          description: Dados do dispositivo que autorizou o pagamento.
       required:
         - pagamentoConfirmado
         - dataHoraConfirmacao
-        - dispositivoConfirmacao
     InclusaoConfirmacaoPagamento:
       type: object
       properties:
@@ -1302,12 +1291,8 @@ components:
           description: >-
             Pagamento confirmado (true). Pagamento não confirmado (false).
           example: true
-        dispositivoConfirmacao:
-          $ref: '#/components/schemas/Terminal'
-          description: Dados do dispositivo que autorizou o pagamento.
       required:
         - pagamentoConfirmado
-        - dispositivoConfirmacao
     ConsultaConfirmacaoOperacao:
       type: object
       properties:
@@ -1326,13 +1311,9 @@ components:
             Data e hora da confirmação da operação financeira digital 
             na instituição financeira. Formato RFC 3339, seção 5.6.
           example: '2017-07-21T17:32:28Z'
-        dispositivoConfirmacao:
-          $ref: '#/components/schemas/Terminal'
-          description: Dados do dispositivo que autorizou a operação.
       required:
         - operacaoConfirmada
         - dataHoraConfirmacao
-        - dispositivoConfirmacao
     InclusaoConfirmacaoOperacao:
       type: object
       properties:
@@ -1344,12 +1325,8 @@ components:
           description: >-
             Operação financeira confirmada (true). Operação financeira não confirmada (false).
           example: true
-        dispositivoConfirmacao:
-          $ref: '#/components/schemas/Terminal'
-          description: Dados do dispositivo que autorizou a operação.
       required:
         - operacaoConfirmada
-        - dispositivoConfirmacao
     AutorizacaoOperacao:
       type: object
       properties:
@@ -1369,13 +1346,9 @@ components:
             Data e hora da autorização da operação financeira digital na
             instituição financeira. Formato RFC 3339, seção 5.6.
           example: '2017-07-21T17:32:28Z'
-        dispositivoConfirmacao:
-          $ref: '#/components/schemas/Terminal'
-          description: Dados do dispositivo que confirmou a operação.
       required:
         - operacaoAutorizada
         - dataHoraAutorizacao
-        - dispositivoConfirmacao
     MensagemRetorno:
       type: object
       properties:

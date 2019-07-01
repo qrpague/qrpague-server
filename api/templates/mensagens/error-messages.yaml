@@ -76,6 +76,30 @@ erros:
             - cnpj_nao_autorizado:
                 codigoDetalheErro: 4
                 detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+    - confirmacao_operacao:
+        codigoErro: 6000
+        mensagemErro: Erro de confirmação de operação
+        detalhes:
+            - operacao_nao_encontrada:
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuid} não existe
+            - operacao_confirmada:
+                codigoDetalheErro: 2
+                detalheErro: A operação ${uuid} já foi confirmada/cancelada
+    - requisicao:
+        codigoErro: 997000
+        mensagemErro: Erro na requisição
+        detalhes:
+            - campo_obrigatorio:
+                codigoDetalheErro: 1
+                detalheErro: O campo ${campo} é obrigatório
+    - resposta:
+        codigoErro: 998000
+        mensagemErro: Erro na resposta
+        detalhes:
+            - campo_obrigatorio:
+                codigoDetalheErro: 1
+                detalheErro: O campo ${campo} é obrigatório
     - jwt:
         codigoErro: 999000
         mensagemErro: Erro no JSON Web Token

@@ -71,10 +71,10 @@ const Operacao = {
         enum: ARRAY_SITUACAO,
         default: SITUACAO.EMITIDO 
     },
-    terminal: {
-        type: TerminalSchema,
-        required: [true, 'O campo terminal é obrigatório'],
-    },
+    // terminal: {
+    //     type: TerminalSchema,
+    //     required: [true, 'O campo terminal é obrigatório'],
+    // },
     beneficiario: {
         type: PessoaSchema,
         required: [true, 'O campo beneficiario é obrigatório'],
