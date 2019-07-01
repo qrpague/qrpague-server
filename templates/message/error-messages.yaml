@@ -22,6 +22,9 @@ erros:
             - cnpj_nao_autorizado:
                 codigoDetalheErro: 2
                 detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+            - cnpj_nao_informado:
+                codigoDetalheErro: 3
+                detalheErro: O CNPJ não foi informado.
     - insercao_pagamento:
         codigoErro: 3000
         mensagemErro: Erro de inserção de pagamento

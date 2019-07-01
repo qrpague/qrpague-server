@@ -219,7 +219,7 @@ const confirmarPagamento = async ({ uuid, tokenInstituicao, confirmacao }) => {
 		if(!(err instanceof ResponseError)){
 			if(err.name === JWT.ERROR_NAME) {
 				if(err.message.includes(JWT.INVALID_SUBJECT.ERROR_MESSAGE)) {
-					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 50000, 4, { cnpj: cnpjInstituicao });
+					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 4, { cnpj: cnpjInstituicao });
 				} else if(err.message.includes(JWT.INVALID_SIGNATURE.ERROR_MESSAGE)) {
 					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
 				}

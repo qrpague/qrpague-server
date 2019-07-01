@@ -30,6 +30,7 @@ COPY api ./api
 COPY config ./config
 COPY public ./public
 COPY package.json ./  
+COPY package-lock.json ./  
 COPY test ./test
 
 # ISSUE - https://github.com/lorenwest/node-config/issues/244

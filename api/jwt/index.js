@@ -1,5 +1,9 @@
 const jwt = require('jsonwebtoken');
 
+const CONSTANTS = {
+    TOKEN_NAME: 'token-instituicao'
+}
+
 const sign = (payload, key, options) => {
     const token = jwt.sign(payload, key, options);
     return token
@@ -25,5 +29,6 @@ const decode = (token, options = { complete: false }) => {
 module.exports = {
     sign,
     verify,
-    decode
+    decode,
+    CONSTANTS
 }

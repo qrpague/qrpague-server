@@ -1,6 +1,7 @@
 const { Response, Logger } = require('../util');
 const paramUtil = require('../helper/param-util');
 const service = require('../service/pagamento-service');
+const { CONSTANTS } = require('../jwt');
 
 const WHATSAPP = 'WHATSAPP';
 
@@ -8,7 +9,7 @@ const criarPagamento = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
         const pagamento = req.body;
-        const tokenInstituicao = params['token-instituicao'];
+        const tokenInstituicao = params[CONSTANTS.TOKEN_NAME];
         const uuidOperacao = params.uuid;
 
         const result = await service.criarPagamento({ tokenInstituicao, uuidOperacao, pagamento });
@@ -23,7 +24,7 @@ const criarPagamento = async (req, res, next) => {
 const consultarPagamentos = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
-        const tokenInstituicao = params['token-instituicao'];
+        const tokenInstituicao = params[CONSTANTS.TOKEN_NAME];
         const options = { ...params, tokenInstituicao }
 
         const result = await service.consultarPagamentos(options);
@@ -36,7 +37,7 @@ const consultarPagamentos = async (req, res, next) => {
 const consultarPagamento = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
-        const tokenInstituicao = params['token-instituicao'];
+        const tokenInstituicao = params[CONSTANTS.TOKEN_NAME];
         const options = { ...params, tokenInstituicao }
         
         const result = await service.consultarPagamento(options);
@@ -51,7 +52,7 @@ const confirmarPagamento = async (req, res, next) => {
     try {
         const options = paramUtil.getParams(req);
         const uuid = options.uuid;
-        const tokenInstituicao = options['token-instituicao'];
+        const tokenInstituicao = options[CONSTANTS.TOKEN_NAME];
         const confirmacao = req.body;
         const result = await service.confirmarPagamento({ uuid, tokenInstituicao, confirmacao});
 

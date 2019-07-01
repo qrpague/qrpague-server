@@ -3,9 +3,10 @@ const fs = require('fs');
 const uuidv4 = require('uuid/v4');
 const QRCode = require('qrcode');
 const Validador = require('boleto-brasileiro-validator');
+const jwt = require('../jwt');
 const { Operacao } = require('../database/db');
 const { APPLICATION_IMAGE } = require('../util/http/content-type');
-const { Err, Request, Response, Logger, YAMLReader } = require('../util');
+const { ResponseError, Err, Request, Response, Logger, YAMLReader } = require('../util');
 const { Instituicao } = require('../regras');
 const Crypto = require('../crypto');
 
@@ -40,57 +41,112 @@ const criarOperacao = async ({ contentType, operacaoFinanceira }) => {
 	}
 }
 
-const consultarOperacoes = async ({ idRequisicao, cnpjInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
-	const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
-	if(!instituicaoSolicitante) {
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
-	}
+const consultarOperacoes = async ({ idRequisicao, tokenInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
+
+	let cnpjInstituicao;
+
+	try {
+
+		cnpjInstituicao = extrairCNPJDoJWT(tokenInstituicao);
+		if(!cnpjInstituicao) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 3);
+		}
 	
-	const options = {
-		cnpjInstituicao,
-		cpfCnpjBeneficiario,
-		idRequisicao,
-		paginaInicial,
-		tamanhoPagina,
-		periodoInicio,
-		periodoFim
+		const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
+		if(!instituicaoSolicitante) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
+		}
+		
+		await verificarTokenInstituicao(tokenInstituicao, instituicaoSolicitante.chavePublica, cnpjInstituicao);
+
+		const options = {
+			cnpjInstituicao,
+			cpfCnpjBeneficiario,
+			idRequisicao,
+			paginaInicial,
+			tamanhoPagina,
+			periodoInicio,
+			periodoFim
+		}
+		const operacoes = await Operacao.recuperarOperacoes(options);
+		const hashObj = Crypto.hash(JSON.stringify(operacoes));
+		const signatureObj = Crypto.sign(hashObj.hash, MY_PRIVATE_KEY);
+		const resultado = {
+			quantidadeRegistros: operacoes.length,
+			paginaAtual: paginaInicial,
+			tamanhoPagina: tamanhoPagina,
+			resultados: operacoes,
+			hash: hashObj.hash,
+			assinatura: signatureObj.signature,
+			algoritmo: signatureObj.algorithm
+		}
+		return resultado;
+	} catch(err) {
+
+		Logger.warn(err);
+
+		if(!(err instanceof ResponseError)){
+			if(err.name === JWT.ERROR_NAME) {
+				if(err.message.includes(JWT.INVALID_SUBJECT.ERROR_MESSAGE)) {
+					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
+				} else if(err.message.includes(JWT.INVALID_SIGNATURE.ERROR_MESSAGE)) {
+					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
+				}
+			}
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000);
+		}
+		throw err;
 	}
-	const operacoes = await Operacao.recuperarOperacoes(options);
-	const hashObj = Crypto.hash(JSON.stringify(operacoes));
-	const signatureObj = Crypto.sign(hashObj.hash, MY_PRIVATE_KEY);
-	const resultado = {
-		quantidadeRegistros: operacoes.length,
-		paginaAtual: paginaInicial,
-		tamanhoPagina: tamanhoPagina,
-		resultados: operacoes,
-		hash: hashObj.hash,
-		assinatura: signatureObj.signature,
-		algoritmo: signatureObj.algorithm
-	}
-	return resultado;
 }
 
-const consultarOperacao = async ({  uuid, cnpjInstituicao, originalUrl, userAgent, isWhatsApp }) => {
+const consultarOperacao = async ({  uuid, tokenInstituicao }) => {
 
-	const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
-	if(!instituicaoSolicitante) {
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
-	}
+	let cnpjInstituicao;
 
-	let operacao = await Operacao.consultarOperacao(uuid);
-	if (!operacao) {
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 1, { uuid });
-	}
+	try {
 
-	const hashObj = Crypto.hash(JSON.stringify(operacao));
-	const signatureObj = Crypto.sign(hashObj.hash, MY_PRIVATE_KEY);
-	const resultado = {
-		resultado: operacao,
-		hash: hashObj.hash,
-		assinatura: signatureObj.signature,
-		algoritmo: signatureObj.algorithm
+		cnpjInstituicao = extrairCNPJDoJWT(tokenInstituicao);
+		if(!cnpjInstituicao) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 3);
+		}
+	
+		const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
+		if(!instituicaoSolicitante) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
+		}
+		
+		await verificarTokenInstituicao(tokenInstituicao, instituicaoSolicitante.chavePublica, cnpjInstituicao);
+	
+		let operacao = await Operacao.consultarOperacao(uuid);
+		if (!operacao) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 1, { uuid });
+		}
+	
+		const hashObj = Crypto.hash(JSON.stringify(operacao));
+		const signatureObj = Crypto.sign(hashObj.hash, MY_PRIVATE_KEY);
+		const resultado = {
+			resultado: operacao,
+			hash: hashObj.hash,
+			assinatura: signatureObj.signature,
+			algoritmo: signatureObj.algorithm
+		}
+		return resultado;
+	} catch(err) {
+
+		Logger.warn(err);
+
+		if(!(err instanceof ResponseError)){
+			if(err.name === JWT.ERROR_NAME) {
+				if(err.message.includes(JWT.INVALID_SUBJECT.ERROR_MESSAGE)) {
+					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
+				} else if(err.message.includes(JWT.INVALID_SIGNATURE.ERROR_MESSAGE)) {
+					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
+				}
+			}
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000);
+		}
+		throw err;
 	}
-	return resultado;
 }
 
 const autorizarOperacao = async ({ uuid, autorizacao }) => {
@@ -122,25 +178,20 @@ const confirmarOperacao = async ({ uuid, confirmacao }) => {
 	}
 }
 
-const buildWhatsappContent = ({ operacao, originalUrl }) => {
-	const urlOperacao = SERVER_URL + originalUrl;
-	const whatsappLink = WHATSAPP_TEMPLATE_FILE;
-	const type = 'website';
-	let content = fs.readFileSync(whatsappLink , "utf8");
-	let tipo;
-	let descricao;
-	switch( operacao.tipoOperacao ) {
-		case OPERACAO.TRANSFERENCIA: 
-			tipo = 'Transferência digital.';  
-			descricao = `Tíquete de transferência no valor de R$ ${operacao.valor}`;
-		break
+const extrairCNPJDoJWT = (token) => {
+	if(!token) {
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 1);
 	}
-	content = content.replaceAll( '$TITLE$' , ' ' + tipo  )
-	content = content.replaceAll( '$URL$' , urlOperacao )
-	content = content.replaceAll( '$DESCRIPTION$' , descricao )
-	content = content.replaceAll( '$URL_IMAGE$' , QRPAGUE_IMAGE_URL )
-	content = content.replaceAll( '$TYPE$' , type )
-	return content;
+	const decodedJwt = jwt.decode(token);
+	if(!decodedJwt){
+		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 3);
+	}
+	return decodedJwt.sub;	
+}
+
+const verificarTokenInstituicao = async (token, key, cnpj) => {
+	const options = { subject: cnpj }
+	await jwt.verify(token, key, options);
 }
 
 module.exports = {
