@@ -12,10 +12,10 @@ const criarPagamento = async (req, res, next) => {
         const options = PagamentoValidator.requisicaoCriarPagamento(params, body);
         const resposta = await service.criarPagamento(options);
         const contentType = Response.CONTENT_TYPE.APPLICATION_JSON;
-        Response.created(res, resposta, { contentType });
+        return Response.created(res, resposta, { contentType });
     } catch (err) {
         Logger.warn(err);
-        Response.fromError(res, err);
+        return Response.fromError(res, err);
     }
 }
 

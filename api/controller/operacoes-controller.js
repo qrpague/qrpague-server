@@ -13,10 +13,10 @@ const criarOperacao = async (req, res, next) => {
         const body = req.body;
         const operacaoFinanceira = OperacaoValidator.requisicaoCriarOperacao(params, body);
         const resposta = await service.criarOperacao({ contentType, operacaoFinanceira });
-        Response.created(res, resposta, { contentType });
+        return Response.created(res, resposta, { contentType });
     } catch (err) {
         Logger.warn(err);
-        Response.fromError(res, err);
+        return Response.fromError(res, err);
     }
 }
 
