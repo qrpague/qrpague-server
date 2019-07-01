@@ -45,9 +45,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/InclusaoOperacaoFinanceira'
-                - $ref: '#/components/schemas/CodigoBarras'
+              $ref: '#/components/schemas/InclusaoOperacaoFinanceira'
       responses:
         '201':
           description: Imagem do QRCode gerado a partir do mecanismo do QRPAGUE.
@@ -194,60 +192,6 @@ paths:
                 $ref: '#/components/schemas/RespostaConsultaOperacaoFinanceira'
         '400':
           description: Exceção de negócio
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MensagemRetorno'
-        '500':
-          description: Erro interno no servidor
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-  '/operacoes/{uuid}/autorizacao':
-    x-swagger-router-controller: operacoes-controller
-    put:
-      tags:
-        - Operações Financeiras Digitais
-      summary: >-
-        Endpoit para autorizar uma operação financeira digital gerada através do
-        QRPague.
-      description: >-
-        Este endpoint deve ser implementado pela instituição financeira para
-        receber a autorização para realização de uma operação financeira digital
-        gerada através da solução QRPague e identificada pelo seu uuid.
-      operationId: autorizarOperacao
-      security:
-        - OAuth2: []
-      parameters:
-        - in: path
-          name: uuid
-          description: >-
-            Identificador único da operação financeira na instituição financeira
-            que gerou o QRPague.
-          required: true
-          schema:
-            type: string
-            pattern: >-
-              ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
-        - $ref: '#/components/parameters/cnpjInstituicao'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AutorizacaoOperacao'
-      responses:
-        '204':
-          description: Autorização realizada com sucesso
-        '400':
-          description: Exceção de negócio
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MensagemRetorno'
-        '406':
-          description: >-
-            Exceção de negócio quando atualização de status da operação não for
-            feita corretamente.
           content:
             application/json:
               schema:
@@ -556,46 +500,6 @@ paths:
           description: Erro interno no servidor
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  '/codigo-barras/{codigoBarras}':
-    get:
-      tags:
-        - Código de Barras
-      summary: >-
-        Endpoit para retornar informações do código de barras do boleto de
-        pagamento do tipo Convênio ou Título.
-      description: >-
-        Este endpoint retorna as informações do código de barras para leitura no
-        mobile banking associado ao QRPague para pagamento do boleto de Convênio
-        ou Título.
-      operationId: codigo-barra-qrcode
-      security:
-        - OAuth2: []
-      parameters:
-        - in: path
-          name: codigoBarras
-          required: true
-          description: >-
-            Identificador númerico do código de barras do título ou convênio,
-            sem espaçadores ou pontos, com 44 dígitos.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Requisição realizada com sucesso
-          content:
-            application/qrpague:
-              schema:
-                $ref: '#/components/schemas/CodigoBarras'
-        '400':
-          description: Exceção de negócio
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MensagemRetorno'
-        '500':
-          description: Erro interno no servidor
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
 components:
   securitySchemes:
     OAuth2:
@@ -628,17 +532,6 @@ components:
       schema:
         type: string
   schemas:
-    CodigoBarras:
-      type: object
-      properties:
-        codigoBarras:
-          type: string
-          description: >-
-            Valor dos dígitos do código de barras de 44 dígitos numéricos, para
-            boletos de títulos ou convênios, sem espaçadores, pontos ou traços.
-          example: '12345678912123456781231234567812312345678912'
-      required:
-        - codigoBarras
     RespostaConsulta:
       type: object
       properties:
@@ -867,8 +760,6 @@ components:
             para um QRCode gerado.
         confirmacaoOperacao:
           $ref: '#/components/schemas/ConsultaConfirmacaoOperacao'
-        autorizacaoOperacao:
-          $ref: '#/components/schemas/AutorizacaoOperacao'
       required:
         - uuid
         - versao
@@ -1323,28 +1214,6 @@ components:
           example: true
       required:
         - operacaoConfirmada
-    AutorizacaoOperacao:
-      type: object
-      properties:
-        operacaoAutorizada:
-          type: boolean
-          enum:
-            - true
-            - false
-          description: >-
-            Operação financeira autorizada (true). Operação financeira não
-            autorizada (false).
-          example: true
-        dataHoraAutorizacao:
-          type: string
-          format: date-time
-          description: >-
-            Data e hora da autorização da operação financeira digital na
-            instituição financeira. Formato RFC 3339, seção 5.6.
-          example: '2017-07-21T17:32:28Z'
-      required:
-        - operacaoAutorizada
-        - dataHoraAutorizacao
     MensagemRetorno:
       type: object
       properties:

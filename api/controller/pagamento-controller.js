@@ -3,8 +3,6 @@ const paramUtil = require('../helper/param-util');
 const service = require('../service/pagamento-service');
 const PagamentoValidator = require('../http-validators/pagamento-validator');
 
-const WHATSAPP = 'WHATSAPP';
-
 const criarPagamento = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
