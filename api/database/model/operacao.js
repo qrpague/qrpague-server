@@ -130,7 +130,7 @@ module.exports = (db, mongoose, promise) => {
                     await pagamento.save();
                 }
             }
-            operacao.stituacao = situacao;
+            operacao.situacao = situacao;
             operacao.confirmacaoOperacao = confirmacaoOperacao;
             await operacao.save();
             await session.commitTransaction();

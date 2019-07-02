@@ -37,15 +37,15 @@ const requisicaoCriarOperacao = (params, body) => {
             requisicao = { ...requisicao, descricao: body.descricao }
         }
 
-        if(body.exigeEndereco) {
+        if(body.exigeEndereco || typeof body.exigeEndereco === 'boolean') {
             requisicao = { ...requisicao, exigeEndereco: body.exigeEndereco }
         }
 
-        if(body.pagamentoParcial) {
+        if(body.pagamentoParcial || typeof body.pagamentoParcial === 'boolean') {
             requisicao = { ...requisicao, pagamentoParcial: body.pagamentoParcial }
         }
 
-        if(body.exigeEmail) {
+        if(body.exigeEmail || typeof body.exigeEmail === 'boolean') {
             requisicao = { ...requisicao, exigeEmail: body.exigeEmail }
         }
 
@@ -306,6 +306,7 @@ const requisicaoConfirmarOperacao = (params, body) => {
         campoObrigatorio('uuid', params.uuid);
         campoObrigatorio('operacaoConfirmada', body.operacaoConfirmada);
 
+        
         let requisicao = {
             uuid: params.uuid,
             confirmacao: {
