@@ -286,8 +286,12 @@ paths:
             schema:
               $ref: '#/components/schemas/InclusaoPagamento'
       responses:
-        '204':
-          description: Pagamento realizado com sucesso
+        '201':
+          description: Requisição realizada com sucesso
+          content:
+            application/qrpague:
+              schema:
+                $ref: '#/components/schemas/ConsultaPagamento'
         '400':
           description: Exceção de negócio
           content:
@@ -893,6 +897,14 @@ components:
             Identificador único de um pagamento realizado para uma operação
             financeira digital na instituição sacadora. RFC 4122
           example: "3d0ca315-aff9–4fc2-be61–3b76b9a2d798"
+        uuidOperacaoFinanceira:
+          type: string
+          pattern: >-
+            ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
+          description: >-
+            Identificador único de uma operação financeira digital
+            na instituição sacadora. RFC 4122
+          example: "3d0ca315-aff9–4fc2-be61–3b76b9a2d798"
         idRequisicao:
           type: string
           pattern: >-
@@ -929,6 +941,7 @@ components:
           $ref: '#/components/schemas/ConsultaConfirmacaoPagamento'
       required:
         - uuid
+        - uuidOperacaoFinanceira
         - dataHoraPagamento
         - pagador
         - valor

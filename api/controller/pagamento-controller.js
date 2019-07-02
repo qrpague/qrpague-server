@@ -8,8 +8,8 @@ const criarPagamento = async (req, res, next) => {
         const params = paramUtil.getParams(req);
         const body = req.body;
         const options = PagamentoValidator.requisicaoCriarPagamento(params, body);
-        await service.criarPagamento(options);
-        return Response.noContent(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
+        const resposta = await service.criarPagamento(options);
+        return Response.created(res, resposta, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
     } catch (err) {
         Logger.warn(err);
         return Response.fromError(res, err);

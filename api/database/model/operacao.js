@@ -102,13 +102,44 @@ module.exports = (db, mongoose, promise) => {
 	OperacaoModel.confirmarOperacao = async (uuid, confirmacaoOperacao) => {
         Logger.debug('Confirmação da Operação');
 
-        const situacao = (confirmacaoOperacao.operacaoConfirmada) ? SITUACAO.CONFIRMADO : SITUACAO.CANCELADO;
         confirmacaoOperacao.dataHoraConfirmacao = Date.now();
-        return await OperacaoModel.findOneAndUpdate({ uuid, situacao: SITUACAO.EMITIDO }, { situacao, confirmacaoOperacao });
-    }
-    
-    OperacaoModel.isOperacaoValida = async (operacao) => {
+        
+        let session;
+        try {
+            session = await db.startSession();
+            session.startTransaction();
+            const situacao = (confirmacaoOperacao.operacaoConfirmada) ? SITUACAO.CONFIRMADO : SITUACAO.CANCELADO;
+            const query = { uuid, situacao: SITUACAO.EMITIDO }
+            let operacao = await OperacaoModel.findOne(query).populate('pagamentos');
+            
+            if(!operacao){
+                return null
+            }
 
+            const pagamentos = operacao.pagamentos;
+
+            for(let i=0; i < pagamentos.length; i++){
+                let idPagamento = pagamentos[i]._id;
+                let pagamento = await db.model('Pagamento').findOne({ _id: idPagamento });
+                if(situacao === SITUACAO.CANCELADO || !pagamento.confirmacaoPagamento) {
+                    pagamento.situacao = SITUACAO.CANCELADO;
+                    pagamento.confirmacaoPagamento = { 
+                        pagamentoConfirmado: false,
+                        dataHoraConfirmacao: Date.now()
+                    }
+                    await pagamento.save();
+                }
+            }
+            operacao.stituacao = situacao;
+            operacao.confirmacaoOperacao = confirmacaoOperacao;
+            await operacao.save();
+            await session.commitTransaction();
+            return OperacaoModel.findOne({ uuid });
+        } catch(err) {
+            Logger.warn(err);
+            session.abortTransaction();
+            throw err;
+        }
     }
 
     return OperacaoModel;
