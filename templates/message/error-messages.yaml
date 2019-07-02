@@ -31,7 +31,7 @@ erros:
         detalhes:
             - operacao_nao_encontrada:
                 codigoDetalheErro: 1
-                detalheErro: A operação ${uuidOperacao} não existe
+                detalheErro: A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada
             - cnpj_nao_autorizado:
                 codigoDetalheErro: 2
                 detalheErro: A instituição de cnpj ${cnpj} não está autorizada
@@ -47,6 +47,9 @@ erros:
             - cnpj_nao_informado:
                 codigoDetalheErro: 6
                 detalheErro: O CNPJ não foi informado
+            - operacao_invalida:
+                codigoDetalheErro: 7
+                detalheErro: O pagamento não pode ser efetuado porque a operação ${uuidOperacao} não é mais válida
     - consulta_pagamento:
         codigoErro: 4000
         mensagemErro: Erro de consulta de pagamento
@@ -76,6 +79,12 @@ erros:
             - cnpj_nao_autorizado:
                 codigoDetalheErro: 4
                 detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+            - operacao_nao_encontrada:
+                codigoDetalheErro: 5
+                detalheErro: A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada
+            - operacao_invalida:
+                codigoDetalheErro: 6
+                detalheErro: O pagamento não pode ser efetuado porque a operação ${uuidOperacao} não é mais válida
     - confirmacao_operacao:
         codigoErro: 6000
         mensagemErro: Erro de confirmação de operação

@@ -44,9 +44,12 @@ const criarPagamento = async ({ tokenInstituicao, uuidOperacao, pagamento }) => 
 		
 		await verificarTokenInstituicao(tokenInstituicao, instituicaoSolicitante.chavePublica, pagamento.cnpjInstituicao);
 
-		const operacao = await Operacao.consultarOperacao(uuidOperacao);
+		const operacao = await Operacao.consultarOperacao(uuidOperacao, Operacao.SITUACAO.EMITIDO);
 		if (!operacao) {
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 3000, 1, { uuidOperacao });
+		}
+		if(!operacao.isValida()) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 3000, 7, { uuidOperacao });
 		}
 		
 		const resultado = await Pagamento.incluirPagamento(pagamento, operacao);
@@ -215,6 +218,15 @@ const confirmarPagamento = async ({ uuid, tokenInstituicao, confirmacao }) => {
 		let pagamento = await Pagamento.consultarPagamento(uuid, cnpjInstituicao);
 		if (!pagamento) {
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 1, { uuid, cnpj: cnpjInstituicao });
+		}
+
+		const uuidOperacao = pagamento.uuidOperacaoFinanceira;
+		const operacao = await Operacao.consultarOperacao(uuidOperacao, Operacao.SITUACAO.EMITIDO);
+		if (!operacao) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 5, { uuidOperacao });
+		}
+		if(!operacao.isValida()) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 6, { uuidOperacao });
 		}
 
 		pagamento = await Pagamento.confirmarPagamento(uuid, confirmacao);

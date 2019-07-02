@@ -14,7 +14,6 @@ module.exports = (db, mongoose, promise) => {
             transform: function (doc, ret) {
                 delete ret._id;
                 delete ret.__v;
-                delete ret.uuidOperacaoFinanceira;
             }
         }
     });
@@ -26,7 +25,7 @@ module.exports = (db, mongoose, promise) => {
     PagamentoModel.incluirPagamento = async (pag, operacao) => {
         Logger.debug('Inclusão de Pagamento');
 
-        pag.dataHoraPagamento = new Date();
+        pag.dataHoraPagamento = Date.now();
         pag.situacao = SITUACAO.REALIZADO;
         pag.uuidOperacaoFinanceira = operacao.uuid;
 
@@ -83,7 +82,7 @@ module.exports = (db, mongoose, promise) => {
         Logger.debug('Confirmação de Pagamento');
 
         const situacao = (confirmacaoPagamento.pagamentoConfirmado) ? SITUACAO.CONFIRMADO : SITUACAO.CANCELADO;
-        confirmacaoPagamento.dataHoraConfirmacao = new Date();
+        confirmacaoPagamento.dataHoraConfirmacao = Date.now();
         return await PagamentoModel.findOneAndUpdate({ uuid, situacao: SITUACAO.REALIZADO }, { situacao, confirmacaoPagamento });
 	}
 

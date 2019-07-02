@@ -1,5 +1,6 @@
 const { Err, Logger } = require('../../util');
 const { Operacao, SITUACAO, TIPO_OPERACAO } = require('../schema/operacao-financeira');
+const DateUtil = require('../../helper/date-util');
 
 const DEFAULT_MONGOOSE_LIMIT = 30;
 const DEFAULT_MONGOOSE_SKIP = 0;
@@ -35,6 +36,14 @@ module.exports = (db, mongoose, promise) => {
         }
     })
 
+    operacaoSchema.methods.isValida = function() {
+        const now = new Date();
+        const dataHoraVencimento = this.dataHoraVencimento;
+        const result = DateUtil.compare(now, dataHoraVencimento);
+        const isValida = (result < 0);
+        return isValida;
+    }
+
     let OperacaoModel = db.model('Operacao', operacaoSchema);
 
     OperacaoModel.TIPO_OPERACAO = TIPO_OPERACAO;
@@ -43,8 +52,8 @@ module.exports = (db, mongoose, promise) => {
     OperacaoModel.incluirOperacao = async (op) => {
         Logger.debug('Inclusão de Operação Financeira');
 
-        op.dataHoraSolicitacao = new Date();
-        op.dataHoraVencimento = new Date(op.dataHoraVencimento);
+        op.dataHoraSolicitacao = Date.now();
+        op.dataHoraVencimento = new Date(op.dataHoraVencimento).getTime();
         let operacao = new OperacaoModel(op);
 		return await operacao.save();
     },
@@ -72,10 +81,15 @@ module.exports = (db, mongoose, promise) => {
         return await OperacaoModel.find(query, null, opt).populate('pagamentos');
 	},
 
-	OperacaoModel.consultarOperacao = async ( uuid ) => {
+	OperacaoModel.consultarOperacao = async ( uuid, situacao ) => {
         Logger.debug('Consulta de Operação Financeira');
 
-        return await OperacaoModel.findOne({ uuid }).populate('pagamentos');
+        let query = { uuid }
+        if(situacao) {
+            query.situacao = situacao;
+        }
+
+        return await OperacaoModel.findOne(query).populate('pagamentos');
 	},
 
 	OperacaoModel.autorizarOperacao = async (uuid, autorizacaoOperacao) => {
@@ -89,9 +103,13 @@ module.exports = (db, mongoose, promise) => {
         Logger.debug('Confirmação da Operação');
 
         const situacao = (confirmacaoOperacao.operacaoConfirmada) ? SITUACAO.CONFIRMADO : SITUACAO.CANCELADO;
-        confirmacaoOperacao.dataHoraConfirmacao = new Date();
+        confirmacaoOperacao.dataHoraConfirmacao = Date.now();
         return await OperacaoModel.findOneAndUpdate({ uuid, situacao: SITUACAO.EMITIDO }, { situacao, confirmacaoOperacao });
-	}
+    }
+    
+    OperacaoModel.isOperacaoValida = async (operacao) => {
+
+    }
 
     return OperacaoModel;
 }
