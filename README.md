@@ -48,6 +48,9 @@ docker-compose -f docker-compose-full.yaml up
 - `SERVER_URL`
     - **OBRIGATÓRIA**
     - URL do serviço de API.
+- `MY_PRIVATE_KEY`
+    - **OBRIGATÓRIA**
+    - Chave privada assimétrica para assinatura e criptografia.
 - `ERROR_MESSAGE_FILE`
     - **OPCIONAL | DEFAULT = Arquivo de template já determinado no projeto**
     - FilePath do arquivo de mensagens de erro.
