@@ -24,7 +24,7 @@ erros:
                 detalheErro: A instituição de cnpj ${cnpj} não está autorizada
             - cnpj_nao_informado:
                 codigoDetalheErro: 3
-                detalheErro: O CNPJ não foi informado.
+                detalheErro: O CNPJ não foi informado
     - insercao_pagamento:
         codigoErro: 3000
         mensagemErro: Erro de inserção de pagamento
@@ -62,20 +62,20 @@ erros:
                 detalheErro: A instituição de cnpj ${cnpj} não está autorizada
             - cnpj_nao_informado:
                 codigoDetalheErro: 3
-                detalheErro: O CNPJ não foi informado.
+                detalheErro: O CNPJ não foi informado
     - confirmacao_pagamento:
         codigoErro: 5000
         mensagemErro: Erro de confirmação de pagamento
         detalhes:
             - erro_ao_salvar:
                 codigoDetalheErro: 1
-                detalheErro: O pagamento ${uuid} não existe.
+                detalheErro: O pagamento ${uuid} não existe
             - pagamento_confirmado:
                 codigoDetalheErro: 2
                 detalheErro: O pagamento ${uuid} já foi confirmado/cancelado
             - cnpj_nao_informado:
                 codigoDetalheErro: 3
-                detalheErro: O CNPJ não foi informado.
+                detalheErro: O CNPJ não foi informado
             - cnpj_nao_autorizado:
                 codigoDetalheErro: 4
                 detalheErro: A instituição de cnpj ${cnpj} não está autorizada

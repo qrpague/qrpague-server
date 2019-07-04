@@ -162,3 +162,123 @@ instituicoes:
     - `nome (string)`: **Este campo representa o nome da instituição**.
     - `cnpj (string)`: **Este campo representa o CNPJ da instituição**.
     - `chavePublica (string)`: **Este campo representa a chave pública da instituição**.
+
+# Mensagens de erro
+
+As mensagens abaixo são tratadas e que possuem semântica negocial no módulo do QRPague.
+
+## Operação Financeira Digital
+
+### **Inserção de uma operação `(POST) - /operacoes`**
+
+- **Código de Erro**: 1000
+- **Mensagem de erro**: Erro de inserção de operação
+
+#### **Erros específicos**
+
+| Código de Detalhamento | Detalhe |
+| -- | -- |
+| 1 | A operação ${uuid} não pode ser salva |
+| 2 | A operação ${uuid} já existe e não pode ser incluída |
+| 3 | A operação com a requisição ${idRequisicao} já foi incluída |
+
+### **Consulta de operações `(GET) - /operacoes` ou `(GET) - /operacoes/{uuid}`**
+
+- **Código de Erro**: 2000
+- **Mensagem de erro**: Erro de consulta de operação
+
+#### **Erros específicos**
+
+| Código de Detalhamento | Detalhe |
+| -- | -- |
+| 1 | A operação ${uuid} não existe |
+| 2 | A instituição de cnpj ${cnpj} não está autorizada |
+| 3 | O CNPJ não foi informado |
+
+### **Confirmação de operação `(PUT) - /operacoes/{uuid}/confirmacao`**
+
+- **Código de Erro**: 6000
+- **Mensagem de erro**: Erro de confirmação de pagamento
+
+#### **Erros específicos**
+
+| Código de Detalhamento | Detalhe |
+| -- | -- |
+| 1 | A operação ${uuid} não existe |
+| 2 | A operação ${uuid} já foi confirmada/cancelada |
+
+## Pagamento
+
+### **Inserção de um pagamento `(POST) - /pagamentos`**
+
+- **Código de Erro**: 3000
+- **Mensagem de erro**: Erro de inserção de pagamento
+
+#### **Erros específicos**
+
+| Código de Detalhamento | Detalhe |
+| -- | -- |
+| 1 | A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada |
+| 2 | A instituição de cnpj ${cnpj} não está autorizada |
+| 3 | O pagamento ${uuid} não pode ser salvo |
+| 4 | O pagamento ${uuid} já existe e não pode ser incluído novamente |
+| 5 | O pagamento com a requisição ${idRequisicao} já foi incluído |
+| 6 | O CNPJ não foi informado |
+
+### **Consulta de pagamentos `(GET) - /pagamentos` ou `(GET) - /pagamentos/{uuid}`**
+
+- **Código de Erro**: 4000
+- **Mensagem de erro**: Erro de consulta de pagamento
+
+#### **Erros específicos**
+
+| Código de Detalhamento | Detalhe |
+| -- | -- |
+| 1 | O pagamento ${uuid} não existe ou não pertence ao cnpj ${cnpj} |
+| 2 | A instituição de cnpj ${cnpj} não está autorizada |
+| 3 | O CNPJ não foi informado |
+
+### **Confirmação de pagamento `(PUT) - /pagamentos/{uuid}/confirmacao`**
+
+- **Código de Erro**: 5000
+- **Mensagem de erro**: Erro de confirmação de pagamento
+
+#### **Erros específicos**
+
+| Código de Detalhamento | Detalhe |
+| -- | -- |
+| 1 | O pagamento ${uuid} não existe |
+| 2 | O pagamento ${uuid} já foi confirmado/cancelado |
+| 3 | O CNPJ não foi informado |
+| 4 | A instituição de cnpj ${cnpj} não está autorizada |
+| 5 | A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada |
+| 6 | O pagamento não pode ser efetuado porque a operação ${uuidOperacao} não é mais válida |
+
+## Requisição
+
+Erros que podem ocorrer nas requisições http.
+
+- **Código de Erro**: 997000
+- **Mensagem de erro**: Erro na requisição
+
+#### **Erros específicos**
+
+| Código de Detalhamento | Detalhe |
+| -- | -- |
+| 1 | O campo '${campo}' é obrigatório |
+
+## Requisição
+
+Erros que podem ocorrer com relação ao token JWT.
+
+- **Código de Erro**: 999000
+- **Mensagem de erro**: Erro no JSON Web Token
+
+#### **Erros específicos**
+
+| Código de Detalhamento | Detalhe |
+| -- | -- |
+| 1 | O token não foi informado |
+| 2 | Assinatura inválida para o token de pagamento informado |
+| 3 | Houve um erro na decodificação do token |
+| 4 | O token está expirado |
