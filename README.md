@@ -165,7 +165,7 @@ instituicoes:
 
 # 3. Mensagens de erro
 
-As mensagens abaixo são tratadas e que possuem semântica negocial no módulo do QRPague.
+As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPague.
 
 ## 3.1 Operação Financeira Digital
 
