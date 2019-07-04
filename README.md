@@ -163,11 +163,11 @@ instituicoes:
     - `cnpj (string)`: **Este campo representa o CNPJ da instituição**.
     - `chavePublica (string)`: **Este campo representa a chave pública da instituição**.
 
-# Mensagens de erro
+# 3. Mensagens de erro
 
 As mensagens abaixo são tratadas e que possuem semântica negocial no módulo do QRPague.
 
-## Operação Financeira Digital
+## 3.1 Operação Financeira Digital
 
 ### **Inserção de uma operação `(POST) - /operacoes`**
 
@@ -207,7 +207,7 @@ As mensagens abaixo são tratadas e que possuem semântica negocial no módulo d
 | 1 | A operação ${uuid} não existe |
 | 2 | A operação ${uuid} já foi confirmada/cancelada |
 
-## Pagamento
+## 3.2 Pagamento
 
 ### **Inserção de um pagamento `(POST) - /pagamentos`**
 
@@ -254,7 +254,7 @@ As mensagens abaixo são tratadas e que possuem semântica negocial no módulo d
 | 5 | A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada |
 | 6 | O pagamento não pode ser efetuado porque a operação ${uuidOperacao} não é mais válida |
 
-## Requisição
+## 3.3 Requisição
 
 Erros que podem ocorrer nas requisições http.
 
@@ -267,7 +267,7 @@ Erros que podem ocorrer nas requisições http.
 | -- | -- |
 | 1 | O campo '${campo}' é obrigatório |
 
-## Requisição
+## 3.4 JSON WEB Token
 
 Erros que podem ocorrer com relação ao token JWT.
 
