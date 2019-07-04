@@ -1,0 +1,13 @@
+instituicoes:
+    - sicoob:
+        nome: Sicoob Confederação
+        cnpj: 04.891.850/0001-88
+        chavePublica: /run/secrets/sicoob/sicoob_public.pub
+    - caixa_economica_federal:
+        nome: Caixa Econômica Federal
+        cnpj: 00.360.305/0001-04
+        chavePublica: /run/secrets/caixa/caixa_public.pub
+    - banco_do_brasil:
+        nome: Banco do Brasil
+        cnpj: 00.000.000/0001-91
+        chavePublica: /run/secrets/bb/bb_public.pub

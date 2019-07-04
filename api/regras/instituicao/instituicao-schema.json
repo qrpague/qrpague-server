@@ -1,0 +1,27 @@
+{
+    "title": "Validador de Instituicao",
+    "type": "object",
+    "properties": {
+        "instituicoes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "minProperties": 1,
+                "patternProperties": {
+                    "^[A-Za-z_][A-Za-z0-9_]*$": { 
+                        "type": "object",
+                        "properties": {
+                            "nome": { "type": "string" },
+                            "cnpj": { "type": "string" },
+                            "chavePublica": { "type": "string" }
+                        },
+                        "required": ["nome", "cnpj", "chavePublica"],
+                        "additionalProperties": false
+                    }
+                }
+            }
+        }
+    },
+    "required": ["instituicoes"],
+    "additionalProperties": false
+}

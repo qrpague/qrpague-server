@@ -1,0 +1,46 @@
+{
+    "title": "Message Validator",
+    "type": "object",
+    "properties": {
+        "erros": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "minProperties": 1,
+                "patternProperties": {
+                    "^[A-Za-z_][A-Za-z0-9_]*$": { 
+                        "type": "object",
+                        "properties": {
+                            "type": { "type": "string" },
+                            "codigoErro": { "type": "integer" },
+                            "mensagemErro": { "type": "string" },
+                            "detalhes": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "minProperties": 1,
+                                    "patternProperties": { 
+                                        "^[A-Za-z_][A-Za-z0-9_]*$": { 
+                                            "type": "object",
+                                            "properties": {
+                                                "instance": { "type": "string" },
+                                                "codigoDetalheErro": { "type": "integer" },
+                                                "detalheErro": { "type": "string" }
+                                            },
+                                            "required": ["codigoDetalheErro", "detalheErro"],
+                                            "additionalProperties": false
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "required": ["codigoErro", "mensagemErro", "detalhes"],
+                        "additionalProperties": false
+                    }
+                }
+            }
+        }
+    },
+    "required": ["erros"],
+    "additionalProperties": false
+}

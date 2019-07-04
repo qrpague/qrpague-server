@@ -1,0 +1,37 @@
+version: '3'
+
+networks: 
+  stack:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.29.0.0/16
+
+services:
+  api:
+    image: test/qrpague:latest
+    networks:
+        - stack
+    depends_on:
+        - mongo
+    ports:
+        - "9999:8080"
+    volumes:
+        - ./templates:/home/qrpague/templates
+        - ./keys:/run/secrets
+    environment:
+        MONGO_CONNECTION : 'mongodb://mongo:27017/QRPAGUE'
+        SERVER_URL : 'http://127.0.0.1:8080'
+        PORT: 8080
+        NODE_PROJECT: 'QRPague-Service'
+        LOG_LEVEL: 'debug'
+        MONGOOSE_DEBUG: 'true'
+        ERROR_MESSAGE_FILE: '/home/qrpague/templates/message/error-messages.yaml'
+        INSTITUICOES_FILE: '/home/qrpague/templates/instituicoes/instituicoes.yaml'
+        QRPAGUE_IMAGE_URL: 'https://avatars1.githubusercontent.com/u/43270555?s=460&v=4'
+        MY_PRIVATE_KEY: /run/secrets/sicoob/sicoob_private.pem
+  mongo:
+    image: mongo:4.1
+    networks:
+        - stack

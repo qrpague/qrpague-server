@@ -1,0 +1,127 @@
+erros:
+    - insercao_operacao:
+        codigoErro: 1000
+        mensagemErro: Erro de inserção de operação
+        detalhes:
+            - erro_ao_salvar:
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuid} não pode ser salva
+            - operacao_existente:
+                codigoDetalheErro: 2
+                detalheErro: A operação ${uuid} já existe e não pode ser incluída novamente
+            - id_requisicao_existente:
+                codigoDetalheErro: 3
+                detalheErro: A operação com a requisição ${idRequisicao} já foi incluída
+    - consulta_operacao:
+        codigoErro: 2000
+        mensagemErro: Erro de consulta de operação
+        detalhes:
+            - erro_ao_salvar:
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuid} não existe
+            - cnpj_nao_autorizado:
+                codigoDetalheErro: 2
+                detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+            - cnpj_nao_informado:
+                codigoDetalheErro: 3
+                detalheErro: O CNPJ não foi informado
+    - insercao_pagamento:
+        codigoErro: 3000
+        mensagemErro: Erro de inserção de pagamento
+        detalhes:
+            - operacao_nao_encontrada:
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada
+            - cnpj_nao_autorizado:
+                codigoDetalheErro: 2
+                detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+            - erro_ao_salvar:
+                codigoDetalheErro: 3
+                detalheErro: O pagamento ${uuid} não pode ser salvo
+            - pagamento_existente:
+                codigoDetalheErro: 4
+                detalheErro: O pagamento ${uuid} já existe e não pode ser incluído novamente
+            - id_requisicao_existente:
+                codigoDetalheErro: 5
+                detalheErro: O pagamento com a requisição ${idRequisicao} já foi incluído
+            - cnpj_nao_informado:
+                codigoDetalheErro: 6
+                detalheErro: O CNPJ não foi informado
+            - operacao_invalida:
+                codigoDetalheErro: 7
+                detalheErro: O pagamento não pode ser efetuado porque a operação ${uuidOperacao} não é mais válida
+    - consulta_pagamento:
+        codigoErro: 4000
+        mensagemErro: Erro de consulta de pagamento
+        detalhes:
+            - erro_ao_salvar:
+                codigoDetalheErro: 1
+                detalheErro: O pagamento ${uuid} não existe ou não pertence ao cnpj ${cnpj}
+            - cnpj_nao_autorizado:
+                codigoDetalheErro: 2
+                detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+            - cnpj_nao_informado:
+                codigoDetalheErro: 3
+                detalheErro: O CNPJ não foi informado
+    - confirmacao_pagamento:
+        codigoErro: 5000
+        mensagemErro: Erro de confirmação de pagamento
+        detalhes:
+            - erro_ao_salvar:
+                codigoDetalheErro: 1
+                detalheErro: O pagamento ${uuid} não existe
+            - pagamento_confirmado:
+                codigoDetalheErro: 2
+                detalheErro: O pagamento ${uuid} já foi confirmado/cancelado
+            - cnpj_nao_informado:
+                codigoDetalheErro: 3
+                detalheErro: O CNPJ não foi informado
+            - cnpj_nao_autorizado:
+                codigoDetalheErro: 4
+                detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+            - operacao_nao_encontrada:
+                codigoDetalheErro: 5
+                detalheErro: A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada
+            - operacao_invalida:
+                codigoDetalheErro: 6
+                detalheErro: O pagamento não pode ser efetuado porque a operação ${uuidOperacao} não é mais válida
+    - confirmacao_operacao:
+        codigoErro: 6000
+        mensagemErro: Erro de confirmação de operação
+        detalhes:
+            - operacao_nao_encontrada:
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuid} não existe
+            - operacao_confirmada:
+                codigoDetalheErro: 2
+                detalheErro: A operação ${uuid} já foi confirmada/cancelada
+    - requisicao:
+        codigoErro: 997000
+        mensagemErro: Erro na requisição
+        detalhes:
+            - campo_obrigatorio:
+                codigoDetalheErro: 1
+                detalheErro: O campo '${campo}' é obrigatório
+    - resposta:
+        codigoErro: 998000
+        mensagemErro: Erro na resposta
+        detalhes:
+            - campo_obrigatorio:
+                codigoDetalheErro: 1
+                detalheErro: O campo '${campo}' é obrigatório
+    - jwt:
+        codigoErro: 999000
+        mensagemErro: Erro no JSON Web Token
+        detalhes:
+            - token_nao_informado:
+                codigoDetalheErro: 1
+                detalheErro: O token não foi informado
+            - assinatura_invalida:
+                codigoDetalheErro: 2
+                detalheErro: Assinatura inválida para o token informado
+            - decodificacao_invalida:
+                codigoDetalheErro: 3
+                detalheErro: Houve um erro na decodificação do token
+            - jwt_expirado:
+                codigoDetalheErro: 4
+                detalheErro: O token está expirado
