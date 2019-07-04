@@ -198,26 +198,14 @@ const consultarPagamento = async ({  uuid, tokenInstituicao }) => {
 	}
 }
 
-const confirmarPagamento = async ({ uuid, tokenInstituicao, confirmacao }) => {
+const confirmarPagamento = async ({ uuid, confirmacao }) => {
 
-	let cnpjInstituicao;
 
 	try {
-		cnpjInstituicao = extrairCNPJDoJWT(tokenInstituicao);
-		if(!cnpjInstituicao) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 3);
-		}
 	
-		const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
-		if(!instituicaoSolicitante) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 4, { cnpj: cnpjInstituicao });
-		}
-		
-		await verificarTokenInstituicao(tokenInstituicao, instituicaoSolicitante.chavePublica, cnpjInstituicao);
-	
-		let pagamento = await Pagamento.consultarPagamento(uuid, cnpjInstituicao);
+		let pagamento = await Pagamento.consultarPagamento(uuid);
 		if (!pagamento) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 1, { uuid, cnpj: cnpjInstituicao });
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 1, { uuid });
 		}
 
 		const uuidOperacao = pagamento.uuidOperacaoFinanceira;
@@ -226,6 +214,8 @@ const confirmarPagamento = async ({ uuid, tokenInstituicao, confirmacao }) => {
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 5, { uuidOperacao });
 		}
 		if(!operacao.isValida()) {
+			confirmacao = { pagamentoConfirmado:false }
+			await Pagamento.confirmarPagamento(uuid, confirmacao);
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 6, { uuidOperacao });
 		}
 
@@ -238,15 +228,6 @@ const confirmarPagamento = async ({ uuid, tokenInstituicao, confirmacao }) => {
 		Logger.warn(err);
 
 		if(!(err instanceof ResponseError)){
-			if(isErroJWT(err)) {
-				if(err.message.includes(JWT.INVALID_SUBJECT.ERROR_MESSAGE)) {
-					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 4, { cnpj: cnpjInstituicao });
-				} else if(err.message.includes(JWT.INVALID_SIGNATURE.ERROR_MESSAGE)) {
-					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
-				} else if(err.message.includes(JWT.TOKEN_EXPIRED.ERROR_MESSAGE)) {
-					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 4);
-				}
-			}
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000);
 		}
 		throw err;

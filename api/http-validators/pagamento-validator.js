@@ -253,13 +253,11 @@ const requisicaoConsultarPagamento = (params, body) => {
 const requisicaoConfirmarPagamento = (params, body) => {
     try {
 
-        campoObrigatorio('token-instituicao', params[CONSTANTS.TOKEN_NAME]);
         campoObrigatorio('uuid', params.uuid);
         campoObrigatorio('pagamentoConfirmado', body.pagamentoConfirmado);
 
         let requisicao = {
             uuid: params.uuid,
-            tokenInstituicao: params[CONSTANTS.TOKEN_NAME],
             confirmacao: {
                 pagamentoConfirmado: body.pagamentoConfirmado
             }

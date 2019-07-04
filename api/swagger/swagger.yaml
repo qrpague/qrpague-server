@@ -466,7 +466,6 @@ paths:
       security:
         - OAuth2: []
       parameters:
-        - $ref: '#/components/parameters/token-instituicao'
         - in: path
           name: uuid
           description: >-

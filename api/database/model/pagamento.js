@@ -75,7 +75,12 @@ module.exports = (db, mongoose, promise) => {
 	PagamentoModel.consultarPagamento = async ( uuid, cnpjInstituicao ) => {
         Logger.debug('Consulta de Pagamento');
 
-        return await PagamentoModel.findOne({ uuid, cnpjInstituicao });
+        let query = { uuid }
+        if(cnpjInstituicao) {
+            query.cnpjInstituicao = cnpjInstituicao;
+        }
+
+        return await PagamentoModel.findOne(query);
 	},
 
 	PagamentoModel.confirmarPagamento = async (uuid, confirmacaoPagamento) => {
