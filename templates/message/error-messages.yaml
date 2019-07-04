@@ -118,7 +118,7 @@ erros:
                 detalheErro: O token não foi informado
             - assinatura_invalida:
                 codigoDetalheErro: 2
-                detalheErro: Assinatura inválida para o token de pagamento informado
+                detalheErro: Assinatura inválida para o token informado
             - decodificacao_invalida:
                 codigoDetalheErro: 3
                 detalheErro: Houve um erro na decodificação do token

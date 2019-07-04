@@ -279,6 +279,6 @@ Erros que podem ocorrer com relação ao token JWT.
 | Código de Detalhamento | Detalhe |
 | -- | -- |
 | 1 | O token não foi informado |
-| 2 | Assinatura inválida para o token de pagamento informado |
+| 2 | Assinatura inválida para o token informado |
 | 3 | Houve um erro na decodificação do token |
 | 4 | O token está expirado |
