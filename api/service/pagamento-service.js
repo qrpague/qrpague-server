@@ -39,14 +39,14 @@ const criarPagamento = async ({ tokenInstituicao, uuidOperacao, pagamento }) => 
 
 		const instituicaoSolicitante = Instituicao.buscar(pagamento.cnpjInstituicao);
 		if(!instituicaoSolicitante) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 3000, 2, { cnpj: pagamento.cnpjInstituicao });
+			Err.throwError(Response.HTTP_STATUS.UNAUTHORIZED, 3000, 2, { cnpj: pagamento.cnpjInstituicao });
 		}
 		
 		await verificarTokenInstituicao(tokenInstituicao, instituicaoSolicitante.chavePublica, pagamento.cnpjInstituicao);
 
 		const operacao = await Operacao.consultarOperacao(uuidOperacao, Operacao.SITUACAO.EMITIDO);
 		if (!operacao) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 3000, 1, { uuidOperacao });
+			Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 3000, 1, { uuidOperacao });
 		}
 		if(!operacao.isValida()) {
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 3000, 7, { uuidOperacao });
@@ -72,7 +72,7 @@ const criarPagamento = async ({ tokenInstituicao, uuidOperacao, pagamento }) => 
 			} else if(isErroJWT(err)) {
 
 				if(err.message.includes(JWT.INVALID_SUBJECT.ERROR_MESSAGE)) {
-					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 3000, 2, { cnpj: pagamento.cnpjInstituicao });
+					Err.throwError(Response.HTTP_STATUS.UNAUTHORIZED, 3000, 2, { cnpj: pagamento.cnpjInstituicao });
 				} else if(err.message.includes(JWT.INVALID_SIGNATURE.ERROR_MESSAGE)) {
 					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
 				} else if(err.message.includes(JWT.TOKEN_EXPIRED.ERROR_MESSAGE)) {
@@ -98,7 +98,7 @@ const consultarPagamentos = async ({ idRequisicao, tokenInstituicao, cpfCnpjPaga
 	
 		const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
 		if(!instituicaoSolicitante) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 2, { cnpj: cnpjInstituicao });
+			Err.throwError(Response.HTTP_STATUS.UNAUTHORIZED, 4000, 2, { cnpj: cnpjInstituicao });
 		}
 		
 		await verificarTokenInstituicao(tokenInstituicao, instituicaoSolicitante.chavePublica, cnpjInstituicao);
@@ -134,7 +134,7 @@ const consultarPagamentos = async ({ idRequisicao, tokenInstituicao, cpfCnpjPaga
 		if(!(err instanceof ResponseError)){
 			if(isErroJWT(err)) {
 				if(err.message.includes(JWT.INVALID_SUBJECT.ERROR_MESSAGE)) {
-					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 2, { cnpj: cnpjInstituicao });
+					Err.throwError(Response.HTTP_STATUS.UNAUTHORIZED, 4000, 2, { cnpj: cnpjInstituicao });
 				} else if(err.message.includes(JWT.INVALID_SIGNATURE.ERROR_MESSAGE)) {
 					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
 				} else if(err.message.includes(JWT.TOKEN_EXPIRED.ERROR_MESSAGE)) {
@@ -159,7 +159,7 @@ const consultarPagamento = async ({  uuid, tokenInstituicao }) => {
 	
 		const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
 		if(!instituicaoSolicitante) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 2, { cnpj: cnpjInstituicao });
+			Err.throwError(Response.HTTP_STATUS.UNAUTHORIZED, 4000, 2, { cnpj: cnpjInstituicao });
 		}
 		
 		await verificarTokenInstituicao(tokenInstituicao, instituicaoSolicitante.chavePublica, cnpjInstituicao);
@@ -185,7 +185,7 @@ const consultarPagamento = async ({  uuid, tokenInstituicao }) => {
 		if(!(err instanceof ResponseError)){
 			if(isErroJWT(err)) {
 				if(err.message.includes(JWT.INVALID_SUBJECT.ERROR_MESSAGE)) {
-					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 4000, 2, { cnpj: cnpjInstituicao });
+					Err.throwError(Response.HTTP_STATUS.UNAUTHORIZED, 4000, 2, { cnpj: cnpjInstituicao });
 				} else if(err.message.includes(JWT.INVALID_SIGNATURE.ERROR_MESSAGE)) {
 					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
 				} else if(err.message.includes(JWT.TOKEN_EXPIRED.ERROR_MESSAGE)) {
@@ -211,7 +211,7 @@ const confirmarPagamento = async ({ uuid, confirmacao }) => {
 		const uuidOperacao = pagamento.uuidOperacaoFinanceira;
 		const operacao = await Operacao.consultarOperacao(uuidOperacao, Operacao.SITUACAO.EMITIDO);
 		if (!operacao) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 5, { uuidOperacao });
+			Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 5000, 5, { uuidOperacao });
 		}
 		if(!operacao.isValida()) {
 			confirmacao = { pagamentoConfirmado:false }
@@ -221,7 +221,7 @@ const confirmarPagamento = async ({ uuid, confirmacao }) => {
 
 		pagamento = await Pagamento.confirmarPagamento(uuid, confirmacao);
 		if (!pagamento) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 2, { uuid });
+			Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 5000, 2, { uuid });
 		}
 	} catch(err) {
 

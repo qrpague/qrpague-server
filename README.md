@@ -176,11 +176,11 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 
 #### **Erros específicos**
 
-| Código de Detalhamento | Detalhe |
-| -- | -- |
-| 1 | A operação ${uuid} não pode ser salva |
-| 2 | A operação ${uuid} já existe e não pode ser incluída |
-| 3 | A operação com a requisição ${idRequisicao} já foi incluída |
+| Código de Detalhamento | Detalhe | Http Status Code |
+| -- | -- | -- |
+| 1 | A operação ${uuid} não pode ser salva | 400 |
+| 2 | A operação ${uuid} já existe e não pode ser incluída | 422 |
+| 3 | A operação com a requisição ${idRequisicao} já foi incluída | 422 |
 
 ### **Consulta de operações `(GET) - /operacoes` ou `(GET) - /operacoes/{uuid}`**
 
@@ -189,11 +189,11 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 
 #### **Erros específicos**
 
-| Código de Detalhamento | Detalhe |
+| Código de Detalhamento | Detalhe | Http Status Code |
 | -- | -- |
-| 1 | A operação ${uuid} não existe |
-| 2 | A instituição de cnpj ${cnpj} não está autorizada |
-| 3 | O CNPJ não foi informado |
+| 1 | A operação ${uuid} não existe | 400 |
+| 2 | A instituição de cnpj ${cnpj} não está autorizada | 401 |
+| 3 | O CNPJ não foi informado | 400 |
 
 ### **Confirmação de operação `(PUT) - /operacoes/{uuid}/confirmacao`**
 
@@ -202,10 +202,10 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 
 #### **Erros específicos**
 
-| Código de Detalhamento | Detalhe |
+| Código de Detalhamento | Detalhe | Http Status Code |
 | -- | -- |
-| 1 | A operação ${uuid} não existe |
-| 2 | A operação ${uuid} já foi confirmada/cancelada |
+| 1 | A operação ${uuid} não existe | 400 |
+| 2 | A operação ${uuid} já foi confirmada/cancelada | 422 |
 
 ## 3.2 Pagamento
 
@@ -216,14 +216,14 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 
 #### **Erros específicos**
 
-| Código de Detalhamento | Detalhe |
+| Código de Detalhamento | Detalhe | Http Status Code |
 | -- | -- |
-| 1 | A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada |
-| 2 | A instituição de cnpj ${cnpj} não está autorizada |
-| 3 | O pagamento ${uuid} não pode ser salvo |
-| 4 | O pagamento ${uuid} já existe e não pode ser incluído novamente |
-| 5 | O pagamento com a requisição ${idRequisicao} já foi incluído |
-| 6 | O CNPJ não foi informado |
+| 1 | A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada | 422 |
+| 2 | A instituição de cnpj ${cnpj} não está autorizada | 401 |
+| 3 | O pagamento ${uuid} não pode ser salvo | 400 |
+| 4 | O pagamento ${uuid} já existe e não pode ser incluído novamente | 422 |
+| 5 | O pagamento com a requisição ${idRequisicao} já foi incluído | 422 |
+| 6 | O CNPJ não foi informado | 400 |
 
 ### **Consulta de pagamentos `(GET) - /pagamentos` ou `(GET) - /pagamentos/{uuid}`**
 
@@ -232,11 +232,11 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 
 #### **Erros específicos**
 
-| Código de Detalhamento | Detalhe |
+| Código de Detalhamento | Detalhe | Http Status Code |
 | -- | -- |
-| 1 | O pagamento ${uuid} não existe ou não pertence ao cnpj ${cnpj} |
-| 2 | A instituição de cnpj ${cnpj} não está autorizada |
-| 3 | O CNPJ não foi informado |
+| 1 | O pagamento ${uuid} não existe ou não pertence ao cnpj ${cnpj} | 400 |
+| 2 | A instituição de cnpj ${cnpj} não está autorizada | 401 |
+| 3 | O CNPJ não foi informado | 400 |
 
 ### **Confirmação de pagamento `(PUT) - /pagamentos/{uuid}/confirmacao`**
 
@@ -245,14 +245,14 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 
 #### **Erros específicos**
 
-| Código de Detalhamento | Detalhe |
+| Código de Detalhamento | Detalhe | Http Status Code |
 | -- | -- |
-| 1 | O pagamento ${uuid} não existe |
-| 2 | O pagamento ${uuid} já foi confirmado/cancelado |
-| 3 | O CNPJ não foi informado |
-| 4 | A instituição de cnpj ${cnpj} não está autorizada |
-| 5 | A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada |
-| 6 | O pagamento não pode ser efetuado porque a operação ${uuidOperacao} não é mais válida |
+| 1 | O pagamento ${uuid} não existe | 400 |
+| 2 | O pagamento ${uuid} já foi confirmado/cancelado | 422 |
+| 3 | O CNPJ não foi informado | 400 |
+| 4 | A instituição de cnpj ${cnpj} não está autorizada | 401 |
+| 5 | A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada | 422 |
+| 6 | O pagamento não pode ser efetuado porque a operação ${uuidOperacao} não é mais válida | 400 |
 
 ## 3.3 Requisição
 
@@ -263,9 +263,9 @@ Erros que podem ocorrer nas requisições http.
 
 #### **Erros específicos**
 
-| Código de Detalhamento | Detalhe |
+| Código de Detalhamento | Detalhe | Http Status Code |
 | -- | -- |
-| 1 | O campo '${campo}' é obrigatório |
+| 1 | O campo '${campo}' é obrigatório | 400 |
 
 ## 3.4 JSON WEB Token
 
@@ -276,9 +276,9 @@ Erros que podem ocorrer com relação ao token JWT.
 
 #### **Erros específicos**
 
-| Código de Detalhamento | Detalhe |
+| Código de Detalhamento | Detalhe | Http Status Code |
 | -- | -- |
-| 1 | O token não foi informado |
-| 2 | Assinatura inválida para o token informado |
-| 3 | Houve um erro na decodificação do token |
-| 4 | O token está expirado |
+| 1 | O token não foi informado | 400 |
+| 2 | Assinatura inválida para o token informado | 400 |
+| 3 | Houve um erro na decodificação do token | 400 |
+| 4 | O token está expirado | 400 |

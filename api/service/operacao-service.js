@@ -134,7 +134,7 @@ const consultarOperacao = async ({  uuid, tokenInstituicao }) => {
 	
 		let operacao = await Operacao.consultarOperacao(uuid);
 		if (!operacao) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 1, { uuid });
+			Err.throwError(Response.HTTP_STATUS.UNAUTHORIZED, 2000, 1, { uuid });
 		}
 	
 		const hashObj = Crypto.hash(JSON.stringify(operacao));
@@ -169,7 +169,7 @@ const consultarOperacao = async ({  uuid, tokenInstituicao }) => {
 const autorizarOperacao = async ({ uuid, autorizacao }) => {
 	const operacao = await Operacao.consultarOperacao(uuid);
 	if (!operacao) {
-		Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 1, { uuid });
+		Err.throwError(Response.HTTP_STATUS.UNAUTHORIZED, 2000, 1, { uuid });
 	}
 	const urlCallBack = operacao.callback;
 	if (!urlCallBack) {
@@ -192,7 +192,7 @@ const confirmarOperacao = async ({ uuid, confirmacao }) => {
 	
 		operacao = await Operacao.confirmarOperacao(uuid, confirmacao);
 		if (!operacao) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 6000, 2, { uuid });
+			Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 6000, 2, { uuid });
 		}
 	} catch(err) {
 		Logger.warn(err);
