@@ -190,7 +190,7 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 #### **Erros específicos**
 
 | Código de Detalhamento | Detalhe | Http Status Code |
-| -- | -- |
+| -- | -- | -- |
 | 1 | A operação ${uuid} não existe | 400 |
 | 2 | A instituição de cnpj ${cnpj} não está autorizada | 401 |
 | 3 | O CNPJ não foi informado | 400 |
@@ -203,7 +203,7 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 #### **Erros específicos**
 
 | Código de Detalhamento | Detalhe | Http Status Code |
-| -- | -- |
+| -- | -- | -- |
 | 1 | A operação ${uuid} não existe | 400 |
 | 2 | A operação ${uuid} já foi confirmada/cancelada | 422 |
 
@@ -217,7 +217,7 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 #### **Erros específicos**
 
 | Código de Detalhamento | Detalhe | Http Status Code |
-| -- | -- |
+| -- | -- | -- |
 | 1 | A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada | 422 |
 | 2 | A instituição de cnpj ${cnpj} não está autorizada | 401 |
 | 3 | O pagamento ${uuid} não pode ser salvo | 400 |
@@ -233,7 +233,7 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 #### **Erros específicos**
 
 | Código de Detalhamento | Detalhe | Http Status Code |
-| -- | -- |
+| -- | -- | -- |
 | 1 | O pagamento ${uuid} não existe ou não pertence ao cnpj ${cnpj} | 400 |
 | 2 | A instituição de cnpj ${cnpj} não está autorizada | 401 |
 | 3 | O CNPJ não foi informado | 400 |
@@ -246,7 +246,7 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 #### **Erros específicos**
 
 | Código de Detalhamento | Detalhe | Http Status Code |
-| -- | -- |
+| -- | -- | -- |
 | 1 | O pagamento ${uuid} não existe | 400 |
 | 2 | O pagamento ${uuid} já foi confirmado/cancelado | 422 |
 | 3 | O CNPJ não foi informado | 400 |
@@ -264,7 +264,7 @@ Erros que podem ocorrer nas requisições http.
 #### **Erros específicos**
 
 | Código de Detalhamento | Detalhe | Http Status Code |
-| -- | -- |
+| -- | -- | -- |
 | 1 | O campo '${campo}' é obrigatório | 400 |
 
 ## 3.4 JSON WEB Token
@@ -277,7 +277,7 @@ Erros que podem ocorrer com relação ao token JWT.
 #### **Erros específicos**
 
 | Código de Detalhamento | Detalhe | Http Status Code |
-| -- | -- |
+| -- | -- | -- |
 | 1 | O token não foi informado | 400 |
 | 2 | Assinatura inválida para o token informado | 400 |
 | 3 | Houve um erro na decodificação do token | 400 |
