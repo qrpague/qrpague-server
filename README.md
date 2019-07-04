@@ -144,15 +144,15 @@ instituicoes:
     - sicoob:
         nome: Sicoob Confederação
         cnpj: 04.891.850/0001-88
-        chavePublica: MIIBCgKCAQEA+xGZ/wcz9ugFpP07Nspo6U17l0YhFiFpxxU4pTk3Lifz9R3zsIsuERwta7+fWIfxOo208ett/jhskiVodSEt3QBGh4XBipyWopKwZ93HHaDVZAALi/2A+xTBtWdEo7XGUujKDvC2/aZKukfjpOiUI8AhLAfjmlcD/UZ1QPh0mHsglRNCmpCwmwSXA9VNmhz+PiB+Dml4WWnKW/VHo2ujTXxq7+efMU4H2fny3Se3KYOsFPFGZ1TNQSYlFuShWrHPtiLmUdPoP6CV2mML1tk+l7DIIqXrQhLUKDACeM5roMx0kLhUWB8P+0uj1CNlNN4JRZlC7xFfqiMbFRU9Z4N6YwIDAQAB
+        chavePublica: /run/secrets/sicoob/sicoob_public.pub
     - caixa_economica_federal:
         nome: Caixa Econômica Federal
         cnpj: 00.360.305/0001-04
-        chavePublica: MIIBCgKCAQEA+xGZ/wcz9ugFpP07Nspo6U17l0YhFiFpxxU4pTk3Lifz9R3zsIsuERwta7+fWIfxOo208ett/jhskiVodSEt3QBGh4XBipyWopKwZ93HHaDVZAALi/2A+xTBtWdEo7XGUujKDvC2/aZKukfjpOiUI8AhLAfjmlcD/UZ1QPh0mHsglRNCmpCwmwSXA9VNmhz+PiB+Dml4WWnKW/VHo2ujTXxq7+efMU4H2fny3Se3KYOsFPFGZ1TNQSYlFuShWrHPtiLmUdPoP6CV2mML1tk+l7DIIqXrQhLUKDACeM5roMx0kLhUWB8P+0uj1CNlNN4JRZlC7xFfqiMbFRU9Z4N6YwIDAQAB
+        chavePublica: /run/secrets/caixa/caixa_public.pub
     - banco_do_brasil:
         nome: Banco do Brasil
         cnpj: 00.000.000/0001-91
-        chavePublica: MIIBCgKCAQEA+xGZ/wcz9ugFpP07Nspo6U17l0YhFiFpxxU4pTk3Lifz9R3zsIsuERwta7+fWIfxOo208ett/jhskiVodSEt3QBGh4XBipyWopKwZ93HHaDVZAALi/2A+xTBtWdEo7XGUujKDvC2/aZKukfjpOiUI8AhLAfjmlcD/UZ1QPh0mHsglRNCmpCwmwSXA9VNmhz+PiB+Dml4WWnKW/VHo2ujTXxq7+efMU4H2fny3Se3KYOsFPFGZ1TNQSYlFuShWrHPtiLmUdPoP6CV2mML1tk+l7DIIqXrQhLUKDACeM5roMx0kLhUWB8P+0uj1CNlNN4JRZlC7xFfqiMbFRU9Z4N6YwIDAQAB
+        chavePublica: /run/secrets/bb/bb_public.pub
 ```
 
 - Seu arquivo precisa iniciar com uma chave chamada `instituicoes (array)` e seus **elementos filhos**.
@@ -161,7 +161,7 @@ instituicoes:
 - Dentro de cada elemento da instituição, você precisa declarar alguns atributos obrigatórios, como:
     - `nome (string)`: **Este campo representa o nome da instituição**.
     - `cnpj (string)`: **Este campo representa o CNPJ da instituição**.
-    - `chavePublica (string)`: **Este campo representa a chave pública da instituição**.
+    - `chavePublica (string)`: **Este campo representa a o arquivo onde se encontra a chave pública da instituição**.
 
 # 3. Mensagens de erro
 
