@@ -10,7 +10,7 @@ networks:
 
 services:
   api:
-    image: test/qrpague:latest
+    image: qrpague/qrpague-api:latest
     networks:
         - stack
     depends_on:
