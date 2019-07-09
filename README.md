@@ -124,7 +124,7 @@ erros:
             - `codigoDetalheErro (number)`: **Este campo representa um erro em sua forma mais específica**.
             - `detalheErro (string)`: **Este campo forma uma mensagem detalhada do erro**.
 
-## 2.2 Arquivo de instituições
+## 2.3 Arquivo de instituições
 
 O serviço QRPague permite a autorização de instituições que podem operar no serviço do QRPague. Para tal efeito foi criado um arquivo de especificação das instituições no formato YAML.
 
@@ -133,7 +133,7 @@ O serviço QRPague permite a autorização de instituições que podem operar no
 - **O serviço do QRPague já vem com um arquivo padrão de instituições, mas você DEVE substituir este arquivo através da variável de ambiente `INSTITUICOES_FILE`.**
 - **Caso deseje substituir o arquivo, favor seguir orientação no exemplo abaixo:**
 
-### 2.2.2 Exemplo
+### 2.3.1 Exemplo
 
 O arquivo de instituições precisa ser um arquivo YAML conforme exemplo abaixo:
 
