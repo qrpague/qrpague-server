@@ -99,7 +99,7 @@ module.exports = (db, mongoose, promise) => {
         return await Asset.findOneAndUpdate({ uuid }, { situacao, autorizacaoOperacao });
 	},
 
-	OperacaoModel.confirmarOperacao = async (uuid, confirmacaoOperacao) => {
+	OperacaoModel.confirmarOperacao = async (uuid, confirmacaoOperacao, isTransferencia = false) => {
         Logger.debug('Confirmação da Operação');
 
         confirmacaoOperacao.dataHoraConfirmacao = Date.now();
@@ -109,7 +109,18 @@ module.exports = (db, mongoose, promise) => {
             session = await db.startSession();
             session.startTransaction();
             const situacao = (confirmacaoOperacao.operacaoConfirmada) ? SITUACAO.CONFIRMADO : SITUACAO.CANCELADO;
-            const query = { uuid, situacao: SITUACAO.EMITIDO }
+            let query = { uuid, situacao: SITUACAO.EMITIDO }
+
+            if(isTransferencia){
+                query = {
+                    ...query,
+                    "$and": [
+                        {"pagamentos": {"$exists": true}},
+                        {"pagamentos": {"$size": 1}}
+                    ]
+                }
+            }
+
             let operacao = await OperacaoModel.findOne(query).populate('pagamentos');
             
             if(!operacao){
@@ -121,7 +132,14 @@ module.exports = (db, mongoose, promise) => {
             for(let i=0; i < pagamentos.length; i++){
                 let idPagamento = pagamentos[i]._id;
                 let pagamento = await db.model('Pagamento').findOne({ _id: idPagamento });
-                if(situacao === SITUACAO.CANCELADO || !pagamento.confirmacaoPagamento) {
+                if(isTransferencia === true) {
+                    pagamento.situacao = SITUACAO.CONFIRMADO;
+                    pagamento.confirmacaoPagamento = { 
+                        pagamentoConfirmado: true,
+                        dataHoraConfirmacao: Date.now()
+                    }
+                    await pagamento.save();
+                } else if(situacao === SITUACAO.CANCELADO || !pagamento.confirmacaoPagamento) {
                     pagamento.situacao = SITUACAO.CANCELADO;
                     pagamento.confirmacaoPagamento = { 
                         pagamentoConfirmado: false,

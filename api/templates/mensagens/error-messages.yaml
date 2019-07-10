@@ -85,6 +85,9 @@ erros:
             - operacao_invalida:
                 codigoDetalheErro: 6
                 detalheErro: O pagamento não pode ser efetuado porque a operação ${uuidOperacao} não é mais válida
+            - operacao_nao_pode_ser_confirmada:
+                codigoDetalheErro: 7
+                detalheErro: A operação ${uuidOperacao} associada a este pagamento já foi confirmada/cancelada.
     - confirmacao_operacao:
         codigoErro: 6000
         mensagemErro: Erro de confirmação de operação

@@ -1,4 +1,4 @@
-FROM keymetrics/pm2:8-alpine
+FROM keymetrics/pm2:10-alpine
 
 ENV USER="qrpague"
 ENV HOME="/home/qrpague"
@@ -46,7 +46,7 @@ RUN chown -R $USER:$USER $HOME && \
     chmod -R g=u $APP /etc/passwd
 
 # Instalar dependências
-RUN npm install
+RUN npm install --verbose
 
 # Selecionar o usuário
 USER $USER
