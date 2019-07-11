@@ -640,6 +640,10 @@ components:
     ConsultaOperacaoFinanceira:
       type: object
       properties:
+        callbackURI:
+          type: string
+          description: >-
+            URL de callback para recebimento da confirmação de uma operação e/ou pagamento.
         versao:
           type: number
           format: float
@@ -716,15 +720,6 @@ components:
             Operação financeira exige endereço (true). Operação
             financeira não exige endereço (false).
           example: true
-        pagamentoParcial:
-          type: boolean
-          enum:
-            - true
-            - false
-          description: >-
-            Operação financeira permite pagamento parcial (true). Operação
-            financeira não permite pagamento parcial (false).
-          example: false
         exigeEmail:
           type: boolean
           enum:
@@ -765,6 +760,7 @@ components:
           $ref: '#/components/schemas/ConsultaConfirmacaoOperacao'
       required:
         - uuid
+        - callbackURI
         - versao
         - cnpjInstituicao
         - valor
@@ -775,6 +771,10 @@ components:
     InclusaoOperacaoFinanceira:
       type: object
       properties:
+        callbackURI:
+          type: string
+          description: >-
+            URL de callback para recebimento da confirmação de uma operação e/ou pagamento.
         versao:
           type: number
           format: float
@@ -829,15 +829,6 @@ components:
             Operação financeira exige endereço (true). Operação
             financeira não exige endereço (false).
           example: true
-        pagamentoParcial:
-          type: boolean
-          enum:
-            - true
-            - false
-          description: >-
-            Operação financeira permite pagamento parcial (true). Operação
-            financeira não permite pagamento parcial (false).
-          example: false
         exigeEmail:
           type: boolean
           enum:
@@ -857,6 +848,7 @@ components:
             Itens participantes de uma da operação financeira digital gerado
             para um QRCode.
       required:
+        - callbackURI
         - versao
         - cnpjInstituicao
         - valor
