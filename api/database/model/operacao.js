@@ -92,23 +92,17 @@ module.exports = (db, mongoose, promise) => {
         return await OperacaoModel.findOne(query).populate('pagamentos');
 	},
 
-	OperacaoModel.autorizarOperacao = async (uuid, autorizacaoOperacao) => {
-        Logger.debug('Autorização de Operação Financeira');
+	OperacaoModel.efetivarOperacao = async (uuid, efetivacaoOperacao, isTransferencia = false) => {
 
-		const situacao = (autorizacaoOperacao.operacaoAutorizada) ? SITUACAO.AUTORIZADO : SITUACAO.CANCELADO;
-        return await Asset.findOneAndUpdate({ uuid }, { situacao, autorizacaoOperacao });
-	},
+        Logger.debug('Efetivação da Operação');
 
-	OperacaoModel.confirmarOperacao = async (uuid, confirmacaoOperacao, isTransferencia = false) => {
-        Logger.debug('Confirmação da Operação');
+        efetivacaoOperacao.dataHoraEfetivacao = Date.now();
 
-        confirmacaoOperacao.dataHoraConfirmacao = Date.now();
-        
         let session;
         try {
             session = await db.startSession();
             session.startTransaction();
-            const situacao = (confirmacaoOperacao.operacaoConfirmada) ? SITUACAO.CONFIRMADO : SITUACAO.CANCELADO;
+            const situacao = (efetivacaoOperacao.operacaoEfetivada) ? SITUACAO.EFETIVADO : SITUACAO.REJEITADO;
             let query = { uuid, situacao: SITUACAO.EMITIDO }
 
             if(isTransferencia){
@@ -139,7 +133,7 @@ module.exports = (db, mongoose, promise) => {
                         dataHoraConfirmacao: Date.now()
                     }
                     await pagamento.save();
-                } else if(situacao === SITUACAO.CANCELADO || !pagamento.confirmacaoPagamento) {
+                } else if(situacao === SITUACAO.REJEITADO || !pagamento.confirmacaoPagamento) {
                     pagamento.situacao = SITUACAO.CANCELADO;
                     pagamento.confirmacaoPagamento = { 
                         pagamentoConfirmado: false,
@@ -149,7 +143,7 @@ module.exports = (db, mongoose, promise) => {
                 }
             }
             operacao.situacao = situacao;
-            operacao.confirmacaoOperacao = confirmacaoOperacao;
+            operacao.efetivacaoOperacao = efetivacaoOperacao;
             await operacao.save();
             await session.commitTransaction();
             return OperacaoModel.findOne({ uuid });

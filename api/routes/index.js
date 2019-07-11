@@ -8,7 +8,7 @@ const router = express.Router();
 router.route('/operacoes').post(Operacao.criarOperacao);
 router.route('/operacoes').get(Operacao.consultarOperacoes);
 router.route('/operacoes/:uuid').get(Operacao.consultarOperacao);
-router.route('/operacoes/:uuid/autorizacao').put(Operacao.autorizarOperacao);
+router.route('/operacoes/:uuid/efetivacao').put(Operacao.efetivarOperacao);
 router.route('/operacoes/:uuid/confirmacao').put(Operacao.confirmarOperacao);
 
 router.route('/operacoes/:uuid/pagamentos').post(Pagamento.criarPagamento);

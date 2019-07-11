@@ -166,31 +166,14 @@ const consultarOperacao = async ({  uuid, tokenInstituicao }) => {
 	}
 }
 
-const autorizarOperacao = async ({ uuid, autorizacao }) => {
-	const operacao = await Operacao.consultarOperacao(uuid);
-	if (!operacao) {
-		Err.throwError(Response.HTTP_STATUS.UNAUTHORIZED, 2000, 1, { uuid });
-	}
-	const urlCallBack = operacao.callback;
-	if (!urlCallBack) {
-		autorizacao.dispositivoConfirmacao = {}
-	} else {
-		const dispositivoConfirmacao = await Request.post(urlCallBack, operacao);
-		autorizacao.dispositivoConfirmacao = dispositivoConfirmacao;
-	}
-	await Operacao.autorizarOperacao(uuid, autorizacao);
-	let resposta = { sucessoOperacao: true, dataReferencia: new Date() }
-	return resposta;
-}
-
-const confirmarOperacao = async ({ uuid, confirmacao }) => {
+const efetivarOperacao = async ({ uuid, efetivacaoOperacao }) => {
 	try {
 		let operacao = await Operacao.consultarOperacao(uuid);
 		if (!operacao) {
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 6000, 1, { uuid });
 		}
 	
-		operacao = await Operacao.confirmarOperacao(uuid, confirmacao);
+		operacao = await Operacao.efetivarOperacao(uuid, efetivacaoOperacao);
 		if (!operacao) {
 			Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 6000, 2, { uuid });
 		}
@@ -201,6 +184,10 @@ const confirmarOperacao = async ({ uuid, confirmacao }) => {
 		}
 		throw err;
 	}
+}
+
+const confirmarOperacao = async () => {
+
 }
 
 const extrairCNPJDoJWT = (token) => {
@@ -227,6 +214,6 @@ module.exports = {
 	criarOperacao,
 	consultarOperacoes,
 	consultarOperacao,
-	autorizarOperacao,
+	efetivarOperacao,
 	confirmarOperacao
 }

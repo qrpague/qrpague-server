@@ -258,7 +258,7 @@ const requisicaoConfirmarPagamento = (params, body) => {
 
         let requisicao = {
             uuid: params.uuid,
-            confirmacao: {
+            confirmacaoPagamento: {
                 pagamentoConfirmado: body.pagamentoConfirmado
             }
         }

@@ -301,17 +301,17 @@ const requisicaoConsultarOperacao = (params, body) => {
     }
 }
 
-const requisicaoConfirmarOperacao = (params, body) => {
+const requisicaoEfetivarOperacao = (params, body) => {
     try {
 
         campoObrigatorio('uuid', params.uuid);
-        campoObrigatorio('operacaoConfirmada', body.operacaoConfirmada);
+        campoObrigatorio('operacaoEfetivada', body.operacaoEfetivada);
 
         
         let requisicao = {
             uuid: params.uuid,
-            confirmacao: {
-                operacaoConfirmada: body.operacaoConfirmada
+            efetivacaoOperacao: {
+                operacaoEfetivada: body.operacaoEfetivada
             }
         }
 
@@ -330,5 +330,5 @@ module.exports = {
     requisicaoCriarOperacao,
     requisicaoConsultarOperacoes,
     requisicaoConsultarOperacao,
-    requisicaoConfirmarOperacao,
+    requisicaoEfetivarOperacao,
 }

@@ -4,7 +4,7 @@ const { Pessoa } = require('./pessoa');
 const { Item } = require('./item');
 const { Pagamento } = require('./pagamento');
 const { ConfirmacaoOperacao } = require('./confirmacao-operacao');
-const { AutorizacaoOperacao } = require('./autorizacao-operacao');
+const { EfetivacaoOperacao } = require('./efetivacao-operacao');
 
 const TIPO_OPERACAO = {
     SAQUE : 'SAQUE',
@@ -15,7 +15,8 @@ const ARRAY_TIPO_OPERACAO = Object.values(TIPO_OPERACAO);
 
 const SITUACAO = {
     EMITIDO: 'EMITIDO',
-    AUTORIZADO: 'AUTORIZADO',
+    EFETIVADO: 'EFETIVADO',
+    REJEITADO: 'REJEITADO',
     CONFIRMADO: 'CONFIRMADO',
     CANCELADO: 'CANCELADO'
 }
@@ -26,7 +27,7 @@ const PessoaSchema = new Schema(Pessoa, { _id: false })
 const ItemSchema = new Schema(Item, { _id: false })
 const PagamentoSchema = new Schema(Pagamento, { _id: false })
 const ConfirmacaoOperacaoSchema = new Schema(ConfirmacaoOperacao, { _id: false })
-const AutorizacaoOperacaoSchema = new Schema(AutorizacaoOperacao, { _id: false })
+const EfetivacaoOperacaoSchema = new Schema(EfetivacaoOperacao, { _id: false })
 
 const UUID_PATTERN = /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$/;
 
@@ -110,12 +111,12 @@ const Operacao = {
         type: Boolean,
         required: false
     },
-    confirmacaoOperacao: {
-        type: ConfirmacaoOperacaoSchema,
+    efetivacaoOperacao: {
+        type: EfetivacaoOperacaoSchema,
         required: false 
     },
-    autorizacaoOperacao: {
-        type: AutorizacaoOperacaoSchema,
+    confirmacaoOperacao: {
+        type: ConfirmacaoOperacaoSchema,
         required: false 
     },
     itens: [ ItemSchema ],

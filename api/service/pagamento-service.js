@@ -198,7 +198,7 @@ const consultarPagamento = async ({  uuid, tokenInstituicao }) => {
 	}
 }
 
-const confirmarPagamento = async ({ uuid, confirmacao }) => {
+const confirmarPagamento = async ({ uuid, confirmacaoPagamento }) => {
 
 	try {
 	
@@ -213,16 +213,16 @@ const confirmarPagamento = async ({ uuid, confirmacao }) => {
 			Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 5000, 5, { uuidOperacao });
 		}
 		if(!operacao.isValida()) {
-			confirmacao = { pagamentoConfirmado: false }
-			await Pagamento.confirmarPagamento(uuid, confirmacao);
+			confirmacaoPagamento = { pagamentoConfirmado: false }
+			await Pagamento.confirmarPagamento(uuid, confirmacaoPagamento);
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 6, { uuidOperacao });
 		}
 		
 		const isTransferencia = (operacao.tipoOperacao === Operacao.TIPO_OPERACAO.TRANSFERENCIA);
 		if(isTransferencia) {
-			confirmacao = { operacaoConfirmada: true }
-			let operacaoConfirmada = await Operacao.confirmarOperacao(uuidOperacao, confirmacao, isTransferencia);
-			if (!operacaoConfirmada) {
+			const efetivacaoOperacao = { operacaoEfetivada: true }
+			let operacaoEfetivada = await Operacao.efetivarOperacao(uuidOperacao, efetivacaoOperacao, isTransferencia);
+			if (!operacaoEfetivada) {
 				Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 5000, 7, { uuidOperacao });
 			}
 		} else {
