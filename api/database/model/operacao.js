@@ -156,7 +156,7 @@ module.exports = (db, mongoose, promise) => {
 
     OperacaoModel.confirmarOperacao = async (uuid, confirmacaoOperacao) => {
 
-        Logger.debug('Efetivação da Operação');
+        Logger.debug('Confirmação da Operação');
 
         confirmacaoOperacao.dataHoraConfirmacao = Date.now();
 
@@ -170,7 +170,7 @@ module.exports = (db, mongoose, promise) => {
             let operacao = await OperacaoModel.findOne(query).populate('pagamentos');
             
             if(!operacao){
-                return null
+                return null;
             }
             
             if(situacao === SITUACAO.CANCELADO){
