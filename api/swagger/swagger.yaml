@@ -200,59 +200,6 @@ paths:
           description: Erro interno no servidor
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-  '/operacoes/{uuid}/confirmacao':
-    x-swagger-router-controller: operacoes-controller
-    put:
-      tags:
-        - Operações Financeiras Digitais
-      summary: >-
-        Endpoint para confirmar a entrega de um produto de uma
-        operação financeira digital gerada através do QRPAGUE.
-      description: >-
-        Este endpoint deve ser implementado pela instituição financeira para
-        receber a confirmação do recebimento de uma operação financeira digital
-        gerada através da solução QRPague e identificada pelo seu uuid.
-      operationId: confirmarOperacao
-      security:
-        - OAuth2: []
-      parameters:
-        - in: path
-          name: uuid
-          description: >-
-            Identificador único da operação financeira na instituição financeira
-            que gerou o QRPague.
-          required: true
-          schema:
-            type: string
-            pattern: >-
-              ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/InclusaoConfirmacaoOperacao'
-      responses:
-        '204':
-          description: Confirmação realizada com sucesso
-        '400':
-          description: Exceção de negócio
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MensagemRetorno'
-        '406':
-          description: >-
-            Exceção de negócio quando atualização de status da operação não for
-            feita corretamente.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MensagemRetorno'
-        '500':
-          description: Erro interno no servidor
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
   '/operacoes/{uuid}/efetivacao':
     x-swagger-router-controller: operacoes-controller
     put:
@@ -285,6 +232,59 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/InclusaoEfetivacaoOperacao'
+      responses:
+        '204':
+          description: Confirmação realizada com sucesso
+        '400':
+          description: Exceção de negócio
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
+        '406':
+          description: >-
+            Exceção de negócio quando atualização de status da operação não for
+            feita corretamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
+        '500':
+          description: Erro interno no servidor
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  '/operacoes/{uuid}/confirmacao':
+    x-swagger-router-controller: operacoes-controller
+    put:
+      tags:
+        - Operações Financeiras Digitais
+      summary: >-
+        Endpoint para confirmar a entrega de um produto de uma
+        operação financeira digital gerada através do QRPAGUE.
+      description: >-
+        Este endpoint deve ser implementado pela instituição financeira para
+        receber a confirmação do recebimento de uma operação financeira digital
+        gerada através da solução QRPague e identificada pelo seu uuid.
+      operationId: confirmarOperacao
+      security:
+        - OAuth2: []
+      parameters:
+        - in: path
+          name: uuid
+          description: >-
+            Identificador único da operação financeira na instituição financeira
+            que gerou o QRPague.
+          required: true
+          schema:
+            type: string
+            pattern: >-
+              ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InclusaoConfirmacaoOperacao'
       responses:
         '204':
           description: Confirmação realizada com sucesso
