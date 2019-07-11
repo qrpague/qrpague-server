@@ -1,4 +1,4 @@
-const { Err, Logger } = require('../../util');
+const { Err, Logger, Request } = require('../../util');
 const { Operacao, SITUACAO, TIPO_OPERACAO } = require('../schema/operacao-financeira');
 const DateUtil = require('../../helper/date-util');
 
@@ -42,6 +42,37 @@ module.exports = (db, mongoose, promise) => {
         const result = DateUtil.compare(now, dataHoraVencimento);
         const isValida = (result < 0);
         return isValida;
+    }
+
+    operacaoSchema.methods.chamarCallbackURI = function() {
+
+        const uuidOperacao = this.uuid;
+        const pagamentos = this.pagamentos;
+        
+        const operacaoCallbackURI = this.callbackURI + 
+                '?tipo=operacao' +
+                '&uuidOperacao=' + 
+                uuidOperacao +
+                '&situacao=' + 
+                this.situacao;
+    
+        Request.get(operacaoCallbackURI);
+    
+        if(pagamentos && Array.isArray(pagamentos) && pagamentos.length > 0) {
+            for(let i=0; i< pagamentos.length; i++) {
+                const pagamento = pagamentos[i];
+                const pagamentoCallbackURI = this.callbackURI +
+                    '?tipo=pagamento' + 
+                    '&uuidOperacao=' +
+                    uuidOperacao +
+                    '&uuidPagamento=' +
+                    pagamento.uuid +
+                    '&situacao=' + 
+                    pagamento.situacao;
+    
+                Request.get(pagamentoCallbackURI);				
+            }
+        }
     }
 
     let OperacaoModel = db.model('Operacao', operacaoSchema);
@@ -146,7 +177,7 @@ module.exports = (db, mongoose, promise) => {
             operacao.efetivacaoOperacao = efetivacaoOperacao;
             await operacao.save();
             await session.commitTransaction();
-            return OperacaoModel.findOne({ uuid });
+            return OperacaoModel.findOne({ uuid }).populate('pagamentos');
         } catch(err) {
             Logger.warn(err);
             session.abortTransaction();
@@ -190,7 +221,7 @@ module.exports = (db, mongoose, promise) => {
             operacao.confirmacaoOperacao = confirmacaoOperacao;
             await operacao.save();
             await session.commitTransaction();
-            return OperacaoModel.findOne({ uuid });
+            return OperacaoModel.findOne({ uuid }).populate('pagamentos');
         } catch(err) {
             Logger.warn(err);
             session.abortTransaction();

@@ -17,6 +17,7 @@ const UUID_PATTERN = /^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-
 const Pagamento = {
     uuid: { type: String, required: true, unique: true },
     uuidOperacaoFinanceira: { type: String, required: true },
+    callbackURI: { type: String, required: true },
     cnpjInstituicao: { type: String, required: true },
     dataHoraPagamento: {type: Date, required: true },
     pagador: { type: PessoaSchema, required: true },

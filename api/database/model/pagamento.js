@@ -1,4 +1,4 @@
-const { Err, Logger } = require('../../util');
+const { Err, Logger, Request } = require('../../util');
 const { Pagamento, SITUACAO } = require('../schema/pagamento');
 const { Operacao } = require('../db');
 
@@ -18,6 +18,20 @@ module.exports = (db, mongoose, promise) => {
         }
     });
 
+    pagamentoSchema.methods.chamarCallbackURI = function() {
+
+        const pagamentoCallbackURI = this.callbackURI +
+                    '?tipo=pagamento' + 
+                    '&uuidOperacao=' +
+                    this.uuidOperacaoFinanceira +
+                    '&uuidPagamento=' +
+                    this.uuid +
+                    '&situacao=' + 
+                    this.situacao;
+    
+        Request.get(pagamentoCallbackURI);
+    }
+
     let PagamentoModel = db.model('Pagamento', pagamentoSchema);
 
     PagamentoModel.SITUACAO = SITUACAO;
@@ -28,6 +42,7 @@ module.exports = (db, mongoose, promise) => {
         pag.dataHoraPagamento = Date.now();
         pag.situacao = SITUACAO.REALIZADO;
         pag.uuidOperacaoFinanceira = operacao.uuid;
+        pag.callbackURI = operacao.callbackURI;
 
         let session;
         try {

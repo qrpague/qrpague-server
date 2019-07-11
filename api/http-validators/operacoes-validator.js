@@ -18,6 +18,7 @@ const requisicaoCriarOperacao = (params, body) => {
         campoObrigatorio('instituicao', body.beneficiario.instituicao);
 
         let requisicao = {
+            callbackURI: body.callbackURI,
             versao: body.versao,
             valor: body.valor,
             cnpjInstituicao: body.cnpjInstituicao,

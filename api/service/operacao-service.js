@@ -177,6 +177,8 @@ const efetivarOperacao = async ({ uuid, efetivacaoOperacao }) => {
 		if (!operacao) {
 			Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 6000, 2, { uuid });
 		}
+
+		operacao.chamarCallbackURI();
 	} catch(err) {
 		Logger.warn(err);
 		if(!(err instanceof ResponseError)){

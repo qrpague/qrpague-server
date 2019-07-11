@@ -215,6 +215,7 @@ const confirmarPagamento = async ({ uuid, confirmacaoPagamento }) => {
 		if(!operacao.isValida()) {
 			confirmacaoPagamento = { pagamentoConfirmado: false }
 			await Pagamento.confirmarPagamento(uuid, confirmacaoPagamento);
+			pagamento.chamarCallbackURI();
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 5000, 6, { uuidOperacao });
 		}
 		
@@ -225,11 +226,13 @@ const confirmarPagamento = async ({ uuid, confirmacaoPagamento }) => {
 			if (!operacaoEfetivada) {
 				Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 5000, 7, { uuidOperacao });
 			}
+			operacaoEfetivada.chamarCallbackURI();
 		} else {
 			pagamento = await Pagamento.confirmarPagamento(uuid, confirmacao);
 			if (!pagamento) {
 				Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 5000, 2, { uuid });
 			}
+			pagamento.chamarCallbackURI();
 		}
 	} catch(err) {
 

@@ -41,6 +41,10 @@ const Operacao = {
             message: (props) => `O campo ${props.path} - ${props.value} não está seguindo o padrão ${UUID_PATTERN}.`
         }
     },
+    callbackURI: { 
+        type: String,
+        required: [true, 'O campo callbackURI é obrigatório']
+    },
     versao: { 
         type: Number,
         required: [true, 'O campo versao é obrigatório'] 
