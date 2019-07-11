@@ -6,6 +6,7 @@ const requisicaoCriarOperacao = (params, body) => {
     
     try {
 
+        campoObrigatorio('callbackURI', body.callbackURI);
         campoObrigatorio('versao', body.versao);
         campoObrigatorio('valor', body.valor);
         campoObrigatorio('cnpjInstituicao', body.cnpjInstituicao);
