@@ -195,10 +195,22 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 | 2 | A instituição de cnpj ${cnpj} não está autorizada | 401 |
 | 3 | O CNPJ não foi informado | 400 |
 
-### **Confirmação de operação `(PUT) - /operacoes/{uuid}/confirmacao`**
+### **Efetivação de operação `(PUT) - /operacoes/{uuid}/efetivacao`**
 
 - **Código de Erro**: 6000
-- **Mensagem de erro**: Erro de confirmação de pagamento
+- **Mensagem de erro**: Erro de efetivação de operação
+
+#### **Erros específicos**
+
+| Código de Detalhamento | Detalhe | Http Status Code |
+| -- | -- | -- |
+| 1 | A operação ${uuid} não existe | 400 |
+| 2 | A operação ${uuid} já foi efetivada/rejeitada | 422 |
+
+### **Confirmação de operação `(PUT) - /operacoes/{uuid}/confirmacao`**
+
+- **Código de Erro**: 7000
+- **Mensagem de erro**: Erro de confirmação de operação
 
 #### **Erros específicos**
 
@@ -251,8 +263,9 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 | 2 | O pagamento ${uuid} já foi confirmado/cancelado | 422 |
 | 3 | O CNPJ não foi informado | 400 |
 | 4 | A instituição de cnpj ${cnpj} não está autorizada | 401 |
-| 5 | A operação ${uuidOperacao} não existe ou já foi confirmada/cancelada | 422 |
+| 5 | A operação ${uuidOperacao} não existe ou já não pode ser mais utilizada | 422 |
 | 6 | O pagamento não pode ser efetuado porque a operação ${uuidOperacao} não é mais válida | 400 |
+| 7 | A operação ${uuidOperacao} associada já não pode ser mais utilizada | 400 |
 
 ## 3.3 Requisição
 

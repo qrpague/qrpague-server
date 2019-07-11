@@ -88,7 +88,7 @@ erros:
             - operacao_nao_pode_ser_confirmada:
                 codigoDetalheErro: 7
                 detalheErro: A operação ${uuidOperacao} associada já não pode ser mais utilizada
-    - confirmacao_operacao:
+    - efetivacao_operacao:
         codigoErro: 6000
         mensagemErro: Erro de efetivação de operação
         detalhes:
@@ -98,6 +98,16 @@ erros:
             - operacao_confirmada:
                 codigoDetalheErro: 2
                 detalheErro: A operação ${uuid} já foi efetivada/rejeitada
+    - confirmacao_operacao:
+        codigoErro: 7000
+        mensagemErro: Erro de confirmação de operação
+        detalhes:
+            - operacao_nao_encontrada:
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuid} não existe
+            - operacao_confirmada:
+                codigoDetalheErro: 2
+                detalheErro: A operação ${uuid} já foi confirmada/cancelada
     - requisicao:
         codigoErro: 997000
         mensagemErro: Erro na requisição
