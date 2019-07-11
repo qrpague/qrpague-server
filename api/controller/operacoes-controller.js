@@ -60,7 +60,16 @@ const efetivarOperacao = async (req, res, next) => {
 }
 
 const confirmarOperacao = async (req, res, next) => {
-    
+    try {
+        const params = paramUtil.getParams(req);
+        const body = req.body;
+        const options = OperacaoValidator.requisicaoConfirmarOperacao(params, body);
+        await service.confirmarOperacao(options);
+        return Response.noContent(res, { contentType: Response.CONTENT_TYPE.APPLICATION_JSON });
+    } catch (err) {
+        Logger.warn(err);
+        return Response.fromError(res, err);
+    }
 }
 
 module.exports = {

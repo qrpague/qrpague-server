@@ -326,9 +326,35 @@ const requisicaoEfetivarOperacao = (params, body) => {
     }
 }
 
+const requisicaoConfirmarOperacao = (params, body) => {
+    try {
+
+        campoObrigatorio('uuid', params.uuid);
+        campoObrigatorio('operacaoConfirmada', body.operacaoConfirmada);
+
+        
+        let requisicao = {
+            uuid: params.uuid,
+            confirmacaoOperacao: {
+                operacaoConfirmada: body.operacaoConfirmada
+            }
+        }
+
+        return requisicao;
+
+    } catch(err) {
+        Logger.warn(err);
+        if(!(err instanceof ResponseError)){
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 997000);
+		}
+        throw err;
+    }
+}
+
 module.exports = {
     requisicaoCriarOperacao,
     requisicaoConsultarOperacoes,
     requisicaoConsultarOperacao,
     requisicaoEfetivarOperacao,
+    requisicaoConfirmarOperacao
 }

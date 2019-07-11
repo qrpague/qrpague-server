@@ -205,7 +205,7 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 | Código de Detalhamento | Detalhe | Http Status Code |
 | -- | -- | -- |
 | 1 | A operação ${uuid} não existe | 400 |
-| 2 | A operação ${uuid} já foi efetivada/rejeitada | 422 |
+| 2 | A operação ${uuid} não pode ser efetivada/rejeitada | 422 |
 
 ### **Confirmação de operação `(PUT) - /operacoes/{uuid}/confirmacao`**
 
@@ -217,7 +217,7 @@ As mensagens abaixo são tratadas e possuem semântica negocial no serviço QRPa
 | Código de Detalhamento | Detalhe | Http Status Code |
 | -- | -- | -- |
 | 1 | A operação ${uuid} não existe | 400 |
-| 2 | A operação ${uuid} já foi confirmada/cancelada | 422 |
+| 2 | A operação ${uuid} não pode ser confirmada/cancelada | 422 |
 
 ## 3.2 Pagamento
 

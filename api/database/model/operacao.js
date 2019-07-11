@@ -154,5 +154,49 @@ module.exports = (db, mongoose, promise) => {
         }
     }
 
+    OperacaoModel.confirmarOperacao = async (uuid, confirmacaoOperacao) => {
+
+        Logger.debug('Efetivação da Operação');
+
+        confirmacaoOperacao.dataHoraConfirmacao = Date.now();
+
+        let session;
+        try {
+            session = await db.startSession();
+            session.startTransaction();
+            const situacao = (confirmacaoOperacao.operacaoConfirmada) ? SITUACAO.CONFIRMADO : SITUACAO.CANCELADO;
+            let query = { uuid, situacao: SITUACAO.EFETIVADO }
+
+            let operacao = await OperacaoModel.findOne(query).populate('pagamentos');
+            
+            if(!operacao){
+                return null
+            }
+            
+            if(situacao === SITUACAO.CANCELADO){
+                const pagamentos = operacao.pagamentos;
+                for(let i=0; i < pagamentos.length; i++){
+                    let idPagamento = pagamentos[i]._id;
+                    let pagamento = await db.model('Pagamento').findOne({ _id: idPagamento });
+                    pagamento.situacao = SITUACAO.CANCELADO;
+                    pagamento.confirmacaoPagamento = { 
+                        pagamentoConfirmado: false,
+                        dataHoraConfirmacao: Date.now()
+                    }
+                    await pagamento.save();
+                }
+            }
+            operacao.situacao = situacao;
+            operacao.confirmacaoOperacao = confirmacaoOperacao;
+            await operacao.save();
+            await session.commitTransaction();
+            return OperacaoModel.findOne({ uuid });
+        } catch(err) {
+            Logger.warn(err);
+            session.abortTransaction();
+            throw err;
+        }
+    }
+
     return OperacaoModel;
 }

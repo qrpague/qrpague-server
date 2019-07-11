@@ -186,8 +186,24 @@ const efetivarOperacao = async ({ uuid, efetivacaoOperacao }) => {
 	}
 }
 
-const confirmarOperacao = async () => {
-
+const confirmarOperacao = async ({ uuid, confirmacaoOperacao }) => {
+	try {
+		let operacao = await Operacao.consultarOperacao(uuid);
+		if (!operacao) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 7000, 1, { uuid });
+		}
+	
+		operacao = await Operacao.confirmarOperacao(uuid, confirmacaoOperacao);
+		if (!operacao) {
+			Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 7000, 2, { uuid });
+		}
+	} catch(err) {
+		Logger.warn(err);
+		if(!(err instanceof ResponseError)){
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 7000);
+		}
+		throw err;
+	}
 }
 
 const extrairCNPJDoJWT = (token) => {

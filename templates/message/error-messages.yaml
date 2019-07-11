@@ -97,7 +97,7 @@ erros:
                 detalheErro: A operação ${uuid} não existe
             - operacao_confirmada:
                 codigoDetalheErro: 2
-                detalheErro: A operação ${uuid} já foi efetivada/rejeitada
+                detalheErro: A operação ${uuid} não pode ser efetivada/rejeitada
     - confirmacao_operacao:
         codigoErro: 7000
         mensagemErro: Erro de confirmação de operação
@@ -107,7 +107,7 @@ erros:
                 detalheErro: A operação ${uuid} não existe
             - operacao_confirmada:
                 codigoDetalheErro: 2
-                detalheErro: A operação ${uuid} já foi confirmada/cancelada
+                detalheErro: A operação ${uuid} não pode ser confirmada/cancelada
     - requisicao:
         codigoErro: 997000
         mensagemErro: Erro na requisição
