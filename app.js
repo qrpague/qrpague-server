@@ -16,11 +16,15 @@ const start = (app) => {
     
     createMiddleware(swaggerFilePath, app, function(err, middleware, api, parser) {
 
-        app.use(middleware.metadata())
-        app.use(middleware.CORS());
-        app.use(middleware.parseRequest());
+        app.use(
+            middleware.metadata(),
+            middleware.CORS(),
+            middleware.parseRequest(),
+            middleware.validateRequest()
+        );
 
         app.use('/qrpague', Routes);
+
         app.listen(PORT, () => Logger.info('O servidor do QR-PAGUE subiu na porta:', PORT));
     });
 }

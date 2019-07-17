@@ -16,7 +16,7 @@ info:
     email: dev@sicoob.com.br
 
 host: qrpague.sicoob.com.br
-basePath: /conta-corrente
+basePath: /qrpague
 schemes:
   - https
 
