@@ -7,7 +7,7 @@ const createMiddleware = require('swagger-express-middleware');
 
 const expressApp = express();
 
-const swaggerFilePath = path.join(__dirname, 'api/swagger/swagger.yaml');
+const swaggerFilePath = path.join(__dirname, 'api/swagger/swagger-openapi-2.yaml');
 const PORT = process.env.PORT || 8080;
 
 const start = (app) => {

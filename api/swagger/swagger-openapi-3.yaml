@@ -8,7 +8,7 @@ info:
     financeiras online. O uso das APIs deve obedecer os fluxos de processo
     disponíveis no GitHub do projeto para cada natureza de operação (saque,
     transferência ou pagamento).
-  version: 1.0.0
+  version: v1
   title: Operações Digitais QRPague
   termsOfService: 'http://swagger.io/terms/'
   contact:
@@ -39,7 +39,7 @@ paths:
         operação financeira digital.
       operationId: criarOperacao
       security:
-        - OAuth2: []
+        - OAuth2: [qrpague_operacao_cadastro]
       requestBody:
         required: true
         content:
@@ -74,6 +74,10 @@ paths:
                 $ref: '#/components/schemas/MensagemRetorno'
         '500':
           description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
     get:
@@ -89,7 +93,7 @@ paths:
         digital gerada através da solução QRPague pelo parâmetro uuid.
       operationId: consultarOperacoes
       security:
-        - OAuth2: []
+        - OAuth2: [qrpague_operacao_consulta]
       parameters:
         - $ref: '#/components/parameters/token-instituicao'
         - in: query
@@ -153,6 +157,10 @@ paths:
                 $ref: '#/components/schemas/MensagemRetorno'
         '500':
           description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}':
@@ -170,7 +178,7 @@ paths:
         parâmetro. 
       operationId: consultarOperacao
       security:
-        - OAuth2: []
+        - OAuth2: [qrpague_operacao_consulta]
       parameters:
         - $ref: '#/components/parameters/token-instituicao'
         - in: path
@@ -198,6 +206,10 @@ paths:
                 $ref: '#/components/schemas/MensagemRetorno'
         '500':
           description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}/efetivacao':
@@ -214,7 +226,7 @@ paths:
         gerada através da solução QRPague e identificada pelo seu uuid.
       operationId: efetivarOperacao
       security:
-        - OAuth2: []
+        - OAuth2: [qrpague_operacao_efetivacao]
       parameters:
         - in: path
           name: uuid
@@ -251,6 +263,10 @@ paths:
                 $ref: '#/components/schemas/MensagemRetorno'
         '500':
           description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}/confirmacao':
@@ -267,7 +283,7 @@ paths:
         gerada através da solução QRPague e identificada pelo seu uuid.
       operationId: confirmarOperacao
       security:
-        - OAuth2: []
+        - OAuth2: [qrpague_operacao_confirmacao]
       parameters:
         - in: path
           name: uuid
@@ -304,6 +320,10 @@ paths:
                 $ref: '#/components/schemas/MensagemRetorno'
         '500':
           description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}/pagamentos':
@@ -319,7 +339,7 @@ paths:
         digital gerada através da solução QRPague e identificada pelo seu uuid.
       operationId: operacao-financeira-pagar
       security:
-        - OAuth2: []
+        - OAuth2: [qrpague_pagamento_cadastro]
       parameters:
         - $ref: '#/components/parameters/token-instituicao'
         - in: path
@@ -369,6 +389,10 @@ paths:
                 $ref: '#/components/schemas/MensagemRetorno'
         '500':
           description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   /pagamentos:
@@ -385,7 +409,7 @@ paths:
         digitais gerada através da solução QRPague pelo parâmetro uuid.
       operationId: pagamentos-recuperar
       security:
-        - OAuth2: []
+        - OAuth2: [qrpague_pagamento_consulta]
       parameters:
         - $ref: '#/components/parameters/token-instituicao'
         - in: query
@@ -458,6 +482,10 @@ paths:
                 $ref: '#/components/schemas/MensagemRetorno'
         '500':
           description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/pagamentos/{uuid}':
@@ -473,7 +501,7 @@ paths:
         financeira digital identificada pelo UUID passado como parâmetro. 
       operationId: pagamento-consultar
       security:
-        - OAuth2: []
+        - OAuth2: [qrpague_pagamento_consulta]
       parameters:
         - $ref: '#/components/parameters/token-instituicao'
         - in: path
@@ -501,6 +529,10 @@ paths:
                 $ref: '#/components/schemas/MensagemRetorno'
         '500':
           description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/pagamentos/{uuid}/confirmacao':
@@ -517,7 +549,7 @@ paths:
         seu uuid.
       operationId: pagamento-confirmar
       security:
-        - OAuth2: []
+        - OAuth2: [qrpague_pagamento_confirmacao]
       parameters:
         - in: path
           name: uuid
@@ -554,6 +586,10 @@ paths:
                 $ref: '#/components/schemas/MensagemRetorno'
         '500':
           description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
 components:
@@ -562,12 +598,16 @@ components:
       type: oauth2
       flows:
         authorizationCode:
-          authorizationUrl: 'https://example.com/oauth/authorize'
-          tokenUrl: 'https://example.com/oauth/token'
+          authorizationUrl: 'https://<<uri>>/oauth/authorize'
+          tokenUrl: 'https://<<uri>>/oauth/token'
           scopes:
-            read: Grants read access
-            write: Grants write access
-            admin: Grants access to admin operations
+            qrpague_operacao_cadastro: Autoriza recurso para gerar uma operação financeira digital.
+            qrpague_operacao_consulta: Autoriza recurso para consultar operação financeira digital.
+            qrpague_operacao_efetivacao: Autoriza recurso para efetivar uma operação financeira digital.
+            qrpague_operacao_confirmacao: Autoriza recurso para confirmar uma operação financeira digital.
+            qrpague_pagamento_cadastro: Autoriza recurso para gerar pagamento.
+            qrpague_pagamento_consulta: Autoriza recurso para consultar pagamento.
+            qrpague_pagamento_confirmacao: Autoriza recurso para confirmar pagamento.
   parameters:
     cnpjInstituicao:
       in: header
