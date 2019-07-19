@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 8080;
 const start = (app) => {
 
     setupConfiguration(app);
-    
+
     createMiddleware(swaggerFilePath, app, function(err, middleware, api, parser) {
 
         app.use(
@@ -28,6 +28,5 @@ const start = (app) => {
         app.listen(PORT, () => Logger.info('O servidor do QR-PAGUE subiu na porta:', PORT));
     });
 }
-
 
 start(expressApp);

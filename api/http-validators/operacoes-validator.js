@@ -283,11 +283,9 @@ const requisicaoConsultarOperacao = (params, body) => {
 
     try {
 
-        campoObrigatorio('token-instituicao', params[CONSTANTS.TOKEN_NAME]);
         campoObrigatorio('uuid', params.uuid);
 
         let requisicao = {
-            tokenInstituicao: params[CONSTANTS.TOKEN_NAME],
             uuid: params.uuid
         }
 

@@ -114,23 +114,9 @@ const consultarOperacoes = async ({ idRequisicao, tokenInstituicao, cpfCnpjBenef
 	}
 }
 
-const consultarOperacao = async ({  uuid, tokenInstituicao }) => {
-
-	let cnpjInstituicao;
+const consultarOperacao = async ({ uuid }) => {
 
 	try {
-
-		cnpjInstituicao = extrairCNPJDoJWT(tokenInstituicao);
-		if(!cnpjInstituicao) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 3);
-		}
-	
-		const instituicaoSolicitante = Instituicao.buscar(cnpjInstituicao);
-		if(!instituicaoSolicitante) {
-			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
-		}
-		
-		await verificarTokenInstituicao(tokenInstituicao, instituicaoSolicitante.chavePublica, cnpjInstituicao);
 	
 		let operacao = await Operacao.consultarOperacao(uuid);
 		if (!operacao) {
@@ -151,15 +137,6 @@ const consultarOperacao = async ({  uuid, tokenInstituicao }) => {
 		Logger.warn(err);
 
 		if(!(err instanceof ResponseError)){
-			if(isErroJWT(err)) {
-				if(err.message.includes(JWT.INVALID_SUBJECT.ERROR_MESSAGE)) {
-					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000, 2, { cnpj: cnpjInstituicao });
-				} else if(err.message.includes(JWT.INVALID_SIGNATURE.ERROR_MESSAGE)) {
-					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 2);
-				} else if(err.message.includes(JWT.TOKEN_EXPIRED.ERROR_MESSAGE)) {
-					Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 999000, 4);
-				}
-			}
 			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 2000);
 		}
 		throw err;

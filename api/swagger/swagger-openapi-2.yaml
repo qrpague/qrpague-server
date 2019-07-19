@@ -166,13 +166,6 @@ paths:
         - application/qrpague
         - application/json
       parameters:
-        - in: header
-          name: token-instituicao
-          type: string
-          description: >-
-            JSON Web Token de pagamento assinado pela instituição 
-            que solicita o pagamento. RFC 7519
-          required: true
         - in: path
           name: uuid
           description: >-

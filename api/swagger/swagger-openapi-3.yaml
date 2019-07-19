@@ -180,7 +180,6 @@ paths:
       security:
         - OAuth2: [qrpague_operacao_consulta]
       parameters:
-        - $ref: '#/components/parameters/token-instituicao'
         - in: path
           name: uuid
           description: >-
