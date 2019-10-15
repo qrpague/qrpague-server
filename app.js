@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const setupConfiguration = require('./config/config');
 const Routes = require('./api/routes');
-const { Logger } = require('./api/util');
+const { Logger, Response } = require('./api/util');
 const createMiddleware = require('swagger-express-middleware');
 
 const expressApp = express();
@@ -24,6 +24,10 @@ const start = (app) => {
         );
 
         app.use('/qrpague', Routes);
+
+        app.use(function(err, req, res, next) {
+            Response.fromError(res, err);
+        });
 
         app.listen(PORT, () => Logger.info('O servidor do QR-PAGUE subiu na porta:', PORT));
     });

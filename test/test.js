@@ -35,8 +35,8 @@ describe('Json WEB Test', () => {
 
         const options = {
             algorithm: 'RS256',
-            expiresIn: '1000 minutes',
-            subject: '04.891.850/0001-88'
+            expiresIn: '1000000000 minutes',
+            subject: '04891850000188'
         }
 
         try {
