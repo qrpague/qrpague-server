@@ -22,7 +22,6 @@ schemes:
 
 paths:
   /operacoes:
-    x-swagger-router-controller: operacoes-controller
     post:
       tags:
         - Operações Financeiras Digitais
@@ -147,7 +146,6 @@ paths:
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}':
-    x-swagger-router-controller: operacoes-controller
     get:
       tags:
         - Operações Financeiras Digitais
@@ -191,7 +189,6 @@ paths:
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}/efetivacao':
-    x-swagger-router-controller: operacoes-controller
     put:
       tags:
         - Operações Financeiras Digitais
@@ -244,7 +241,6 @@ paths:
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
   '/operacoes/{uuid}/confirmacao':
-    x-swagger-router-controller: operacoes-controller
     put:
       tags:
         - Operações Financeiras Digitais
@@ -672,7 +668,6 @@ securityDefinitions:
     scopes:
       qrpague_operacao_cadastro: Autoriza recurso para gerar uma operação financeira digital.
       qrpague_operacao_consulta: Autoriza recurso para consultar operação financeira digital.
-      qrpague_operacao_alteracao: Autoriza recurso para alterar operação financeira digital.
       qrpague_operacao_efetivacao: Autoriza recurso para efetivar uma operação financeira digital.
       qrpague_operacao_confirmacao: Autoriza recurso para confirmar uma operação financeira digital.
       qrpague_pagamento_cadastro: Autoriza recurso para gerar pagamento.
@@ -1137,17 +1132,6 @@ definitions:
       - dataHoraVencimento
       - tipoOperacao
       - beneficiario
-  AlteracaoOperacaoFinanceira:
-    type: object
-    properties:
-      valor:
-        type: integer
-        description: >-
-          Valor da operação financeira realizada, onde os últimos 2 dígitos
-          são as casas decimais.
-        example: 150000
-    required:
-      - valor
   RespostaConsultaPagamento:
     type: object
     properties:
