@@ -54,6 +54,29 @@ const criarOperacao = async ({ contentType, operacaoFinanceira }) => {
 	}
 }
 
+const alterarOperacao = async ({ uuid, valor }) => {
+	try {
+		let operacao = await Operacao.consultarOperacao(uuid, Operacao.SITUACAO.EMITIDO);
+		if (!operacao) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 8000, 1, { uuid });
+		}
+		if(valor < 0) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 8000, 2, { uuid });
+		}
+		const resultado = await Operacao.alterarOperacao(uuid, valor);
+		if(!resultado) {
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 8000, 3, { uuid });
+		}
+		return resultado;
+	} catch(err) {
+		Logger.warn(err);
+		if(!(err instanceof ResponseError)){
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 8000);
+		}
+		throw err;
+	}
+}
+
 const consultarOperacoes = async ({ idRequisicao, tokenInstituicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
 
 	let cnpjInstituicao;
@@ -210,5 +233,6 @@ module.exports = {
 	consultarOperacoes,
 	consultarOperacao,
 	efetivarOperacao,
-	confirmarOperacao
+	confirmarOperacao,
+	alterarOperacao
 }

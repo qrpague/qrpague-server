@@ -1,5 +1,5 @@
 const { CONSTANTS } = require('../jwt');
-const { ResponseError, Err, Logger } = require('../util');
+const { Response, ResponseError, Err, Logger } = require('../util');
 const { campoObrigatorio } = require('./commum');
 
 const requisicaoCriarOperacao = (params, body) => {
@@ -350,10 +350,33 @@ const requisicaoConfirmarOperacao = (params, body) => {
     }
 }
 
+const requisicaoAlterarOperacao = (params, body) => {
+    try {
+
+        campoObrigatorio('uuid', params.uuid);
+        campoObrigatorio('valor', body.valor);
+
+        let requisicao = {
+            uuid: params.uuid,
+            valor: body.valor
+        }
+
+        return requisicao;
+
+    } catch(err) {
+        Logger.warn(err);
+        if(!(err instanceof ResponseError)){
+			Err.throwError(Response.HTTP_STATUS.BAD_REQUEST, 997000);
+		}
+        throw err;
+    }
+}
+
 module.exports = {
     requisicaoCriarOperacao,
     requisicaoConsultarOperacoes,
     requisicaoConsultarOperacao,
     requisicaoEfetivarOperacao,
-    requisicaoConfirmarOperacao
+    requisicaoConfirmarOperacao,
+    requisicaoAlterarOperacao
 }

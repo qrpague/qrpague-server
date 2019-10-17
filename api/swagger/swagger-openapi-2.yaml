@@ -190,6 +190,53 @@ paths:
             $ref: '#/definitions/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
+    patch:
+      tags:
+        - Operações Financeiras Digitais
+      summary: >-
+        Endpoit para alterar o valor de uma operação financeira digital
+        (Transferência, Saque ou Pagamento) gerada através do QRPAGUE.
+      description: >-
+        Este endpoint deve ser implementado pela instituição financeira para
+        recuperar as informações de uma operação financeira digital
+        (Transferência, Saque ou Pagamento) identificada pelo UUID passado como
+        parâmetro. 
+      operationId: alterarOperacao
+      security:
+        - OAuth2: [qrpague_operacao_alteracao]
+      produces:
+        - application/qrpague
+        - application/json
+      parameters:
+        - in: path
+          name: uuid
+          description: >-
+            Identificador único da operação financeira na instituição financeira
+            que gerou o QRCode.
+          required: true
+          type: string
+          pattern: >-
+            ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
+        - in: body
+          name: AlteracaoOperacaoFinanceira
+          required: true
+          schema:
+            $ref: '#/definitions/AlteracaoOperacaoFinanceira'
+      responses:
+        '200':
+          description: Requisição realizada com sucesso
+          schema:
+            $ref: '#/definitions/RespostaConsultaOperacaoFinanceira'
+        '400':
+          description: Exceção de negócio
+          schema:
+            $ref: '#/definitions/MensagemRetorno'
+        '500':
+          description: Erro interno no servidor
+          schema:
+            $ref: '#/definitions/MensagemRetorno'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
   '/operacoes/{uuid}/efetivacao':
     x-swagger-router-controller: operacoes-controller
     put:
@@ -554,6 +601,114 @@ paths:
             $ref: '#/definitions/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
+  
+  /beneficiarios:
+    get:
+      tags:
+        - Beneficiário
+      summary: >-
+        Endpoit para recuperar informações de beneficiários vinculados a operações
+        financeiras digitais através do CPF ou CNPJ.
+      description: >-
+        Este endpoint deve ser implementado pela instituição financeira para
+        devolver as informações de beneficiários ligados a operações financeiras
+        digitais geradas através da solução QRPague.
+      operationId: consultarBeneficiarios
+      security:
+        - OAuth2: [qrpague_beneficiario_consulta]
+      produces:
+        - application/qrpague
+        - application/json
+      parameters:
+        - in: header
+          name: token-instituicao
+          type: string
+          description: >-
+            JSON Web Token de pagamento assinado pela instituição 
+            que solicita o pagamento. RFC 7519
+          required: true
+        - in: query
+          name: cpfCnpj
+          type: string
+          minLength: 11
+          maxLength: 14
+          description: >-
+            Especificação do CPF ou CPNJ do beneficiário . Este parametro aceita um array de CPF's ou CNPJ's separados por ','.
+        - in: query
+          name: paginaInicial
+          description: >-
+            Especificação de uma página inicial para consulta de operações
+            financeiras digitais.
+          type: integer
+        - in: query
+          name: tamanhoPagina
+          description: >-
+            Especificação de um tamanho de página para consulta de operações
+            financeiras digitais.
+          type: integer
+      responses:
+        '200':
+          description: Requisição realizada com sucesso
+          schema:
+            $ref: '#/definitions/RespostaConsultaBeneficiarios'
+        '400':
+          description: Exceção de negócio
+          schema:
+            $ref: '#/definitions/MensagemRetorno'
+        '500':
+          description: Erro interno no servidor
+          schema:
+            $ref: '#/definitions/MensagemRetorno'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+  '/beneficiarios/{cpfCnpj}':
+    get:
+      tags:
+        - Beneficiário
+      summary: >-
+        Endpoit para recuperar informações de um beneficiário vinculado a operações
+        financeiras digitais através do CPF ou CNPJ.
+      description: >-
+        Este endpoint deve ser implementado pela instituição financeira para
+        devolver as informações de um beneficiário ligado a operações financeiras
+        digitais geradas através da solução QRPague.
+      operationId: consultarBeneficiario
+      security:
+        - OAuth2: [qrpague_beneficiario_consulta]
+      produces:
+        - application/qrpague
+        - application/json
+      parameters:
+        - in: header
+          name: token-instituicao
+          type: string
+          description: >-
+            JSON Web Token de pagamento assinado pela instituição 
+            que solicita o pagamento. RFC 7519
+          required: true
+        - in: path
+          name: cpfCnpj
+          type: string
+          minLength: 11
+          maxLength: 14
+          description: >-
+            Especificação do CPF ou CPNJ do beneficiário.
+          required: true
+      responses:
+        '200':
+          description: Requisição realizada com sucesso
+          schema:
+            $ref: '#/definitions/RespostaConsultaBeneficiario'
+        '400':
+          description: Exceção de negócio
+          schema:
+            $ref: '#/definitions/MensagemRetorno'
+        '500':
+          description: Erro interno no servidor
+          schema:
+            $ref: '#/definitions/MensagemRetorno'
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
       
 securityDefinitions:
   OAuth2:
@@ -564,11 +719,13 @@ securityDefinitions:
     scopes:
       qrpague_operacao_cadastro: Autoriza recurso para gerar uma operação financeira digital.
       qrpague_operacao_consulta: Autoriza recurso para consultar operação financeira digital.
+      qrpague_operacao_alteracao: Autoriza recurso para alterar operação financeira digital.
       qrpague_operacao_efetivacao: Autoriza recurso para efetivar uma operação financeira digital.
       qrpague_operacao_confirmacao: Autoriza recurso para confirmar uma operação financeira digital.
       qrpague_pagamento_cadastro: Autoriza recurso para gerar pagamento.
       qrpague_pagamento_consulta: Autoriza recurso para consultar pagamento.
       qrpague_pagamento_confirmacao: Autoriza recurso para confirmar pagamento.
+      qrpague_beneficiario_consulta: Autoriza recurso para consultar beneficiario.
 
 definitions:
   RespostaConsultaOperacoes:
@@ -674,6 +831,81 @@ definitions:
     required:
       - quantidadeRegistros
       - resultados
+      - hash
+      - assinatura
+      - algoritmo
+  RespostaConsultaBeneficiarios:
+    type: object
+    properties:
+      quantidadeRegistros:
+        type: integer
+        description: >-
+          Quantidade de objetos retornados em uma consulta de operações
+          financeiras ou pagamentos.
+        example: 50
+      tamanhoPagina:
+        type: integer
+        description: >-
+          Quantidade de objetos apresentados por página em uma consulta de
+          operações financeiras ou pagamentos.
+        example: 15
+      paginaAtual:
+        type: integer
+        description: >-
+          Número que representa a página em que uma consulta de operações
+          financeiras ou pagamentos está sendo apresentada.
+        example: 2
+      links:
+        type: array
+        description: >-
+          Links de possíveis ações a serem realizadas no resultado vindo de
+          uma consulta de operações financeiras ou pagamentos.
+        items:
+          $ref: '#/definitions/Link'
+      resultados:
+        type: array
+        description: >-
+          Conjunto de objetos recuperados a partir dos parâmetros de filtragem
+          informados.
+        items:
+          $ref: '#/definitions/ConsultaBeneficiario'
+      hash:
+        type: string
+        description: >-
+          Hash do resultado na consulta.
+      assinatura:
+        type: string
+        description: >-
+          Assinatura da instituição que gera o resultado.
+      algoritmo:
+        type: string
+        description: >-
+          Algoritmo utilizado na assinatura.
+    required:
+      - quantidadeRegistros
+      - resultados
+      - hash
+      - assinatura
+      - algoritmo
+  RespostaConsultaBeneficiario:
+    type: object
+    properties:
+      resultado:
+        $ref: "#/definitions/ConsultaBeneficiario"
+      hash:
+        type: string
+        description: >-
+          Hash do resultado na consulta.
+      assinatura:
+        type: string
+        description: >-
+          Assinatura da instituição que gera o resultado.
+      algoritmo:
+        type: string
+        description: >-
+          Algoritmo utilizado na assinatura.
+    required:
+      - resultado
       - hash
       - assinatura
       - algoritmo
@@ -944,6 +1176,17 @@ definitions:
       - dataHoraVencimento
       - tipoOperacao
       - beneficiario
+  AlteracaoOperacaoFinanceira:
+    type: object
+    properties:
+      valor:
+        type: integer
+        description: >-
+          Valor da operação financeira realizada, onde os últimos 2 dígitos
+          são as casas decimais.
+        example: 150000
+    required:
+      - valor
   RespostaConsultaPagamento:
     type: object
     properties:
@@ -1026,6 +1269,9 @@ definitions:
       - pagador
       - valor
       - situacao
+  ConsultaBeneficiario:
+    type: object
+    $ref: '#/definitions/Pessoa'
   InclusaoPagamento:
     type: object
     properties:

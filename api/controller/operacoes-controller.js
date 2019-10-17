@@ -20,6 +20,19 @@ const criarOperacao = async (req, res, next) => {
     }
 }
 
+const alterarOperacao = async (req, res, next) => {
+    try {
+        const params = paramUtil.getParams(req);
+        const body = req.body;
+        const options = OperacaoValidator.requisicaoAlterarOperacao(params, body);
+        const resposta = await service.alterarOperacao(options);
+        return Response.success(res, resposta, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
+    } catch (err) {
+        Logger.warn(err);
+        return Response.fromError(res, err);
+    }
+}
+
 const consultarOperacoes = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
@@ -77,5 +90,6 @@ module.exports = {
     consultarOperacoes,
     consultarOperacao,
     efetivarOperacao,
-    confirmarOperacao
+    confirmarOperacao,
+    alterarOperacao
 };

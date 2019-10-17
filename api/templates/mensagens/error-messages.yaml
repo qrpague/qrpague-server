@@ -108,6 +108,32 @@ erros:
             - operacao_confirmada:
                 codigoDetalheErro: 2
                 detalheErro: A operação ${uuid} não pode ser confirmada/cancelada
+    - alteracao_operacao:
+        codigoErro: 8000
+        mensagemErro: Erro de alteração de operação
+        detalhes:
+            - operacao_nao_encontrada:
+                codigoDetalheErro: 1
+                detalheErro: A operação ${uuid} não existe ou o status já não é mais EMITIDO.
+            - operacao_alterada:
+                codigoDetalheErro: 2
+                detalheErro: A operação ${uuid} não pode ser alterada. Informe um valor maior ou igual a 0 (ZERO).
+            - operacao_nao_pode_ser_modificada:
+                codigoDetalheErro: 3
+                detalheErro: A operação ${uuid} não pode ser alterada. Verifique o status da operação ou a data de vencimento.
+    - consulta_beneficiario:
+        codigoErro: 9000
+        mensagemErro: Erro de consulta de beneficiário
+        detalhes:
+            - cnpj_nao_informado:
+                codigoDetalheErro: 1
+                detalheErro: O CNPJ não foi informado
+            - cnpj_nao_autorizado:
+                codigoDetalheErro: 2
+                detalheErro: A instituição de cnpj ${cnpj} não está autorizada
+            - erro_ao_salvar:
+                codigoDetalheErro: 3
+                detalheErro: A beneficiário de CPF/CNPJ ${cpfCnpj} não existe
     - requisicao:
         codigoErro: 997000
         mensagemErro: Erro na requisição

@@ -89,6 +89,15 @@ module.exports = (db, mongoose, promise) => {
 		return await operacao.save();
     },
 
+    OperacaoModel.alterarOperacao = async (uuid, valor) => {
+        Logger.debug('Alteração de Operação Financeira');
+
+        const query = { uuid, situacao: SITUACAO.EMITIDO, dataHoraVencimento: { $gte: Date.now() }}
+        const update = { valor }
+        const options = { new: true }
+        return await OperacaoModel.findOneAndUpdate(query, update, options).populate('pagamentos');
+    }
+
 	OperacaoModel.recuperarOperacoes = async ({ idRequisicao, cpfCnpjBeneficiario, paginaInicial, tamanhoPagina, periodoInicio, periodoFim }) => {
         Logger.debug('Consulta de Operações Financeiras');
 
@@ -227,6 +236,56 @@ module.exports = (db, mongoose, promise) => {
             session.abortTransaction();
             throw err;
         }
+    }
+
+    OperacaoModel.consultarBeneficiarios = async ({ cpfCnpj, paginaInicial, tamanhoPagina }) => {
+        Logger.debug('Consulta de Beneficiário');
+        
+        const limit = tamanhoPagina ? parseInt(tamanhoPagina) : DEFAULT_MONGOOSE_LIMIT;
+        const skip = paginaInicial ? parseInt(paginaInicial) * limit : DEFAULT_MONGOOSE_SKIP;
+        const query = [ 
+            {
+                $group:{
+                    _id: {
+                        beneficiario: '$beneficiario'
+                    }
+                }
+            }, {
+                "$project":{
+                    _id: false, 
+                    "beneficiario":"$_id.beneficiario"
+                }
+            },{
+                "$skip":0
+            },{
+                "$limit":30
+            },{
+                $group: {
+                    _id: 'lista', 
+                    resultado: { 
+                        $push: '$beneficiario'
+                    }
+                }
+            }, {
+                $project: {
+                    _id: false, 
+                    resultado: 1 
+                }
+            }
+        ];
+
+        if(cpfCnpj && (typeof cpfCnpj === 'string' || ( Array.isArray(cpfCnpj) && cpfCnpj.length > 0 ))) {
+            query.unshift({
+                $match: {
+                    'beneficiario.cpfCnpj': { 
+                        $in: cpfCnpj
+                    }
+                }
+            });
+        }
+
+        const resposta = await OperacaoModel.aggregate(query);
+        return (resposta && resposta[0]) ? resposta[0].resultado : resposta;
     }
 
     return OperacaoModel;

@@ -1,5 +1,5 @@
 const { CONSTANTS } = require('../jwt');
-const { ResponseError, Err, Logger } = require('../util');
+const { Response, ResponseError, Err, Logger } = require('../util');
 const { campoObrigatorio } = require('./commum');
 
 const requisicaoCriarPagamento = (params, body) => {
