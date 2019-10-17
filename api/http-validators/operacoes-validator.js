@@ -227,6 +227,10 @@ const requisicaoCriarOperacao = (params, body) => {
             }
         }
 
+        if(body.metadata) {
+            requisicao = { ...requisicao, metadata: body.metadata }
+        }
+
         return requisicao;
     } catch(err) {
         Logger.warn(err);

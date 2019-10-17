@@ -190,53 +190,6 @@ paths:
             $ref: '#/definitions/MensagemRetorno'
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
-    patch:
-      tags:
-        - Operações Financeiras Digitais
-      summary: >-
-        Endpoit para alterar o valor de uma operação financeira digital
-        (Transferência, Saque ou Pagamento) gerada através do QRPAGUE.
-      description: >-
-        Este endpoint deve ser implementado pela instituição financeira para
-        recuperar as informações de uma operação financeira digital
-        (Transferência, Saque ou Pagamento) identificada pelo UUID passado como
-        parâmetro. 
-      operationId: alterarOperacao
-      security:
-        - OAuth2: [qrpague_operacao_alteracao]
-      produces:
-        - application/qrpague
-        - application/json
-      parameters:
-        - in: path
-          name: uuid
-          description: >-
-            Identificador único da operação financeira na instituição financeira
-            que gerou o QRCode.
-          required: true
-          type: string
-          pattern: >-
-            ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
-        - in: body
-          name: AlteracaoOperacaoFinanceira
-          required: true
-          schema:
-            $ref: '#/definitions/AlteracaoOperacaoFinanceira'
-      responses:
-        '200':
-          description: Requisição realizada com sucesso
-          schema:
-            $ref: '#/definitions/RespostaConsultaOperacaoFinanceira'
-        '400':
-          description: Exceção de negócio
-          schema:
-            $ref: '#/definitions/MensagemRetorno'
-        '500':
-          description: Erro interno no servidor
-          schema:
-            $ref: '#/definitions/MensagemRetorno'
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
   '/operacoes/{uuid}/efetivacao':
     x-swagger-router-controller: operacoes-controller
     put:
@@ -1079,6 +1032,10 @@ definitions:
         $ref: '#/definitions/ConsultaConfirmacaoOperacao'
       efetivacaoOperacao:
         $ref: '#/definitions/ConsultaEfetivacaoOperacao'
+      metadata:
+        type: string
+        description: >-
+          Campo livre e opcional para armazenamento de informações extras.
     required:
       - uuid
       - callbackURI
@@ -1168,6 +1125,10 @@ definitions:
         description: >-
           Itens participantes de uma da operação financeira digital gerado
           para um QRCode.
+      metadata:
+        type: string
+        description: >-
+          Campo livre e opcional para armazenamento de informações extras.
     required:
       - callbackURI
       - versao
