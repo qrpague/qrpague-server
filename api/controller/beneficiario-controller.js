@@ -6,9 +6,10 @@ const BeneficiarioValidator = require('../http-validators/beneficiario-validator
 const consultarBeneficiarios = async (req, res, next) => {
     try {
         const params = paramUtil.getParams(req);
+        const contentType = params['content-type'] === Response.CONTENT_TYPE.APPLICATION_QR_PAGUE ? Response.CONTENT_TYPE.APPLICATION_QR_PAGUE : Response.CONTENT_TYPE.APPLICATION_JSON;
         const options = BeneficiarioValidator.requisicaoConsultarBeneficiarios(params);
         const resposta = await service.consultarBeneficiarios(options);
-        return Response.success(res, resposta, { contentType: Response.CONTENT_TYPE.APPLICATION_QR_PAGUE });
+        return Response.success(res, resposta, { contentType });
     } catch (err) {
         Logger.warn(err);
         return Response.fromError(res, err);
