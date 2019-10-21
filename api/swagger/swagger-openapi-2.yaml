@@ -939,7 +939,8 @@ definitions:
           Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
         example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
       valor:
-        type: integer
+        type: number
+        format: double
         description: >-
           Valor da operação financeira realizada, onde os últimos 2 dígitos
           são as casas decimais.
@@ -1068,7 +1069,8 @@ definitions:
           Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
         example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
       valor:
-        type: integer
+        type: number
+        format: double
         description: >-
           Valor da operação financeira realizada, onde os últimos 2 dígitos
           são as casas decimais.
@@ -1190,7 +1192,8 @@ definitions:
       pagador:
         $ref: '#/definitions/Pessoa'
       valor:
-        type: integer
+        type: number
+        format: double
         description: >-
           Valor de um pagamento realizado para uma operação financeira
           realizada, onde os últimos 2 dígitos são as casas decimais.
@@ -1223,7 +1226,8 @@ definitions:
       pagador:
         $ref: '#/definitions/Pessoa'
       valor:
-        type: integer
+        type: number
+        format: double
         description: >-
           Valor de um pagamento realizado para uma operação financeira
           realizada, onde os últimos 2 dígitos são as casas decimais.
