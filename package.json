@@ -1,6 +1,6 @@
 {
   "name": "qrpague-server-nodejs",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "scripts": {
     "start": "pm2 start app.js",
     "debug": "node index.js",
