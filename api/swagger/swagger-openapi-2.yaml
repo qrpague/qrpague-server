@@ -684,19 +684,16 @@ definitions:
         description: >-
           Quantidade de objetos retornados em uma consulta de operações
           financeiras ou pagamentos.
-        example: 50
       tamanhoPagina:
         type: integer
         description: >-
           Quantidade de objetos apresentados por página em uma consulta de
           operações financeiras ou pagamentos.
-        example: 15
       paginaAtual:
         type: integer
         description: >-
           Número que representa a página em que uma consulta de operações
           financeiras ou pagamentos está sendo apresentada.
-        example: 2
       links:
         type: array
         description: >-
@@ -737,19 +734,16 @@ definitions:
         description: >-
           Quantidade de objetos retornados em uma consulta de operações
           financeiras ou pagamentos.
-        example: 50
       tamanhoPagina:
         type: integer
         description: >-
           Quantidade de objetos apresentados por página em uma consulta de
           operações financeiras ou pagamentos.
-        example: 15
       paginaAtual:
         type: integer
         description: >-
           Número que representa a página em que uma consulta de operações
           financeiras ou pagamentos está sendo apresentada.
-        example: 2
       links:
         type: array
         description: >-
@@ -790,19 +784,16 @@ definitions:
         description: >-
           Quantidade de objetos retornados em uma consulta de operações
           financeiras ou pagamentos.
-        example: 50
       tamanhoPagina:
         type: integer
         description: >-
           Quantidade de objetos apresentados por página em uma consulta de
           operações financeiras ou pagamentos.
-        example: 15
       paginaAtual:
         type: integer
         description: >-
           Número que representa a página em que uma consulta de operações
           financeiras ou pagamentos está sendo apresentada.
-        example: 2
       links:
         type: array
         description: >-
@@ -863,12 +854,9 @@ definitions:
       url:
         type: string
         description: Código do produto ou serviço para o cliente do QRCode emitido.
-        example: >-
-          <<api.dominio.com.br>>/qrpague/operacoes?paginaInicial=2&tamanhoPagina=20
       descricao:
         type: string
         description: Descrição do link.
-        example: próxima pagina
       metodoHttp:
         type: string
         enum:
@@ -877,7 +865,6 @@ definitions:
           - PUT
           - DELETE
         description: Método http aplicado à URL espeficida.
-        example: GET
     required:
       - url
       - descricao
@@ -915,14 +902,12 @@ definitions:
         type: number
         format: float
         description: Número da versão do formato do JSON especificado.
-        example: 1
       cnpjInstituicao:
         type: string
         description: >-
           CNPJ da instituição financeira do beneficiário da operação
           financeira digital.
         maxLength: 14
-        example: "01234567890123"
       uuid:
         type: string
         pattern: >-
@@ -930,46 +915,39 @@ definitions:
         description: >-
           Identificador único da operação financeira digital na instituição
           sacadora. RFC 4122
-        example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
       idRequisicao:
         type: string
         pattern: >-
           ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
         description: >-
           Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
-        example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
       valor:
         type: number
         format: double
         description: >-
           Valor da operação financeira realizada, onde os últimos 2 dígitos
           são as casas decimais.
-        example: 150000
       descricao:
         type: string
         description: Descrição da operação financeira realizada.
-        example: Pagamento do serviço de Advocacia na Meu escritório de advogados.
       dataHoraSolicitacao:
         type: string
         format: date-time
         description: >-
           Data e hora da solicitação da operação financeira na instituição
           financeira. Formato RFC 3339, seção 5.6.
-        example: '2017-07-21T17:32:28Z'
       dataHoraVencimento:
         type: string
         format: date-time
         description: >-
           Data e hora de vencimento da operação financeira na instituição
           financeira. Formato RFC 3339, seção 5.6.
-        example: '2017-07-21T17:32:28Z'
       dataHoraEfetivacao:
         type: string
         format: date-time
         description: >-
           Data e hora de efetivação da operação financeira na instituição
           financeira. Formato RFC 3339, seção 5.6.
-        example: '2017-07-21T17:32:28Z'
       tipoOperacao:
         type: string
         enum:
@@ -978,7 +956,6 @@ definitions:
           - VENDA
         description: >-
           Tipo da operação financeira digital realizada.
-        example: VENDA
       exigeEndereco:
         type: boolean
         enum:
@@ -987,7 +964,6 @@ definitions:
         description: >-
           Operação financeira exige endereço (true). Operação
           financeira não exige endereço (false).
-        example: true
       exigeEmail:
         type: boolean
         enum:
@@ -996,7 +972,6 @@ definitions:
         description: >-
           Operação financeira exige endereço de e-mail (true). Operação
           financeira não exige endereço de e-mail (false).
-        example: false
       situacao:
         type: string
         enum:
@@ -1007,7 +982,6 @@ definitions:
           - CONFIRMADO
           - CANCELADO
         description: Situação da operação financeira digital realizada.
-        example: PAGO
       beneficiario:
         $ref: '#/definitions/Pessoa'
       itens:
@@ -1053,39 +1027,33 @@ definitions:
         type: number
         format: float
         description: Número da versão do formato do JSON especificado.
-        example: 1
       cnpjInstituicao:
         type: string
         description: >-
           CNPJ da instituição financeira do beneficiário da operação
           financeira digital.
         maxLength: 14
-        example: "01234567890123"
       idRequisicao:
         type: string
         pattern: >-
           ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
         description: >-
           Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
-        example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
       valor:
         type: number
         format: double
         description: >-
           Valor da operação financeira realizada, onde os últimos 2 dígitos
           são as casas decimais.
-        example: 150000
       descricao:
         type: string
         description: Descrição da operação financeira realizada.
-        example: Pagamento do serviço de Advocacia na Meu escritório de advogados.
       dataHoraVencimento:
         type: string
         format: date-time
         description: >-
           Data e hora de vencimento da operação financeira na instituição
           financeira. Formato RFC 3339, seção 5.6.
-        example: '2017-07-21T17:32:28Z'
       tipoOperacao:
         type: string
         enum:
@@ -1094,7 +1062,6 @@ definitions:
           - VENDA
         description: >-
           Tipo da operação financeira digital realizada.
-        example: VENDA
       exigeEndereco:
         type: boolean
         enum:
@@ -1103,7 +1070,6 @@ definitions:
         description: >-
           Operação financeira exige endereço (true). Operação
           financeira não exige endereço (false).
-        example: true
       exigeEmail:
         type: boolean
         enum:
@@ -1112,7 +1078,6 @@ definitions:
         description: >-
           Operação financeira exige endereço de e-mail (true). Operação
           financeira não exige endereço de e-mail (false).
-        example: false
       beneficiario:
         $ref: '#/definitions/Pessoa'
       itens:
@@ -1166,7 +1131,6 @@ definitions:
         description: >-
           Identificador único de um pagamento realizado para uma operação
           financeira digital na instituição sacadora. RFC 4122
-        example: "3d0ca315-aff9–4fc2-be61–3b76b9a2d798"
       uuidOperacaoFinanceira:
         type: string
         pattern: >-
@@ -1174,21 +1138,18 @@ definitions:
         description: >-
           Identificador único de uma operação financeira digital
           na instituição sacadora. RFC 4122
-        example: "3d0ca315-aff9–4fc2-be61–3b76b9a2d798"
       idRequisicao:
         type: string
         pattern: >-
           ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
         description: >-
           Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
-        example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
       dataHoraPagamento:
         type: string
         format: date-time
         description: >-
           Data e hora do pagamento realizado para uma operação financeira na
           instituição financeira. Formato RFC 3339, seção 5.6.
-        example: '2017-07-21T17:32:28Z'
       pagador:
         $ref: '#/definitions/Pessoa'
       valor:
@@ -1197,7 +1158,6 @@ definitions:
         description: >-
           Valor de um pagamento realizado para uma operação financeira
           realizada, onde os últimos 2 dígitos são as casas decimais.
-        example: 20000
       situacao:
         type: string
         enum:
@@ -1207,7 +1167,6 @@ definitions:
         description: >-
           Situação do pagmento ligado a uma operação financeira digital
           realizada.
-        example: REALIZADO
       confirmacaoPagamento:
         $ref: '#/definitions/ConsultaConfirmacaoPagamento'
     required:
@@ -1231,14 +1190,12 @@ definitions:
         description: >-
           Valor de um pagamento realizado para uma operação financeira
           realizada, onde os últimos 2 dígitos são as casas decimais.
-        example: 20000
       idRequisicao:
         type: string
         pattern: >-
           ^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$
         description: >-
           Identificador opcional para controle de idempotência, ou seja, para não repetir uma operação. RFC 4122
-        example: 3d0ca315-aff9–4fc2-be61–3b76b9a2d798
     required:
       - pagador
       - valor
@@ -1248,7 +1205,6 @@ definitions:
       nome:
         type: string
         description: Nome do beneficiário na operação financeira digital.
-        example: "Meu escritório de advogados"
       cpfCnpj:
         description: >-
           Numero do CPF ou CNPJ da Pessoa participante da operação financeira
@@ -1256,7 +1212,6 @@ definitions:
         type: string
         minLength: 11
         maxLength: 14
-        example: '12345678999'
       endereco:
         $ref: '#/definitions/Endereco'
         description: >-
@@ -1267,25 +1222,21 @@ definitions:
           ISQN da instituição do beneficiário na operação financeira digital.
           Número composto pelos primeiros 8 dígitos do CPNJ da instituição
           financeira.
-        example: '01234567'
       agencia:
         type: string
         description: >-
           Agência do beneficiário referente à operação financeira, quando
           pertinente.
-        example: '1230'
       conta:
         type: string
         description: >-
           Conta do beneficiário referente à operação financeira incluindo
           dígito verificador, quando pertinente.
-        example: '222222'
       operacao:
         type: string
         description: >-
           Operação da conta do beneficiário referente à operação financeira,
           quando pertinente.
-        example: '51'
       tipoConta:
         type: string
         enum:
@@ -1294,7 +1245,6 @@ definitions:
         description: >-
           Tipo da conta do beneficiário referente à operação financeira,
           quando pertinente.
-        example: POUP
     required:
       - nome
       - cpfCnpj
@@ -1306,89 +1256,72 @@ definitions:
         type: string
         description: >-
           Logradouro do endereço conforme formato de endereço dos Correios.
-        example: "SIG Quadra"
       complemento:
         type: string
         description: >-
           Complemento do logradouro do endereço conforme formato de endereço dos Correios.
-        example: "CCS"
       bairro:
         type: string
         description: >-
           Bairro do endereço conforme formato de endereço dos Correios.
-        example: "Zona Industrial"
       valorUnitario:
         type: integer
         description: >-
           Número do endereço conforme formato de endereço dos Correios.
-        example: 8
       localidade:
         type: string
         description: >-
           Localidade do endereço conforme formato de endereço dos Correios.
-        example: "Brasília"
       uf:
         type: string
         pattern: '^[A-Z]{2}$'
         description: >-
           Sigla da Unidade Federativa do do endereço conforme formato de endereço dos Correios.
-        example: DF
       cep:
         type: string
         pattern: '^[0-9]{5}-[0-9]{3}$'
         description: >-
           CEP do endereço conforme formato de endereço dos Correios.
-        example: "70000-000"
   Item:
     type: object
     properties:
       descricao48:
         type: string
         description: Descrição do produto para impressora de 48 posições.
-        example: Desc resumida produto
       descricaoCompleta:
         type: string
         description: Descrição completa do produto ou serviço consumido.
-        example: >-
-          Descrição mais detalhada do produto que pode extrapolar as 48
-          posições da descrição resumida.
       codigo:
         type: string
         description: Código do produto ou serviço para o cliente do QRCode emitido.
-        example: xpto-4851-3327
       quantidade:
         type: integer
         description: >-
           Quantaide de itens do produto ou serviço integrante da operação
           financeira digital.
-        example: 1
       valorUnitario:
         type: integer
         description: >-
           Valor unitário do produto ou serviço integrante da operação
           financeira digital onde os últimos 2 dígitos representam as casas
           decimais.
-        example: 75000
       desconto:
         type: integer
         description: >-
           Desconto aplicado ao total do valor da operação financeira digital
           referente aos seus itens onde os últimos 2 dígitos representam as
           casas decimais.
-        example: 3500
       total:
         type: integer
         description: >-
           Total do valor dos itens participantes da operação financeira
           digital referente do QRCode gerado onde os últimos 2 dígitos
           representam as casas decimais.
-        example: 71500
       urlThumbImg:
         type: string
         description: >-
           URL da imagem do item participante da operação financeira digital
           referente do QRCode gerado.
-        example: <<dominiocliente.com.br>>/prod35/img1.jpg
     required:
       - descricaoCompleta
       - quantidade
@@ -1400,33 +1333,27 @@ definitions:
       idTerminal:
         type: string
         description: Identificador único do terminal na rede da instituição financeira.
-        example: 0001128322332
       descricao:
         type: string
         description: Descrição do terminal na rede da instituição financeira.
-        example: Terminal do super mercado do baixo abc.
       uf:
         type: string
         pattern: '^[A-Z]{2}$'
         description: >-
           Sigla da Unidade Federativa do terminal onde o saque está sendo
           solicitado.
-        example: DF
       cep:
         type: string
         pattern: '^[0-9]{5}-[0-9]{3}$'
         description: CEP do endereço do terminal onde está sendo solicitado o saque.
-        example: 70000-000
       latitudeTerminal:
         type: number
         format: double
         description: Latitude em graus do terminal onde está sendo solicitado o saque.
-        example: '-15.7801'
       longitudeTerminal:
         type: number
         format: double
         description: Longitude em graus do terminal onde está sendo solicitado o saque.
-        example: '-47.9292'
     required:
       - idTerminal
       - descricao
@@ -1444,14 +1371,12 @@ definitions:
           - false
         description: >-
           Pagamento confirmado (true). Pagamento não confirmado (false).
-        example: true
       dataHoraConfirmacao:
         type: string
         format: date-time
         description: >-
           Data e hora da confirmação do pagamento 
           na instituição financeira. Formato RFC 3339, seção 5.6.
-        example: '2017-07-21T17:32:28Z'
     required:
       - pagamentoConfirmado
       - dataHoraConfirmacao
@@ -1465,7 +1390,6 @@ definitions:
           - false
         description: >-
           Pagamento confirmado (true). Pagamento não confirmado (false).
-        example: true
     required:
       - pagamentoConfirmado
   ConsultaEfetivacaoOperacao:
@@ -1478,14 +1402,12 @@ definitions:
           - false
         description: >-
           Operação financeira efetivada (true). Operação financeira não efetivada (false).
-        example: true
       dataHoraEfetivacao:
         type: string
         format: date-time
         description: >-
           Data e hora da efetivação da operação financeira digital 
           na instituição financeira. Formato RFC 3339, seção 5.6.
-        example: '2017-07-21T17:32:28Z'
     required:
       - operacaoEfetivada
       - dataHoraEfetivacao
@@ -1499,7 +1421,6 @@ definitions:
           - false
         description: >-
           Operação financeira efetivada (true). Operação financeira não efetivada (false).
-        example: true
     required:
       - operacaoEfetivada
   ConsultaConfirmacaoOperacao:
@@ -1512,14 +1433,12 @@ definitions:
           - false
         description: >-
           Operação financeira confirmada (true). Operação financeira não confirmada (false).
-        example: true
       dataHoraConfirmacao:
         type: string
         format: date-time
         description: >-
           Data e hora da confirmação da operação financeira digital 
           na instituição financeira. Formato RFC 3339, seção 5.6.
-        example: '2017-07-21T17:32:28Z'
     required:
       - operacaoConfirmada
       - dataHoraConfirmacao
@@ -1533,7 +1452,6 @@ definitions:
           - false
         description: >-
           Operação financeira confirmada (true). Operação financeira não confirmada (false).
-        example: true
     required:
       - operacaoConfirmada
   MensagemRetorno:
@@ -1543,25 +1461,20 @@ definitions:
         description: 'Data hora de referência da transação no formato RFC 3339, seção 5.6.'
         type: string
         format: date-time
-        example: '2017-07-21T17:32:28Z'
       codigoErro:
         type: number
         format: integer
         description: Faixa de código de erro que representa a falha de uma ação.
-        example: 1000
       mensagemErro:
         type: string
         description: Mensagem de erro.
-        example: Erro na inserção de uma operação.
       codigoDetalheErro:
         type: number
         format: integer
         description: Código de detalhamento do erro.
-        example: 1
       detalheErro:
         type: string
         description: Mensagem de detalhamento do erro.
-        example: Você não possui permissão para inserir uma operação.
       parametros:
         type: object
         description: Objeto que contêm chave/valor de parâmetros que possam ser retornados.
