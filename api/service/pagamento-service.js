@@ -228,7 +228,7 @@ const confirmarPagamento = async ({ uuid, confirmacaoPagamento }) => {
 			}
 			operacaoEfetivada.chamarCallbackURI();
 		} else {
-			pagamento = await Pagamento.confirmarPagamento(uuid, confirmacao);
+			pagamento = await Pagamento.confirmarPagamento(uuid, confirmacaoPagamento);
 			if (!pagamento) {
 				Err.throwError(Response.HTTP_STATUS.UNPROCESSABLE, 5000, 2, { uuid });
 			}
